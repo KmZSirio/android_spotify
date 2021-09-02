@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">SpotifyAPI</string>
+    <string name="log_in">Log in</string>
+    <string name="continue_with_facebook">Continue with Facebook</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="continue_with_phone_number">Continue with phone number</string>
+    <string name="sign_up_free">Sign up free</string>
+    <string name="free_on_spotify">Free on Spotify.</string>
+    <string name="millions_of_songs">Millions of songs.</string>
+    <string name="spotify_logo">Spotify logo</string>
+    <string name="background_image_shadow_of_someone_listening_music">Background image, shadow of someone listening music</string>
+</resources>

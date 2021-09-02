@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="trans">#80000000</color>
+
+    <color name="colorPrimary">#019ddb</color>
+    <color name="colorPrimaryVariant">#0078b4</color>
+    <color name="colorSecondary">#f97c12</color>
+    <color name="colorSecondaryVariant">#e95110</color>
+
+    <color name="spotifyGreen">#1ED760</color>
+    <color name="spotifyBlack">#121212</color>
+    <color name="spotifyGreyDarker">#2A2A2A</color>
+    <color name="spotifyGreyLighter">#AFAFAF</color>
+    <color name="spotifyBlue">#305D94</color>
+    <color name="spotifyBlueGrey">#3D4351</color>
+
+    <color name="faGreen">#088a08</color>
+    <color name="sirioR">#801434</color>
+    <color name="sirioY">#F3AC20</color>
+    <color name="sirioG">#94923D</color>
+
+    <color name="green">#3ead34</color>
+    <color name="red">#ad343e</color>
+</resources>
