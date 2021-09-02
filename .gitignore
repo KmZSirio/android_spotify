@@ -13,4 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-.spotify_secret.xml
+/app/src/main/res/values/spotify_secret.xml
