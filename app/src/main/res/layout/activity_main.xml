@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/spotifyBlack"
-    tools:context=".MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -34,14 +34,16 @@
 
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/logInButton"
+        android:layout_width="100dp"
+        android:layout_height="28dp"
         android:layout_marginBottom="35dp"
-        android:text="@string/log_in"
-        android:textColor="@color/white"
+        android:background="@drawable/log_in_button"
         android:fontFamily="sans-serif"
+        android:text="@string/log_in"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +66,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/logInButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
