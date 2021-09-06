@@ -9,4 +9,10 @@
     <string name="millions_of_songs">Millions of songs.</string>
     <string name="spotify_logo">Spotify logo</string>
     <string name="background_image_shadow_of_someone_listening_music">Background image, shadow of someone listening music</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="your_library">Your Library</string>
+    <string name="your_top_artists_last_6_months">Your top artists (last 6 months)</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="artist_picture">Artist picture</string>
 </resources>
