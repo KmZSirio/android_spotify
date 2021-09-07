@@ -1,18 +1,13 @@
-package com.bustasirio.spotifyapi.ui.activities
+package com.bustasirio.spotifyapi.ui.view.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
-import android.graphics.PixelFormat
-import android.view.Window
-import android.view.WindowManager
 
 class HomeActivity : AppCompatActivity() {
 

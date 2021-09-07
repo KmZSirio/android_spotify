@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/spotifyBlack"
-    tools:context=".ui.fragments.SearchFragment" >
+    tools:context=".ui.view.fragments.SearchFragment" >
 
     <TextView
         android:id="@+id/text_dashboard"

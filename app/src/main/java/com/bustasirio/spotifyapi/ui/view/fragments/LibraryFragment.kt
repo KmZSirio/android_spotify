@@ -1,4 +1,4 @@
-package com.bustasirio.spotifyapi.ui.fragments
+package com.bustasirio.spotifyapi.ui.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
