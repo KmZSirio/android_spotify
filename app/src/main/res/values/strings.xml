@@ -15,4 +15,8 @@
     <string name="your_top_artists_last_6_months">Your top artists (last 6 months)</string>
     <string name="good_afternoon">Good afternoon</string>
     <string name="artist_picture">Artist picture</string>
+    <string name="spotify_access_token">SpotifyAccessToken</string>
+    <string name="spotify_token_type">SpotifyTokenType</string>
+    <string name="spotify_refresh_token">SpotifyRefreshToken</string>
+    <string name="spotify_logged">SpotifyLogged</string>
 </resources>
