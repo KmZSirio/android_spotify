@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.view.activities.HomeActivity" />
+        <activity android:name=".ui.view.activities.LobbyActivity" />
         <activity android:name=".ui.view.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

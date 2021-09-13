@@ -5,28 +5,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bustasirio.spotifyapi.R
-import com.bustasirio.spotifyapi.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
+import androidx.activity.viewModels
+import com.bustasirio.spotifyapi.databinding.ActivityLobbyBinding
+import com.bustasirio.spotifyapi.ui.viewmodel.LobbyActivityViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class HomeActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class LobbyActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityHomeBinding
+    // FIXME Creating and recreating fragments trigger unnecessary calls
+    private lateinit var binding: ActivityLobbyBinding
+
+//    private val lobbyActivityViewModel: LobbyActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityHomeBinding.inflate(layoutInflater)
+        binding = ActivityLobbyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
-
-        val navController = findNavController(R.id.nav_host_fragment_activity_home)
+        val navController = findNavController(R.id.nav_host_fragment_activity_lobby)
+        navController.setGraph(R.navigation.mobile_navigation)
         navView.setupWithNavController(navController)
     }
 
     override fun onBackPressed() {
-        // Esto es para prevenir que al dar back y minimizar la app, se abra el login al clickear de nuevo la app
+        // * To prevent that when you minimize the app on lobby, the login appears again when maximizing
         val setIntent = Intent(Intent.ACTION_MAIN)
         setIntent.addCategory(Intent.CATEGORY_HOME)
         setIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

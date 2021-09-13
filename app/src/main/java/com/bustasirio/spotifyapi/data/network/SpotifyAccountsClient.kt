@@ -1,7 +1,6 @@
 package com.bustasirio.spotifyapi.data.network
 
 import com.bustasirio.spotifyapi.data.model.AuthorizationModel
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -13,9 +12,22 @@ interface SpotifyAccountsClient {
     @POST("/api/token")
     @FormUrlEncoded
     suspend fun getAccessToken(
-        @Header("Authorization") authorization : String,
-        @Field("grant_type") grantType : String,
-        @Field("code") code : String,
-        @Field("redirect_uri") redirectUri : String
-    ) : Response<AuthorizationModel>
+        @Header("Authorization") authorization: String,
+        @Field("grant_type") grantType: String,
+        @Field("code") code: String,
+        @Field("redirect_uri") redirectUri: String
+    ): Response<AuthorizationModel>
+
+
+    @Headers(
+        "Accept: application/json"
+    )
+    @POST("/api/token")
+    @FormUrlEncoded
+    suspend fun getNewToken(
+        @Header("Authorization") authorization: String,
+        @Field("grant_type") grantType: String,
+        @Field("refresh_token") refreshToken: String,
+        @Field("redirect_uri") redirectUri: String
+    ): Response<AuthorizationModel>
 }

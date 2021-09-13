@@ -2,7 +2,6 @@ package com.bustasirio.spotifyapi.ui.view.activities
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +13,7 @@ import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.databinding.ActivityMainBinding
-import com.bustasirio.spotifyapi.ui.viewmodel.MainViewModel
+import com.bustasirio.spotifyapi.ui.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val mainViewModel: MainViewModel by viewModels()
+    private val mainViewModel: MainActivityViewModel by viewModels()
 
     private val baseUrl: String = "https://accounts.spotify.com"
     private val endpoint: String = "/authorize"
@@ -74,8 +73,11 @@ class MainActivity : AppCompatActivity() {
 
             mainViewModel.response.observe(this, {
                 Log.d("tagMainActivityResponse", it.accessToken)
-                //TODO Save info on Shared prefs then pass to HomeActivity
-                val sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE)
+
+                val sharedPrefs = getSharedPreferences(
+                    getString(R.string.preference_file_key),
+                    Context.MODE_PRIVATE
+                )
                 with(sharedPrefs.edit()) {
                     putString(getString(R.string.spotify_access_token), it.accessToken)
                     putString(getString(R.string.spotify_token_type), it.tokenType)
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                     apply()
                 }
 
-                startActivity(Intent(this, HomeActivity::class.java))
+                startActivity(Intent(this, LobbyActivity::class.java))
                 finish()
             })
 

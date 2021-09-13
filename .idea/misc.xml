@@ -6,6 +6,7 @@
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/drawable/gradient_navbar.xml" value="0.3828125" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/drawable/splash_background.xml" value="0.3828125" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/activity_home.xml" value="0.33" />
+        <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/activity_lobby.xml" value="0.14814814814814814" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_dashboard.xml" value="0.33" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_home.xml" value="0.33" />
@@ -14,6 +15,8 @@
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/square_artist_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>
