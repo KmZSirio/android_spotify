@@ -16,12 +16,15 @@ class TopArtistsAdapter(private val artists: List<Artist>) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): TopArtistsAdapter.TopArtistsHolder {
+    ): TopArtistsHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return TopArtistsHolder(layoutInflater.inflate(R.layout.square_artist_item, parent, false))
     }
 
-    override fun onBindViewHolder(holder: TopArtistsAdapter.TopArtistsHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: TopArtistsHolder,
+        position: Int
+    ) {
         holder.tvArtistName.text = artists[position].name
         if (artists[position].images.isNotEmpty()) {
             Picasso.get().load(artists[position].images[0].url).into(holder.ivArtistImage)

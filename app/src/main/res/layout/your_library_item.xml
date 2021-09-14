@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:background="@color/spotifyBlack">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivPlaylistYourLibraryItem"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:contentDescription="@string/artist_picture"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/no_image" />
+
+        <TextView
+            android:id="@+id/tvNameYourLibraryItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLength="40"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toEndOf="@+id/ivPlaylistYourLibraryItem"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Slow and melancholic autumn" />
+
+        <TextView
+            android:id="@+id/tvDescriptionYourLibraryItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLength="40"
+            android:maxLines="1"
+            android:paddingTop="5dp"
+            android:textColor="@color/spotifyGreyLighter"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivPlaylistYourLibraryItem"
+            tools:text="Playlist • Sirio Rodriguez" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

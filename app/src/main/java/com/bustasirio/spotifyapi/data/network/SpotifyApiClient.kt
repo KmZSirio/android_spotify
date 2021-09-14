@@ -1,5 +1,6 @@
 package com.bustasirio.spotifyapi.data.network
 
+import com.bustasirio.spotifyapi.data.model.PlaylistsModel
 import com.bustasirio.spotifyapi.data.model.TopArtistsModel
 import com.bustasirio.spotifyapi.data.model.TopTracksModel
 import retrofit2.Response
@@ -27,4 +28,15 @@ interface SpotifyApiClient {
         @Query("time_range") timeRange: String,
         @Query("limit") limit: String
     ): Response<TopTracksModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("/v1/me/playlists")
+    suspend fun getCurrentUserPlaylists(
+        @Header("Authorization") authorizationWithToken: String,
+        @Query("limit") limit: String
+    ): Response<PlaylistsModel>
 }

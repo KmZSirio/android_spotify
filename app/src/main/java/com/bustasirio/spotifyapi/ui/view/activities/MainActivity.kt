@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                 finish()
             })
 
-            mainViewModel.responseError.observe(this, {
+            mainViewModel.errorResponse.observe(this, {
                 if (it != null) {
                     Toast.makeText(this, "Error: $it, try again later.", Toast.LENGTH_SHORT).show()
                 } else {

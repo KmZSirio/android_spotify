@@ -12,26 +12,18 @@ import com.bustasirio.spotifyapi.ui.viewmodel.HomeFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 import android.content.Context
-import android.opengl.Visibility
-import android.util.Log
 
 import android.widget.Toast
-import androidx.core.view.get
-import androidx.navigation.findNavController
 
 import com.bustasirio.spotifyapi.ui.view.adapters.TopArtistsAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.TopTracksAdapter
-import com.google.android.material.chip.Chip
 import java.util.*
 
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private var fragmentHomeBinding: FragmentHomeBinding? = null
-
     private val homeFragmentViewModel: HomeFragmentViewModel by viewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,16 +33,10 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onDestroyView() {
-        fragmentHomeBinding = null
-        super.onDestroyView()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentHomeBinding.bind(view)
-        fragmentHomeBinding = binding
 
         binding.tvWelcomeMessageHome.text = setWelcomeMessage()
 
@@ -104,7 +90,6 @@ class HomeFragment : Fragment() {
         })
 
         // * TopTracksResponse
-        // ! TODO Chip to select scope of most played songs, month, 6 months, lifetime
         homeFragmentViewModel.topTracksMonthResponse.observe(viewLifecycleOwner, {
             val adapter = TopTracksAdapter(it.tracks)
             binding.rvTopTracksMonth.adapter = adapter
@@ -120,7 +105,8 @@ class HomeFragment : Fragment() {
             binding.rvTopTracksLifetime.adapter = adapter
         })
 
-        homeFragmentViewModel.responseError.observe(viewLifecycleOwner, {
+        // ! FIXME reduce code repetition!
+        homeFragmentViewModel.errorResponse.observe(viewLifecycleOwner, {
             if (it != null) {
                 Toast.makeText(requireContext(), "Error: $it, try again later.", Toast.LENGTH_SHORT)
                     .show()
@@ -130,8 +116,9 @@ class HomeFragment : Fragment() {
             }
         })
 
+        // ! FIXME reduce code repetition!
         // * Save new tokens
-        homeFragmentViewModel.responseNewTokens.observe(viewLifecycleOwner, {
+        homeFragmentViewModel.newTokensResponse.observe(viewLifecycleOwner, {
 //            Log.d("tagHomeActivityResponseNewTokens", it.toString())
 
             val sharedPrefs = requireContext().getSharedPreferences(
@@ -162,6 +149,7 @@ class HomeFragment : Fragment() {
         return "Good evening"
     }
 
+    // ! FIXME reduce code repetition!
     private fun getPrefs() {
         val sharedPrefs =
             requireContext().getSharedPreferences(

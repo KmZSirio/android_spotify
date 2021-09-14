@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white">#ffffff</color>
-    <color name="trans">#80000000</color>
+    <color name="trans">#00000000</color>
 
     <color name="colorPrimary">#019ddb</color>
     <color name="colorPrimaryVariant">#0078b4</color>
@@ -9,6 +9,7 @@
     <color name="colorSecondaryVariant">#e95110</color>
 
     <color name="spotifyGreen">#1ED760</color>
+    <color name="spotifyBlackDarker">#070707</color>
     <color name="spotifyBlack">#121212</color>
     <color name="spotifyBlackLighter">#33000000</color>
     <color name="spotifyGreyDarker">#2A2A2A</color>

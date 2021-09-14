@@ -10,11 +10,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(private val service: SpotifyAccountsService) :
-    ViewModel() {
+class MainActivityViewModel @Inject constructor(
+    private val service: SpotifyAccountsService
+) : ViewModel() {
 
     val response = MutableLiveData<AuthorizationModel>()
-    val responseError = MutableLiveData<Int>()
+    val errorResponse = MutableLiveData<Int>()
     val code = MutableLiveData<String>()
 
     // ! TODO encode basic myself!
@@ -32,7 +33,7 @@ class MainActivityViewModel @Inject constructor(private val service: SpotifyAcco
             if (it.isSuccessful) {
                 response.postValue(it.body())
             } else {
-                responseError.postValue(it.code())
+                errorResponse.postValue(it.code())
             }
         }
     }

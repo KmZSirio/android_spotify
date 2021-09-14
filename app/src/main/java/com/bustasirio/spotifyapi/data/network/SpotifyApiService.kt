@@ -1,6 +1,7 @@
 package com.bustasirio.spotifyapi.data.network
 
 import com.bustasirio.spotifyapi.data.model.AuthorizationModel
+import com.bustasirio.spotifyapi.data.model.PlaylistsModel
 import com.bustasirio.spotifyapi.data.model.TopArtistsModel
 import com.bustasirio.spotifyapi.data.model.TopTracksModel
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,18 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
             api.getTopTracks(
                 authorizationWithToken,
                 timeRange,
+                limit
+            )
+        }
+    }
+
+    suspend fun getCurrentUserPlaylists(
+        authorizationWithToken: String,
+        limit: String
+    ): Response<PlaylistsModel> {
+        return withContext(Dispatchers.IO) {
+            api.getCurrentUserPlaylists(
+                authorizationWithToken,
                 limit
             )
         }

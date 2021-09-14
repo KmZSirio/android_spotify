@@ -21,4 +21,7 @@
     <string name="spotify_refresh_token">SpotifyRefreshToken</string>
     <string name="spotify_logged">SpotifyLogged</string>
     <string name="most_played_songs">Most played songs</string>
+    <string name="current_user_profile_image">Current user profile image</string>
+    <string name="search_image_button">Search image button</string>
+    <string name="add_image_button">Add image button</string>
 </resources>

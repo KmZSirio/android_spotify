@@ -20,14 +20,13 @@ class HomeFragmentViewModel @Inject constructor(
 ) : ViewModel() {
 
     val topArtistsResponse = MutableLiveData<TopArtistsModel>()
-    val responseError = MutableLiveData<Int>()
+    val errorResponse = MutableLiveData<Int>()
 
     val topTracksMonthResponse = MutableLiveData<TopTracksModel>()
     val topTracksSixMonthsResponse = MutableLiveData<TopTracksModel>()
     val topTracksLifetimeResponse = MutableLiveData<TopTracksModel>()
-    val responseNewTokens = MutableLiveData<AuthorizationModel>()
+    val newTokensResponse = MutableLiveData<AuthorizationModel>()
 
-    //    val limit = MutableLiveData<String>()
     val authorizationWithToken = MutableLiveData<String>() // "$tokenType $accessToken"
     val authorizationBasic = MutableLiveData<String>() // prefs
 
@@ -64,23 +63,23 @@ class HomeFragmentViewModel @Inject constructor(
                                 if (it.isSuccessful) {
 //                                    Log.d("tagHomeViewModel", "Line 60. ${it.body()!!.artists[0].name}")
                                     topArtistsResponse.postValue(it.body())
-                                    responseNewTokens.postValue(accServiceResp.body())
+                                    newTokensResponse.postValue(accServiceResp.body())
                                 } else {
                                     Log.d("tagHomeViewModel", "line 67")
-                                    responseError.postValue(it.code())
+                                    errorResponse.postValue(it.code())
                                 }
                             }
 
                         } else {
                             Log.d("tagHomeViewModel", "line 73")
-                            responseError.postValue(accServiceResp.code())
+                            errorResponse.postValue(accServiceResp.code())
                         }
                     }
 
                 }
                 else -> {
                     Log.d("tagHomeViewModel", "line 80")
-                    responseError.postValue(apiServiceResp.code())
+                    errorResponse.postValue(apiServiceResp.code())
                 }
             }
         }
@@ -120,23 +119,23 @@ class HomeFragmentViewModel @Inject constructor(
                                     if (term == "short_term") topTracksMonthResponse.postValue(it.body())
                                     if (term == "medium_term") topTracksSixMonthsResponse.postValue(it.body())
                                     if (term == "long_term") topTracksLifetimeResponse.postValue(it.body())
-                                    responseNewTokens.postValue(accServiceResp.body())
+                                    newTokensResponse.postValue(accServiceResp.body())
                                 } else {
                                     Log.d("tagHomeViewModel", "line 117")
-                                    responseError.postValue(it.code())
+                                    errorResponse.postValue(it.code())
                                 }
                             }
 
                         } else {
                             Log.d("tagHomeViewModel", "line 123")
-                            responseError.postValue(accServiceResp.code())
+                            errorResponse.postValue(accServiceResp.code())
                         }
                     }
 
                 }
                 else -> {
                     Log.d("tagHomeViewModel", "line 130")
-                    responseError.postValue(apiServiceResp.code())
+                    errorResponse.postValue(apiServiceResp.code())
                 }
             }
         }

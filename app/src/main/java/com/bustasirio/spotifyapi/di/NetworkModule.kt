@@ -15,9 +15,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    // * To prevent typo :b
+    private const val accountsRetrofit : String = "AccountsRetrofit"
+    private const val apiRetrofit : String = "ApiRetrofit"
+
     @Singleton
     @Provides
-    @Named("AccountsRetrofit")
+    @Named(accountsRetrofit)
     fun providesAccountsRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://accounts.spotify.com")
@@ -27,13 +31,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideSpotifyAccountsClient(@Named("AccountsRetrofit") retrofit: Retrofit): SpotifyAccountsClient {
+    fun provideSpotifyAccountsClient(@Named(accountsRetrofit) retrofit: Retrofit): SpotifyAccountsClient {
         return retrofit.create(SpotifyAccountsClient::class.java)
     }
 
     @Singleton
     @Provides
-    @Named("ApiRetrofit")
+    @Named(apiRetrofit)
     fun providesApiRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.spotify.com")
@@ -43,7 +47,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideSpotifyApiClient(@Named("ApiRetrofit") retrofit: Retrofit): SpotifyApiClient {
+    fun provideSpotifyApiClient(@Named(apiRetrofit) retrofit: Retrofit): SpotifyApiClient {
         return retrofit.create(SpotifyApiClient::class.java)
     }
 
