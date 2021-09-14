@@ -15,7 +15,7 @@
         android:paddingStart="0dp">
 
         <ImageView
-            android:id="@+id/ivArtistImage"
+            android:id="@+id/ivArtistImageSquareArtist"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:contentDescription="@string/artist_picture"
@@ -26,17 +26,17 @@
             tools:srcCompat="@drawable/no_image" />
 
         <TextView
-            android:id="@+id/tvArtistName"
+            android:id="@+id/tvArtistNameSquareArtist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Los Gigantes Del Vallenato"
+            tools:text="Los Gigantes Del Vallenato"
             android:maxLines="2"
             android:ellipsize="end"
             android:textSize="15sp"
             android:paddingTop="5dp"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivArtistImage" />
+            app:layout_constraintTop_toBottomOf="@+id/ivArtistImageSquareArtist" />}
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

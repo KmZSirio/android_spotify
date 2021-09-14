@@ -9,10 +9,11 @@
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/activity_lobby.xml" value="0.14814814814814814" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_dashboard.xml" value="0.33" />
-        <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_library.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_notifications.xml" value="0.32592592592592595" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/on_repeat_item.xml" value="0.38872691933916426" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/square_artist_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.20520833333333333" />

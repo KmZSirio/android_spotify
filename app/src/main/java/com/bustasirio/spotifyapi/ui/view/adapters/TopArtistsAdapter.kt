@@ -33,8 +33,7 @@ class TopArtistsAdapter(private val artists: List<Artist>) :
     override fun getItemCount(): Int = artists.size
 
     class TopArtistsHolder(val view: View) : RecyclerView.ViewHolder(view) {
-
-        val ivArtistImage: ImageView = view.findViewById(R.id.ivArtistImage)
-        val tvArtistName: TextView = view.findViewById(R.id.tvArtistName)
+        val ivArtistImage: ImageView = view.findViewById(R.id.ivArtistImageSquareArtist)
+        val tvArtistName: TextView = view.findViewById(R.id.tvArtistNameSquareArtist)
     }
 }

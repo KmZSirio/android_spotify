@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bustasirio.spotifyapi.data.model.AuthorizationModel
 import com.bustasirio.spotifyapi.data.model.TopArtistsModel
+import com.bustasirio.spotifyapi.data.model.TopTracksModel
 import com.bustasirio.spotifyapi.data.network.SpotifyAccountsService
 import com.bustasirio.spotifyapi.data.network.SpotifyApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +19,12 @@ class HomeFragmentViewModel @Inject constructor(
     private val accountsService: SpotifyAccountsService
 ) : ViewModel() {
 
-    val response = MutableLiveData<TopArtistsModel>()
+    val topArtistsResponse = MutableLiveData<TopArtistsModel>()
     val responseError = MutableLiveData<Int>()
+
+    val topTracksMonthResponse = MutableLiveData<TopTracksModel>()
+    val topTracksSixMonthsResponse = MutableLiveData<TopTracksModel>()
+    val topTracksLifetimeResponse = MutableLiveData<TopTracksModel>()
     val responseNewTokens = MutableLiveData<AuthorizationModel>()
 
     //    val limit = MutableLiveData<String>()
@@ -30,6 +35,7 @@ class HomeFragmentViewModel @Inject constructor(
     val refreshToken = MutableLiveData<String>() // prefs
     private val redirectUri: String = "bustasirio://callback"
 
+    // ! FIXME Eliminate repeatable code
     fun fetchTopArtists() = viewModelScope.launch {
         apiService.getTopArtists(
             authorizationWithToken.value!!,
@@ -38,7 +44,7 @@ class HomeFragmentViewModel @Inject constructor(
             when {
                 apiServiceResp.isSuccessful -> {
 //                    Log.d("tagHomeViewModel", "Line 40. ${apiServiceResp.body()}")
-                    response.postValue(apiServiceResp.body())
+                    topArtistsResponse.postValue(apiServiceResp.body())
                 }
                 apiServiceResp.code() == 401 -> {
 
@@ -57,23 +63,79 @@ class HomeFragmentViewModel @Inject constructor(
                             ).let {
                                 if (it.isSuccessful) {
 //                                    Log.d("tagHomeViewModel", "Line 60. ${it.body()!!.artists[0].name}")
-                                    response.postValue(it.body())
+                                    topArtistsResponse.postValue(it.body())
                                     responseNewTokens.postValue(accServiceResp.body())
                                 } else {
-                                    Log.d("tagHomeViewModel", "line 64")
+                                    Log.d("tagHomeViewModel", "line 67")
                                     responseError.postValue(it.code())
                                 }
                             }
 
                         } else {
-                            Log.d("tagHomeViewModel", "line 70")
+                            Log.d("tagHomeViewModel", "line 73")
                             responseError.postValue(accServiceResp.code())
                         }
                     }
 
                 }
                 else -> {
-                    Log.d("tagHomeViewModel", "line 77")
+                    Log.d("tagHomeViewModel", "line 80")
+                    responseError.postValue(apiServiceResp.code())
+                }
+            }
+        }
+    }
+
+    fun fetchTopTracks(term : String) = viewModelScope.launch {
+        apiService.getTopTracks(
+            authorizationWithToken.value!!,
+            term,
+            "10"
+        ).let { apiServiceResp ->
+            when {
+                apiServiceResp.isSuccessful -> {
+//                    Log.d("tagHomeViewModel", "Line 40. ${apiServiceResp.body()}")
+                    if (term == "short_term") topTracksMonthResponse.postValue(apiServiceResp.body())
+                    if (term == "medium_term") topTracksSixMonthsResponse.postValue(apiServiceResp.body())
+                    if (term == "long_term") topTracksLifetimeResponse.postValue(apiServiceResp.body())
+                }
+                apiServiceResp.code() == 401 -> {
+
+                    accountsService.getNewToken(
+                        authorizationBasic.value!!,
+                        "refresh_token",
+                        refreshToken.value!!,
+                        redirectUri
+                    ).let { accServiceResp ->
+                        if (accServiceResp.isSuccessful && accServiceResp.code() == 200) {
+                            val authWithToken =
+                                "${accServiceResp.body()!!.tokenType} ${accServiceResp.body()!!.accessToken}"
+                            apiService.getTopTracks(
+                                authWithToken,
+                                term,
+                                "10"
+                            ).let {
+                                if (it.isSuccessful) {
+//                                    Log.d("tagHomeViewModel", "Line 60. ${it.body()!!.artists[0].name}")
+                                    if (term == "short_term") topTracksMonthResponse.postValue(it.body())
+                                    if (term == "medium_term") topTracksSixMonthsResponse.postValue(it.body())
+                                    if (term == "long_term") topTracksLifetimeResponse.postValue(it.body())
+                                    responseNewTokens.postValue(accServiceResp.body())
+                                } else {
+                                    Log.d("tagHomeViewModel", "line 117")
+                                    responseError.postValue(it.code())
+                                }
+                            }
+
+                        } else {
+                            Log.d("tagHomeViewModel", "line 123")
+                            responseError.postValue(accServiceResp.code())
+                        }
+                    }
+
+                }
+                else -> {
+                    Log.d("tagHomeViewModel", "line 130")
                     responseError.postValue(apiServiceResp.code())
                 }
             }
