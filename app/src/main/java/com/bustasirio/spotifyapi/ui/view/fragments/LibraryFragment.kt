@@ -12,11 +12,12 @@ import com.bustasirio.spotifyapi.databinding.FragmentLibraryBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.widget.Toast
-import androidx.core.view.get
 import androidx.fragment.app.viewModels
+import com.bustasirio.spotifyapi.core.CircleTransformation
 import com.bustasirio.spotifyapi.ui.view.adapters.LibraryPlaylistsAdapter
+import com.bustasirio.spotifyapi.ui.viewmodel.LibraryFragmentViewModel
+import com.squareup.picasso.Picasso
 
 @AndroidEntryPoint
 class LibraryFragment : Fragment() {
@@ -40,12 +41,20 @@ class LibraryFragment : Fragment() {
 
         getPrefs()
         libraryFragmentViewModel.fetchCurrentUserPlaylists()
+        libraryFragmentViewModel.fetchCurrentUserProfile()
 
-        val icon = BitmapFactory.decodeResource(
-            requireContext().resources,
-            R.drawable.no_image
-        )
-        binding.ivProfileLibrary.setImageBitmap(getCroppedBitmap(icon))
+        // * UserResponse
+        libraryFragmentViewModel.userResponse.observe(viewLifecycleOwner, {
+            if (!it.images.isNullOrEmpty()) {
+                Picasso.get().load(it.images[0].url).transform(CircleTransformation()).into(binding.ivProfileLibrary)
+            } else {
+                val icon = BitmapFactory.decodeResource(
+                    requireContext().resources,
+                    R.drawable.no_image
+                )
+                binding.ivProfileLibrary.setImageBitmap(getCroppedBitmap(icon))
+            }
+        })
 
         // * PlaylistsResponse
         libraryFragmentViewModel.playlistsResponse.observe(viewLifecycleOwner, {

@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private val clientId: String = "151eea6d2b7a4630ace40005f01405b6"
     private val stateSpotify: String = "34fFs29kd09"
     private val responseType: String = "code"
-    private val scope: String = "playlist-read-private playlist-read-collaborative user-top-read"
+    private val scope: String = "playlist-read-private playlist-read-collaborative user-top-read user-read-email"
     private val redirectUri: String = "bustasirio://callback"
 
 

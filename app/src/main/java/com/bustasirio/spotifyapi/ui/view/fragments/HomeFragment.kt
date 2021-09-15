@@ -106,6 +106,7 @@ class HomeFragment : Fragment() {
         })
 
         // ! FIXME reduce code repetition!
+        // ! FIXME one error will create multiple toasts, one per endpoint call
         homeFragmentViewModel.errorResponse.observe(viewLifecycleOwner, {
             if (it != null) {
                 Toast.makeText(requireContext(), "Error: $it, try again later.", Toast.LENGTH_SHORT)
@@ -127,14 +128,14 @@ class HomeFragment : Fragment() {
             )
             with(sharedPrefs.edit()) {
                 putString(
-                    getString(com.bustasirio.spotifyapi.R.string.spotify_access_token),
+                    getString(R.string.spotify_access_token),
                     it.accessToken
                 )
                 putString(
-                    getString(com.bustasirio.spotifyapi.R.string.spotify_token_type),
+                    getString(R.string.spotify_token_type),
                     it.tokenType
                 )
-                putBoolean(getString(com.bustasirio.spotifyapi.R.string.spotify_logged), true)
+                putBoolean(getString(R.string.spotify_logged), true)
                 apply()
             }
         })
