@@ -3,22 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="66dp"
     android:orientation="horizontal"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    android:id="@+id/llYourLibraryItem"
     android:background="@color/spotifyBlack">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clYourLibraryItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/ivPlaylistYourLibraryItem"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:id="@+id/ivAlbumPlaylistTrackItem"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:contentDescription="@string/artist_picture"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,7 +25,7 @@
             tools:srcCompat="@drawable/no_image" />
 
         <TextView
-            android:id="@+id/tvNameYourLibraryItem"
+            android:id="@+id/tvNamePlaylistTrackItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -35,19 +33,19 @@
             android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="14dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintStart_toEndOf="@+id/ivPlaylistYourLibraryItem"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintStart_toEndOf="@+id/ivAlbumPlaylistTrackItem"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Slow and melancholic autumn" />
+            tools:text="I've got you under my skin  you under my skin" />
 
         <TextView
-            android:id="@+id/tvDescriptionYourLibraryItem"
+            android:id="@+id/tvArtistNamePlaylistTrackItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="14dp"
             android:layout_marginEnd="18dp"
             android:ellipsize="end"
             android:maxLength="40"
@@ -55,8 +53,8 @@
             android:textColor="@color/spotifyGreyLighter"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivPlaylistYourLibraryItem"
-            tools:text="Playlist • Sirio Rodriguez" />
+            app:layout_constraintStart_toEndOf="@+id/ivAlbumPlaylistTrackItem"
+            tools:text="Frank Sinatra" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

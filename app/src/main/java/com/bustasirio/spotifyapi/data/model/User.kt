@@ -1,5 +1,9 @@
 package com.bustasirio.spotifyapi.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class User(
     val country: String,
     val display_name: String,
@@ -13,4 +17,4 @@ data class User(
     val product: String,
     val type: String,
     val uri: String
-)
+) : Parcelable

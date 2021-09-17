@@ -7,4 +7,8 @@
  - Most songs have a preview listenable, also there's a botton with an intent for Spotify App.
  - Design almost the same as the Official Spotify App.
 
-![Home tab](https://i.imgur.com/S1EENkc.jpg)
+#### Log in button works, it opens a custom tab to ask for user's authorization to use his Spotify data.
+![Login](https://i.imgur.com/4qbCvE4.jpg)
+![Home tab](https://i.imgur.com/z0UgKXk.jpg)
+![Your library tab](https://i.imgur.com/4Lq2cF0.jpg)
+![Playlist](https://i.imgur.com/XJgaQHS.jpg)

@@ -24,4 +24,10 @@
     <string name="current_user_profile_image">Current user profile image</string>
     <string name="search_image_button">Search image button</string>
     <string name="add_image_button">Add image button</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tracks_url">tracks_url</string>
+    <string name="playlist_cover_image">Playlist cover image</string>
+    <string name="random_play_button">Random play button</string>
+    <string name="back_to_library_button">Back to library button</string>
+    <string name="log_out_button">Log out button</string>
 </resources>

@@ -17,12 +17,15 @@ class SplashActivity : AppCompatActivity() {
 
             val isLogged: Boolean = sharedPrefs.getBoolean(getString(R.string.spotify_logged), false)
 
-            Log.d("tagSplashActivity", isLogged.toString())
             if (isLogged) {
-                startActivity(Intent(this, LobbyActivity::class.java))
+                val intent = Intent(this, LobbyActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             } else {
-                startActivity(Intent(this, MainActivity::class.java))
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             }
         } catch (e: Throwable) {

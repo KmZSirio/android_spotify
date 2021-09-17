@@ -1,5 +1,9 @@
 package com.bustasirio.spotifyapi.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Artist(
     val external_urls: ExternalUrls,
     val href: String,
@@ -8,4 +12,4 @@ data class Artist(
     val name: String,
     val type: String,
     val uri: String
-)
+) : Parcelable

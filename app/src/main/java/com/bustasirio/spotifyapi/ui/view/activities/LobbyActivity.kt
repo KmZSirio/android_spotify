@@ -1,15 +1,13 @@
 package com.bustasirio.spotifyapi.ui.view.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bustasirio.spotifyapi.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import android.content.Intent
-import androidx.activity.viewModels
 import com.bustasirio.spotifyapi.databinding.ActivityLobbyBinding
-import com.bustasirio.spotifyapi.ui.viewmodel.LobbyActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,11 +29,11 @@ class LobbyActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    override fun onBackPressed() {
-        // * To prevent that when you minimize the app on lobby, the login appears again when maximizing
-        val setIntent = Intent(Intent.ACTION_MAIN)
-        setIntent.addCategory(Intent.CATEGORY_HOME)
-        setIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(setIntent)
-    }
+//    override fun onBackPressed() {
+//        // * To prevent that when you minimize the app on lobby, the login appears again when maximizing
+//        val setIntent = Intent(Intent.ACTION_MAIN)
+//        setIntent.addCategory(Intent.CATEGORY_HOME)
+//        setIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//        startActivity(setIntent)
+//    }
 }

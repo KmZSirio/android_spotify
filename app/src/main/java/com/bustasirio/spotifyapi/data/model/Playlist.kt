@@ -1,5 +1,9 @@
 package com.bustasirio.spotifyapi.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Playlist(
     val collaborative: Boolean,
     val description: String,
@@ -13,4 +17,4 @@ data class Playlist(
     val tracks: Tracks,
     val type: String,
     val uri: String
-)
+) : Parcelable

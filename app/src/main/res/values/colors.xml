@@ -16,6 +16,7 @@
     <color name="spotifyGreyLighter">#AFAFAF</color>
     <color name="spotifyBlue">#305D94</color>
     <color name="spotifyBlueGrey">#3D4351</color>
+    <color name="spotifyBlueGreyDarker">#242830</color>
 
     <color name="faGreen">#088a08</color>
     <color name="sirioR">#801434</color>

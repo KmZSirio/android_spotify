@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/spotifyBlack">
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:fitsSystemWindows="true"
+            android:theme="@style/Theme.SpotifyAPI">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingPlaylist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:scrimAnimationDuration="300"
+                android:background="@drawable/gradient_expanded"
+                app:expandedTitleGravity="bottom"
+                app:collapsedTitleTextAppearance="@style/TitleCollapsed"
+                app:titleCollapseMode="fade"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <ImageView
+                    android:id="@+id/ivPlaylist"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:contentDescription="@string/playlist_cover_image"
+                    android:src="@drawable/no_artist"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center|top"
+                    android:layout_marginBottom="20dp"
+                    app:layout_collapseMode="parallax"/>
+
+                <LinearLayout
+                    android:id="@+id/llDetailsPlaylist"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:id="@+id/tvTitlePlaylist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="The Very Best In The Whole Universe"
+                        style="@style/TitleExpanded"/>
+
+                    <TextView
+                        android:id="@+id/tvDescriptionPlaylist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Huesca RAAZ DLTA STARS CSC TLG zG Busta nR ESL KmZ CtF FA"
+                        style="@style/DescriptionExpanded"/>
+
+                    <TextView
+                        android:id="@+id/tvOwnerPlaylist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        tools:text="Sirio Rodriguez"
+                        style="@style/OwnerExpanded"/>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarPlaylist"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:titleMarginStart="60dp"
+                    app:titleMarginEnd="60dp"
+                    app:layout_collapseMode="pin"/>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="60dp"
+            android:clipToPadding="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:orientation="vertical"
+            app:layoutManager="LinearLayoutManager"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:baselineAlignBottom="false"
+            android:contentDescription="@string/random_play_button"
+            android:src="@drawable/ic_baseline_play_arrow_30"
+            app:fabSize="normal"
+            app:layout_anchor="@id/collapsingPlaylist"
+            app:layout_anchorGravity="end|bottom"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/spotifyGreen"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <ImageButton
+        android:id="@+id/ibBackPlaylist"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@color/trans"
+        android:backgroundTint="@color/trans"
+        android:contentDescription="@string/back_to_library_button"
+        android:elevation="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="10dp"
+        android:outlineAmbientShadowColor="@color/trans"
+        android:outlineSpotShadowColor="@color/trans"
+        android:src="@drawable/ic_baseline_arrow_back_34"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--        <androidx.recyclerview.widget.RecyclerView-->
+    <!--            android:id="@+id/rvPlaylist"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:nestedScrollingEnabled="true"-->
+    <!--            android:orientation="vertical"-->
+    <!--            app:layoutManager="LinearLayoutManager"-->
+    <!--            tools:itemCount="100"/>-->

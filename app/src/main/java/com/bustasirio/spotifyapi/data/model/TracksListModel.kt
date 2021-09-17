@@ -1,16 +1,12 @@
 package com.bustasirio.spotifyapi.data.model
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-// * Parcelize and Parcelable to pass it through intents
-
 @Parcelize
-data class TopArtistsModel(
+data class TracksListModel(
     val href: String,
-    @SerializedName("items")
-    val artists: List<Artist>,
+    val items: List<Item>,
     val limit: Int,
     val offset: Int,
     val total: Int

@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.getAuth()
 
             mainViewModel.response.observe(this, {
-                Log.d("tagMainActivityResponse", it.accessToken)
+//                Log.d("tagMainActivityResponse", it.accessToken)
 
                 val sharedPrefs = getSharedPreferences(
                     getString(R.string.preference_file_key),
@@ -86,7 +86,9 @@ class MainActivity : AppCompatActivity() {
                     apply()
                 }
 
-                startActivity(Intent(this, LobbyActivity::class.java))
+                val intent = Intent(this, LobbyActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             })
 

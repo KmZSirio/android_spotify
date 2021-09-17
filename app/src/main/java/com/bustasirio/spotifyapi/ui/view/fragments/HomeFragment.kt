@@ -12,29 +12,35 @@ import com.bustasirio.spotifyapi.ui.viewmodel.HomeFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 
 import android.widget.Toast
+import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
+import com.bustasirio.spotifyapi.ui.view.activities.MainActivity
 
 import com.bustasirio.spotifyapi.ui.view.adapters.TopArtistsAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.TopTracksAdapter
 import java.util.*
 
-
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val homeFragmentViewModel: HomeFragmentViewModel by viewModels()
+    private val homeFragmentVM: HomeFragmentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        removeAnnoyingFrag(requireActivity())
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("tagHomeFragment","onViewCreated")
 
         val binding = FragmentHomeBinding.bind(view)
 
@@ -51,11 +57,34 @@ class HomeFragment : Fragment() {
         binding.rvTopTracksLifetime.overScrollMode = View.OVER_SCROLL_NEVER
         binding.rvTopArtists.overScrollMode = View.OVER_SCROLL_NEVER
 
-        getPrefs()
-        homeFragmentViewModel.fetchTopArtists()
-        homeFragmentViewModel.fetchTopTracks("short_term")
-        homeFragmentViewModel.fetchTopTracks("medium_term")
-        homeFragmentViewModel.fetchTopTracks("long_term")
+        if (isLogged()) {
+            getPrefs()
+            homeFragmentVM.fetchTopArtists()
+            homeFragmentVM.fetchTopTracks("short_term")
+            homeFragmentVM.fetchTopTracks("medium_term")
+            homeFragmentVM.fetchTopTracks("long_term")
+        }
+
+        binding.ibLogOutHome.setOnClickListener {
+
+            requireActivity().supportFragmentManager.popBackStack()
+
+            val sharedPrefs = requireContext().getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            )
+            with(sharedPrefs.edit()) {
+                putString(getString(R.string.spotify_access_token), "")
+                putString(getString(R.string.spotify_token_type), "")
+                putString(getString(R.string.spotify_refresh_token), "")
+                putBoolean(getString(R.string.spotify_logged), false)
+                apply()
+            }
+
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
 
         // * Chips related
         binding.chipGroupHome.setOnCheckedChangeListener { chipGroup, id ->
@@ -80,34 +109,30 @@ class HomeFragment : Fragment() {
 
         // * viewLifecycleOwner instead of this, if you are on a fragment
         // * TopArtistsResponse
-        homeFragmentViewModel.topArtistsResponse.observe(viewLifecycleOwner, {
-//            Log.d("tagHomeFragmentResponse", it.artists[2].name)
-
-//            binding.rvTopArtists.layoutManager = LinearLayoutManager(requireContext())
+        homeFragmentVM.topArtistsResponse.observe(viewLifecycleOwner, {
             val adapter = TopArtistsAdapter(it.artists)
             binding.rvTopArtists.adapter = adapter
-
         })
 
         // * TopTracksResponse
-        homeFragmentViewModel.topTracksMonthResponse.observe(viewLifecycleOwner, {
+        homeFragmentVM.topTracksMonthResponse.observe(viewLifecycleOwner, {
             val adapter = TopTracksAdapter(it.tracks)
             binding.rvTopTracksMonth.adapter = adapter
         })
 
-        homeFragmentViewModel.topTracksSixMonthsResponse.observe(viewLifecycleOwner, {
+        homeFragmentVM.topTracksSixMonthsResponse.observe(viewLifecycleOwner, {
             val adapter = TopTracksAdapter(it.tracks)
             binding.rvTopTracksSixMonths.adapter = adapter
         })
 
-        homeFragmentViewModel.topTracksLifetimeResponse.observe(viewLifecycleOwner, {
+        homeFragmentVM.topTracksLifetimeResponse.observe(viewLifecycleOwner, {
             val adapter = TopTracksAdapter(it.tracks)
             binding.rvTopTracksLifetime.adapter = adapter
         })
 
         // ! FIXME reduce code repetition!
         // ! FIXME one error will create multiple toasts, one per endpoint call
-        homeFragmentViewModel.errorResponse.observe(viewLifecycleOwner, {
+        homeFragmentVM.errorResponse.observe(viewLifecycleOwner, {
             if (it != null) {
                 Toast.makeText(requireContext(), "Error: $it, try again later.", Toast.LENGTH_SHORT)
                     .show()
@@ -119,7 +144,7 @@ class HomeFragment : Fragment() {
 
         // ! FIXME reduce code repetition!
         // * Save new tokens
-        homeFragmentViewModel.newTokensResponse.observe(viewLifecycleOwner, {
+        homeFragmentVM.newTokensResponse.observe(viewLifecycleOwner, {
 //            Log.d("tagHomeActivityResponseNewTokens", it.toString())
 
             val sharedPrefs = requireContext().getSharedPreferences(
@@ -163,9 +188,17 @@ class HomeFragment : Fragment() {
         val refreshToken: String? =
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
-        homeFragmentViewModel.authorizationWithToken.value = "$tokenType $accessToken"
-        homeFragmentViewModel.authorizationBasic.value =
+        homeFragmentVM.authorizationWithToken.value = "$tokenType $accessToken"
+        homeFragmentVM.authorizationBasic.value =
             resources.getString(R.string.spotify_basic)
-        homeFragmentViewModel.refreshToken.value = refreshToken
+        homeFragmentVM.refreshToken.value = refreshToken
+    }
+
+    private fun isLogged(): Boolean {
+        val sharedPrefs = requireContext().getSharedPreferences(
+            getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE
+        )
+        return sharedPrefs.getBoolean(getString(R.string.spotify_logged), false)
     }
 }
