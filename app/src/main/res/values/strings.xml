@@ -30,4 +30,5 @@
     <string name="random_play_button">Random play button</string>
     <string name="back_to_library_button">Back to library button</string>
     <string name="log_out_button">Log out button</string>
+    <string name="profile">Profile</string>
 </resources>

@@ -54,10 +54,10 @@ class LibraryFragment : Fragment() {
         libraryFragmentVM.fetchCurrentUserProfile()
 
         binding.ivProfileLibrary.setOnClickListener {
-//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-//            transaction.replace(R.id.nav_host_fragment_activity_lobby, PlaylistFragment())
-//            transaction.disallowAddToBackStack()
-//            transaction.commit()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host_fragment_activity_lobby, ProfileFragment())
+            transaction.disallowAddToBackStack()
+            transaction.commit()
         }
 
         // * UserResponse
