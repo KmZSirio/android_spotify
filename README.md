@@ -12,3 +12,4 @@
 ![Home tab](https://i.imgur.com/z0UgKXk.jpg)
 ![Your library tab](https://i.imgur.com/4Lq2cF0.jpg)
 ![Playlist](https://i.imgur.com/XJgaQHS.jpg)
+![Profile](https://i.imgur.com/XJgaQHS.jpg)
