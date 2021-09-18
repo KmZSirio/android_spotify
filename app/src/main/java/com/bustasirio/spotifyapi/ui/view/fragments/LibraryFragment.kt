@@ -14,10 +14,10 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Transformations
 import com.bustasirio.spotifyapi.core.CircleTransformation
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
 import com.bustasirio.spotifyapi.data.model.Playlist
+import com.bustasirio.spotifyapi.data.model.User
 import com.bustasirio.spotifyapi.ui.view.adapters.LibraryPlaylistsAdapter
 import com.bustasirio.spotifyapi.ui.viewmodel.LibraryFragmentViewModel
 import com.squareup.picasso.Picasso
@@ -42,22 +42,22 @@ class LibraryFragment : Fragment() {
 
         val binding = FragmentLibraryBinding.bind(view)
 
-        binding.rvPlaylistsLibrary.overScrollMode = View.OVER_SCROLL_NEVER
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack);
 
-//        binding.rvPlaylistsLibrary.
-//        libraryPlaylistsAdapter.tracksUrl.observe(viewLifecycleOwner, {
-//            Log.d("tagLibraryFragment", it)
-//        })
+        var user : User? = null
+        var noPlaylist : Int? = null
+
+        binding.rvPlaylistsLibrary.overScrollMode = View.OVER_SCROLL_NEVER
 
         getPrefs()
         libraryFragmentVM.fetchCurrentUserPlaylists()
         libraryFragmentVM.fetchCurrentUserProfile()
 
         binding.ivProfileLibrary.setOnClickListener {
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment_activity_lobby, ProfileFragment())
-            transaction.disallowAddToBackStack()
-            transaction.commit()
+
+            if (user != null && noPlaylist != null) {
+                fragTransProfile(user, noPlaylist)
+            }
         }
 
         // * UserResponse
@@ -72,6 +72,7 @@ class LibraryFragment : Fragment() {
                 )
                 binding.ivProfileLibrary.setImageBitmap(getCroppedBitmap(icon))
             }
+            user = it
         })
 
         // * PlaylistsResponse
@@ -79,7 +80,8 @@ class LibraryFragment : Fragment() {
             val adapter = LibraryPlaylistsAdapter(it.playlists)
             binding.rvPlaylistsLibrary.adapter = adapter
 
-            adapter.itemPosition.observe(viewLifecycleOwner, { position -> fragTransaction(it.playlists[position]) })
+            adapter.itemPosition.observe(viewLifecycleOwner, { position -> fragTransPlaylist(it.playlists[position]) })
+            noPlaylist = it.total
         })
 
         libraryFragmentVM.errorResponse.observe(viewLifecycleOwner, {
@@ -93,7 +95,6 @@ class LibraryFragment : Fragment() {
         })
 
         libraryFragmentVM.newTokensResponse.observe(viewLifecycleOwner, {
-//            Log.d("tagHomeActivityResponseNewTokens", it.toString())
 
             val sharedPrefs = requireContext().getSharedPreferences(
                 getString(R.string.preference_file_key),
@@ -114,11 +115,24 @@ class LibraryFragment : Fragment() {
         })
     }
 
-    private fun fragTransaction(playlist: Playlist) {
+    private fun fragTransPlaylist(playlist: Playlist) {
         val fragment = PlaylistFragment()
 
         val bundle = Bundle()
         bundle.putParcelable(getString(R.string.tracks_url), playlist)
+        fragment.arguments = bundle
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment_activity_lobby, fragment)
+        transaction.disallowAddToBackStack()
+        transaction.commit()
+    }
+
+    private fun fragTransProfile(user: User?, noPlaylists: Int?) {
+        val fragment = ProfileFragment()
+
+        val bundle = Bundle()
+        bundle.putParcelable(getString(R.string.user_object), user)
+        bundle.putInt(getString(R.string.no_playlists), noPlaylists!!)
         fragment.arguments = bundle
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment_activity_lobby, fragment)

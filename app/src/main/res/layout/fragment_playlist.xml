@@ -125,12 +125,3 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--        <androidx.recyclerview.widget.RecyclerView-->
-    <!--            android:id="@+id/rvPlaylist"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:nestedScrollingEnabled="true"-->
-    <!--            android:orientation="vertical"-->
-    <!--            app:layoutManager="LinearLayoutManager"-->
-    <!--            tools:itemCount="100"/>-->

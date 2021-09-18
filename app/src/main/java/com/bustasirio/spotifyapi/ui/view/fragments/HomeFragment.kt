@@ -40,9 +40,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("tagHomeFragment","onViewCreated")
 
         val binding = FragmentHomeBinding.bind(view)
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack);
 
         binding.tvWelcomeMessageHome.text = setWelcomeMessage()
 

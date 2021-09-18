@@ -39,11 +39,7 @@ class PlaylistFragmentViewModel @Inject constructor(
         ).let { apiServiceResp ->
             when {
                 apiServiceResp.isSuccessful -> {
-//                    Log.d("tagHomeViewModel", "Line 40. ${apiServiceResp.body()}")
-                    Log.d("tagPlaylistFragmentViewModel", "Href: ${apiServiceResp.body()!!.href}")
-                    Log.d("tagPlaylistFragmentViewModel", "Name: ${apiServiceResp.body()!!.items[0].track.name}")
-                    Log.d("tagPlaylistFragmentViewModel", "Artist: ${apiServiceResp.body()!!.items[0].track.artists[0].name}")
-                    tracksResponse.postValue(apiServiceResp.body())
+//                 tracksResponse.postValue(apiServiceResp.body())
                 }
                 apiServiceResp.code() == 401 -> {
 
@@ -62,10 +58,7 @@ class PlaylistFragmentViewModel @Inject constructor(
                                 "20"
                             ).let {
                                 if (it.isSuccessful) {
-//                                    Log.d("tagHomeViewModel", "Line 60. ${it.body()!!.artists[0].name}")
-                                    Log.d("tagPlaylistFragmentViewModel", "Name it: ${it.body()!!.items[0].track.name}")
-                                    Log.d("tagPlaylistFragmentViewModel", "Artist it: ${it.body()!!.items[0].track.artists[0].name}")
-                                    tracksResponse.postValue(it.body())
+//                                  tracksResponse.postValue(it.body())
                                     newTokensResponse.postValue(accServiceResp.body())
                                 } else {
                                     Log.d("tagPlaylistViewModel", "line 67")

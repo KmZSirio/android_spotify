@@ -24,6 +24,8 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack);
+
         Log.d("tagSearchFragment", "${requireActivity().supportFragmentManager.fragments}")
 
     }

@@ -9,6 +9,7 @@
     <color name="colorSecondaryVariant">#e95110</color>
 
     <color name="spotifyGreen">#1ED760</color>
+    <color name="spotifyGreenHalf">#501ED760</color>
     <color name="spotifyBlackDarker">#070707</color>
     <color name="spotifyBlack">#121212</color>
     <color name="spotifyBlackLighter">#33000000</color>

@@ -26,6 +26,8 @@
     <string name="add_image_button">Add image button</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tracks_url">tracks_url</string>
+    <string name="no_playlists">no_playlists</string>
+    <string name="user_object">user_object</string>
     <string name="playlist_cover_image">Playlist cover image</string>
     <string name="random_play_button">Random play button</string>
     <string name="back_to_library_button">Back to library button</string>

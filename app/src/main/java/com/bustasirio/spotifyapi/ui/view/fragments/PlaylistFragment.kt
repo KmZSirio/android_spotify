@@ -46,6 +46,8 @@ class PlaylistFragment : Fragment() {
 
         val binding = FragmentPlaylistBinding.bind(view)
 
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlueGrey);
+
         getPrefs()
         playlistFragmentVM.fetchPlaylistItems(playlist!!.tracks.href)
 
