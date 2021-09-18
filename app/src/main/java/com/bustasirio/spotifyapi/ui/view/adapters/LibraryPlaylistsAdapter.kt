@@ -8,22 +8,36 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.marginBottom
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.data.model.Playlist
 import com.squareup.picasso.Picasso
 
-class LibraryPlaylistsAdapter(private val playlists: List<Playlist>) :
-    RecyclerView.Adapter<LibraryPlaylistsAdapter.LibraryPlaylistsHolder>() {
+class LibraryPlaylistsAdapter :
+    RecyclerView.Adapter<LibraryPlaylistsAdapter.LibraryPlaylistsViewHolder>() {
 
     val itemPosition = MutableLiveData<Int>()
+
+    private val differCallback = object : DiffUtil.ItemCallback<Playlist>() {
+        override fun areItemsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
+            return oldItem.href == newItem.href
+        }
+
+        override fun areContentsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): LibraryPlaylistsHolder {
+    ): LibraryPlaylistsViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return LibraryPlaylistsHolder(
+        return LibraryPlaylistsViewHolder(
             layoutInflater.inflate(
                 R.layout.your_library_item,
                 parent,
@@ -32,37 +46,42 @@ class LibraryPlaylistsAdapter(private val playlists: List<Playlist>) :
         )
     }
 
-    override fun onBindViewHolder(holder: LibraryPlaylistsHolder, position: Int) {
+    override fun onBindViewHolder(holder: LibraryPlaylistsViewHolder, position: Int) {
+
+        val playlist = differ.currentList[position]
 
         var type = "playlist"
-        type = if (playlists[position].type == type)
+        type = if (playlist.type == type)
             "Playlist"
         else
-            playlists[position].type
+            playlist.type
 
-        holder.tvNameYourLibraryItem.text = playlists[position].name
-        holder.tvDescriptionYourLibraryItem.text =
-            type + " • " + playlists[position].owner.display_name
-        if (playlists[position].images.isNotEmpty()) {
-            Picasso.get().load(playlists[position].images[0].url)
-                .into(holder.ivPlaylistYourLibraryItem)
-        } else {
-            holder.ivPlaylistYourLibraryItem.setImageResource(R.drawable.no_artist)
+
+        holder.itemView.apply {
+            holder.tvNameYourLibraryItem.text = playlist.name
+            holder.tvDescriptionYourLibraryItem.text =
+                type + " • " + playlist.owner.display_name
+            if (playlist.images.isNotEmpty()) {
+                Picasso.get().load(playlist.images[0].url)
+                    .into(holder.ivPlaylistYourLibraryItem)
+            } else {
+                holder.ivPlaylistYourLibraryItem.setImageResource(R.drawable.no_artist)
+            }
+
+            holder.itemView.setOnClickListener {
+                itemPosition.postValue(position)
+            }
         }
 
-        holder.itemView.setOnClickListener {
-//            Log.d("tagLibraryPlaylistsAdapter","${playlists[position].tracks.href}")
-            itemPosition.postValue(position)
-        }
+
     }
 
-    override fun getItemCount(): Int = playlists.size
+    override fun getItemCount(): Int = differ.currentList.size
 
-    class LibraryPlaylistsHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    class LibraryPlaylistsViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val ivPlaylistYourLibraryItem: ImageView = view.findViewById(R.id.ivPlaylistYourLibraryItem)
         val tvNameYourLibraryItem: TextView = view.findViewById(R.id.tvNameYourLibraryItem)
         val tvDescriptionYourLibraryItem: TextView =
             view.findViewById(R.id.tvDescriptionYourLibraryItem)
-        val llYourLibraryItem: LinearLayout = view.findViewById(R.id.llYourLibraryItem)
     }
 }

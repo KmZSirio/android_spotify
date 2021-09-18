@@ -36,12 +36,14 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
 
     suspend fun getCurrentUserPlaylists(
         authorizationWithToken: String,
-        limit: String
+        limit: String,
+        offset: String
     ): Response<PlaylistsModel> {
         return withContext(Dispatchers.IO) {
             api.getCurrentUserPlaylists(
                 authorizationWithToken,
-                limit
+                limit,
+                offset
             )
         }
     }

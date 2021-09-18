@@ -36,7 +36,8 @@ interface SpotifyApiClient {
     @GET("/v1/me/playlists")
     suspend fun getCurrentUserPlaylists(
         @Header("Authorization") authorizationWithToken: String,
-        @Query("limit") limit: String
+        @Query("limit") limit: String,
+        @Query("offset") offset: String
     ): Response<PlaylistsModel>
 
 

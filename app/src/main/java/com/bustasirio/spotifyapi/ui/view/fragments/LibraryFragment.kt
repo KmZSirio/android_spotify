@@ -12,9 +12,14 @@ import com.bustasirio.spotifyapi.databinding.FragmentLibraryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import android.graphics.BitmapFactory
 import android.util.Log
+import android.widget.AbsListView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.core.CircleTransformation
+import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_LIBRARY_SIZE
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
 import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.data.model.User
@@ -26,6 +31,8 @@ import com.squareup.picasso.Picasso
 class LibraryFragment : Fragment() {
 
     private val libraryFragmentVM: LibraryFragmentViewModel by viewModels()
+
+    private lateinit var libraryAdapter: LibraryPlaylistsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,17 +48,22 @@ class LibraryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentLibraryBinding.bind(view)
+        setupRecyclerView(binding)
+//        layoutManager = LinearLayoutManager(requireContext())
+//        binding.rvPlaylistsLibrary.layoutManager = layoutManager
+//        binding.rvPlaylistsLibrary.addOnScrollListener(this@LibraryFragment.scrollListener)
 
         requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack);
 
-        var user : User? = null
-        var noPlaylist : Int? = null
+        var user: User? = null
+        var noPlaylist: Int? = null
 
         binding.rvPlaylistsLibrary.overScrollMode = View.OVER_SCROLL_NEVER
 
         getPrefs()
         libraryFragmentVM.fetchCurrentUserPlaylists()
         libraryFragmentVM.fetchCurrentUserProfile()
+
 
         binding.ivProfileLibrary.setOnClickListener {
 
@@ -77,11 +89,19 @@ class LibraryFragment : Fragment() {
 
         // * PlaylistsResponse
         libraryFragmentVM.playlistsResponse.observe(viewLifecycleOwner, {
-            val adapter = LibraryPlaylistsAdapter(it.playlists)
-            binding.rvPlaylistsLibrary.adapter = adapter
+            hideProgressBar(view)
+            libraryAdapter.differ.submitList(it.playlists.toList())
+            val totalPages = it.total / QUERY_LIBRARY_SIZE + 1
+            isLastPage = libraryFragmentVM.page == totalPages
 
-            adapter.itemPosition.observe(viewLifecycleOwner, { position -> fragTransPlaylist(it.playlists[position]) })
+            libraryAdapter.itemPosition.observe(
+                viewLifecycleOwner,
+                { position -> fragTransPlaylist(it.playlists[position]) })
             noPlaylist = it.total
+        })
+
+        libraryFragmentVM.loading.observe(viewLifecycleOwner, {
+            if (it) showProgressBar(view)
         })
 
         libraryFragmentVM.errorResponse.observe(viewLifecycleOwner, {
@@ -113,6 +133,62 @@ class LibraryFragment : Fragment() {
                 apply()
             }
         })
+    }
+
+    private fun hideProgressBar(view: View) {
+        val progressBar: ProgressBar = view.findViewById(R.id.progressLibrary)
+        progressBar.visibility = View.INVISIBLE
+        isLoading = false
+    }
+
+    private fun showProgressBar(view: View) {
+        val progressBar: ProgressBar = view.findViewById(R.id.progressLibrary)
+        progressBar.visibility = View.VISIBLE
+        isLoading = true
+    }
+
+    var isLoading = false
+    var isLastPage = false
+    var isScrolling = false
+
+    val scrollListener = object: RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                isScrolling = true
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+
+            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+            val isNotAtBeginning = firstVisibleItemPosition >= 0
+            val isTotalMoreThanVisible = totalItemCount >= QUERY_LIBRARY_SIZE
+            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning
+                    && isTotalMoreThanVisible && isScrolling
+
+            if (shouldPaginate) {
+                libraryFragmentVM.fetchCurrentUserPlaylists()
+                isScrolling = false
+            }
+        }
+    }
+
+    private fun setupRecyclerView(binding: FragmentLibraryBinding) {
+        libraryAdapter = LibraryPlaylistsAdapter()
+        binding.rvPlaylistsLibrary.apply {
+            adapter = libraryAdapter
+            layoutManager = LinearLayoutManager(activity)
+            addOnScrollListener(this@LibraryFragment.scrollListener)
+        }
     }
 
     private fun fragTransPlaylist(playlist: Playlist) {

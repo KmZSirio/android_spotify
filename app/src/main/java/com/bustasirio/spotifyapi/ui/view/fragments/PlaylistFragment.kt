@@ -97,10 +97,6 @@ class PlaylistFragment : Fragment() {
 
         // * TracksResponse
         playlistFragmentVM.tracksResponse.observe(viewLifecycleOwner, {
-
-            Log.d("tagPlaylistFragment","${it.items[0].track.name}")
-            Log.d("tagPlaylistFragment","${it.items[0].track.artists}")
-//            title = it.
             val adapter = PlaylistAdapter(it.items)
             binding.rvPlaylist.adapter = adapter
 

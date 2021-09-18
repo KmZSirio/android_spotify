@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class PlaylistsModel(
     val href: String,
     @SerializedName("items")
-    val playlists: List<Playlist>,
+    val playlists: MutableList<Playlist>,
     val limit: Int,
     val offset: Int,
     val total: Int

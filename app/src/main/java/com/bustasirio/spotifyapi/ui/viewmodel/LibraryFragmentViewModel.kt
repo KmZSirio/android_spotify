@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bustasirio.spotifyapi.data.model.AuthorizationModel
+import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.data.model.PlaylistsModel
 import com.bustasirio.spotifyapi.data.model.User
 import com.bustasirio.spotifyapi.data.network.SpotifyAccountsService
@@ -19,10 +20,15 @@ class LibraryFragmentViewModel @Inject constructor(
     private val accountsService: SpotifyAccountsService
 ) : ViewModel() {
 
+    private val limit = 20
+    var page = 0
+    var playlists: PlaylistsModel? = null
+
     val playlistsResponse = MutableLiveData<PlaylistsModel>()
     val userResponse = MutableLiveData<User>()
     val errorResponse = MutableLiveData<Int>()
     val newTokensResponse = MutableLiveData<AuthorizationModel>()
+    val loading = MutableLiveData<Boolean>()
 
     val authorizationWithToken = MutableLiveData<String>() // "$tokenType $accessToken"
     val authorizationBasic = MutableLiveData<String>() // prefs
@@ -80,14 +86,25 @@ class LibraryFragmentViewModel @Inject constructor(
     }
 
     fun fetchCurrentUserPlaylists() = viewModelScope.launch {
+        loading.postValue(true)
+//        Log.d("tagLibraryFragmentVM", "$number")
         apiService.getCurrentUserPlaylists(
             authorizationWithToken.value!!,
-            "20"
+            "$limit",
+            "${page * limit}"
         ).let { apiServiceResp ->
             when {
                 apiServiceResp.isSuccessful -> {
-//                    Log.d("tagHomeViewModel", "Line 40. ${apiServiceResp.body()}")
-                    playlistsResponse.postValue(apiServiceResp.body())
+                    // ! ---------------------------------------------
+                    page++
+                    if (playlists == null) {
+                        playlists = apiServiceResp.body()
+                    } else {
+                        val oldPlaylists = playlists?.playlists
+                        val newPlaylists = apiServiceResp.body()?.playlists
+                        oldPlaylists?.addAll(newPlaylists!!)
+                    }
+                    playlistsResponse.postValue(playlists ?: apiServiceResp.body())
                 }
                 apiServiceResp.code() == 401 -> {
 
@@ -102,11 +119,20 @@ class LibraryFragmentViewModel @Inject constructor(
                                 "${accServiceResp.body()!!.tokenType} ${accServiceResp.body()!!.accessToken}"
                             apiService.getCurrentUserPlaylists(
                                 authWithToken,
-                                "20"
+                                "$limit",
+                                "${page * limit}"
                             ).let {
                                 if (it.isSuccessful) {
-//                                    Log.d("tagHomeViewModel", "Line 60. ${it.body()!!.artists[0].name}")
-                                    playlistsResponse.postValue(it.body())
+                                    // ! ---------------------------------------------
+                                    page++
+                                    if (playlists == null) {
+                                        playlists = apiServiceResp.body()
+                                    } else {
+                                        val oldPlaylists = playlists?.playlists
+                                        val newPlaylists = apiServiceResp.body()?.playlists
+                                        oldPlaylists?.addAll(newPlaylists!!)
+                                    }
+                                    playlistsResponse.postValue(playlists ?: apiServiceResp.body())
                                     newTokensResponse.postValue(accServiceResp.body())
                                 } else {
                                     Log.d("tagLibraryViewModel", "line 67")

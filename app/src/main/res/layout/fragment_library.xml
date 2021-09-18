@@ -98,12 +98,24 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:nestedScrollingEnabled="false"
         android:orientation="vertical"
-        app:layoutManager="LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
         tools:itemCount="20"
         tools:listitem="@layout/your_library_item" />
+
+    <ProgressBar
+        android:id="@+id/progressLibrary"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:visibility="invisible"
+        android:progress="0"
+        android:max="500"
+        android:indeterminateDrawable="@drawable/progress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="60dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,7 +29,7 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
-    <!--* HOME CHIPS -->
+        <!--* HOME CHIPS -->
     <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/chip_background_color</item>
         <item name="android:textColor">@color/chip_text_color</item>

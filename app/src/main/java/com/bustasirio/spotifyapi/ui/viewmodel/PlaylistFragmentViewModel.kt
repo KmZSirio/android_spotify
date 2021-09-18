@@ -39,7 +39,7 @@ class PlaylistFragmentViewModel @Inject constructor(
         ).let { apiServiceResp ->
             when {
                 apiServiceResp.isSuccessful -> {
-//                 tracksResponse.postValue(apiServiceResp.body())
+                 tracksResponse.postValue(apiServiceResp.body())
                 }
                 apiServiceResp.code() == 401 -> {
 
@@ -58,7 +58,7 @@ class PlaylistFragmentViewModel @Inject constructor(
                                 "20"
                             ).let {
                                 if (it.isSuccessful) {
-//                                  tracksResponse.postValue(it.body())
+                                  tracksResponse.postValue(it.body())
                                     newTokensResponse.postValue(accServiceResp.body())
                                 } else {
                                     Log.d("tagPlaylistViewModel", "line 67")
