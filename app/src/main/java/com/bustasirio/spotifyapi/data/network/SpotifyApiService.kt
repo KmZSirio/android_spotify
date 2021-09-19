@@ -61,13 +61,15 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
     suspend fun getPlaylistItems(
         url: String,
         authorizationWithToken: String,
-        limit: String
+        limit: String,
+        offset: String
     ): Response<TracksListModel> {
         return withContext(Dispatchers.IO) {
             api.getPlaylistItems(
                 url,
                 authorizationWithToken,
-                limit
+                limit,
+                offset
             )
         }
     }

@@ -8,14 +8,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.view.marginBottom
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
+import com.bustasirio.spotifyapi.core.Constants
+import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_LIBRARY_SIZE
 import com.bustasirio.spotifyapi.core.convertDpToPx
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
 import com.bustasirio.spotifyapi.data.model.Playlist
+import com.bustasirio.spotifyapi.databinding.FragmentLibraryBinding
 import com.bustasirio.spotifyapi.databinding.FragmentPlaylistBinding
+import com.bustasirio.spotifyapi.ui.view.adapters.LibraryPlaylistsAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.PlaylistAdapter
 import com.bustasirio.spotifyapi.ui.viewmodel.PlaylistFragmentViewModel
 import com.google.android.material.appbar.AppBarLayout
@@ -27,7 +35,8 @@ import kotlin.math.roundToInt
 class PlaylistFragment : Fragment() {
 
     private val playlistFragmentVM: PlaylistFragmentViewModel by viewModels()
-//    var tracksUrl: String? = null
+
+    private lateinit var playlistAdapter: PlaylistAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,13 +52,15 @@ class PlaylistFragment : Fragment() {
 
         val arguments = arguments
         val playlist = arguments!!.getParcelable<Playlist>(getString(R.string.tracks_url))
+        playlistFragmentVM.tracksUrl.value = playlist!!.tracks.href
 
         val binding = FragmentPlaylistBinding.bind(view)
+        setupRecyclerView(binding)
 
         requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlueGrey);
 
         getPrefs()
-        playlistFragmentVM.fetchPlaylistItems(playlist!!.tracks.href)
+        playlistFragmentVM.fetchPlaylistItems()
 
         binding.collapsingPlaylist.contentScrim = resources.getDrawable(R.drawable.gradient_collapsed, resources.newTheme())
         binding.rvPlaylist.overScrollMode = View.OVER_SCROLL_NEVER
@@ -95,12 +106,21 @@ class PlaylistFragment : Fragment() {
             }
         })
 
+        playlistAdapter.setOnItemClickListener {
+            Log.d("tagPlaylistFragment", "preview_url: ${it.track.preview_url}")
+        }
+
         // * TracksResponse
         playlistFragmentVM.tracksResponse.observe(viewLifecycleOwner, {
-            val adapter = PlaylistAdapter(it.items)
-            binding.rvPlaylist.adapter = adapter
+            hideProgressBar(view)
 
-            adapter.previewUrl.observe(viewLifecycleOwner, { url -> Log.d("tagPlaylistFragment", "Url: $url")})
+            playlistAdapter.differ.submitList(it.items.toList())
+            val totalPages = it.total / QUERY_LIBRARY_SIZE + 1
+            isLastPage = playlistFragmentVM.page == totalPages
+        })
+
+        playlistFragmentVM.loading.observe(viewLifecycleOwner, {
+            if (it) showProgressBar(view)
         })
 
         playlistFragmentVM.errorResponse.observe(viewLifecycleOwner, {
@@ -135,6 +155,62 @@ class PlaylistFragment : Fragment() {
                 apply()
             }
         })
+    }
+
+    private fun hideProgressBar(view: View) {
+        val progressBar: ProgressBar = view.findViewById(R.id.progressPlaylist)
+        progressBar.visibility = View.INVISIBLE
+        isLoading = false
+    }
+
+    private fun showProgressBar(view: View) {
+        val progressBar: ProgressBar = view.findViewById(R.id.progressPlaylist)
+        progressBar.visibility = View.VISIBLE
+        isLoading = true
+    }
+
+    var isLoading = false
+    var isLastPage = false
+    var isScrolling = false
+
+    val scrollListener = object: RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                isScrolling = true
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+
+            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+            val isNotAtBeginning = firstVisibleItemPosition >= 0
+            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_LIBRARY_SIZE
+            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning
+                    && isTotalMoreThanVisible && isScrolling
+
+            if (shouldPaginate) {
+                playlistFragmentVM.fetchPlaylistItems()
+                isScrolling = false
+            }
+        }
+    }
+
+    private fun setupRecyclerView(binding: FragmentPlaylistBinding) {
+        playlistAdapter = PlaylistAdapter()
+        binding.rvPlaylist.apply {
+            adapter = playlistAdapter
+            layoutManager = LinearLayoutManager(activity)
+            addOnScrollListener(this@PlaylistFragment.scrollListener)
+        }
     }
 
     private fun getPrefs() {

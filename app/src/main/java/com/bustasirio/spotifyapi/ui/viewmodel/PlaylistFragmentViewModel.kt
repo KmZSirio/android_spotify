@@ -18,11 +18,16 @@ class PlaylistFragmentViewModel @Inject constructor(
     private val accountsService: SpotifyAccountsService
 ) : ViewModel() {
 
+    private val limit = 20
+    var page = 0
+    var items: TracksListModel? = null
+
     val tracksResponse = MutableLiveData<TracksListModel>()
     val errorResponse = MutableLiveData<Int>()
     val newTokensResponse = MutableLiveData<AuthorizationModel>()
+    val loading = MutableLiveData<Boolean>()
 
-//    val tracksUrl = MutableLiveData<String>()
+    val tracksUrl = MutableLiveData<String>()
 
     val authorizationWithToken = MutableLiveData<String>() // "$tokenType $accessToken"
     val authorizationBasic = MutableLiveData<String>() // prefs
@@ -31,15 +36,26 @@ class PlaylistFragmentViewModel @Inject constructor(
     val refreshToken = MutableLiveData<String>() // prefs
     private val redirectUri: String = "bustasirio://callback"
 
-    fun fetchPlaylistItems(url: String) = viewModelScope.launch {
+    fun fetchPlaylistItems() = viewModelScope.launch {
+        loading.postValue(true)
         apiService.getPlaylistItems(
-            url,
+            tracksUrl.value!!,
             authorizationWithToken.value!!,
-            "20"
+            "$limit",
+            "${page * limit}"
         ).let { apiServiceResp ->
             when {
                 apiServiceResp.isSuccessful -> {
-                 tracksResponse.postValue(apiServiceResp.body())
+                    // ! ---------------------------------------------
+                    page++
+                    if (items == null) {
+                        items = apiServiceResp.body()
+                    } else {
+                        val oldItems = items?.items
+                        val newItems = apiServiceResp.body()?.items
+                        oldItems?.addAll(newItems!!)
+                    }
+                    tracksResponse.postValue(items ?: apiServiceResp.body())
                 }
                 apiServiceResp.code() == 401 -> {
 
@@ -53,12 +69,22 @@ class PlaylistFragmentViewModel @Inject constructor(
                             val authWithToken =
                                 "${accServiceResp.body()!!.tokenType} ${accServiceResp.body()!!.accessToken}"
                             apiService.getPlaylistItems(
-                                url,
+                                tracksUrl.value!!,
                                 authWithToken,
-                                "20"
+                                "$limit",
+                                "${page * limit}"
                             ).let {
                                 if (it.isSuccessful) {
-                                  tracksResponse.postValue(it.body())
+                                    // ! ---------------------------------------------
+                                    page++
+                                    if (items == null) {
+                                        items = apiServiceResp.body()
+                                    } else {
+                                        val oldItems = items?.items
+                                        val newItems = apiServiceResp.body()?.items
+                                        oldItems?.addAll(newItems!!)
+                                    }
+                                    tracksResponse.postValue(items ?: apiServiceResp.body())
                                     newTokensResponse.postValue(accServiceResp.body())
                                 } else {
                                     Log.d("tagPlaylistViewModel", "line 67")

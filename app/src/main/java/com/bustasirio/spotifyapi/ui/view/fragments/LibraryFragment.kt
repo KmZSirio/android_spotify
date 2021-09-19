@@ -87,6 +87,10 @@ class LibraryFragment : Fragment() {
             user = it
         })
 
+        libraryAdapter.setOnItemClickListener {
+            fragTransPlaylist(it)
+        }
+
         // * PlaylistsResponse
         libraryFragmentVM.playlistsResponse.observe(viewLifecycleOwner, {
             hideProgressBar(view)
@@ -94,9 +98,6 @@ class LibraryFragment : Fragment() {
             val totalPages = it.total / QUERY_LIBRARY_SIZE + 1
             isLastPage = libraryFragmentVM.page == totalPages
 
-            libraryAdapter.itemPosition.observe(
-                viewLifecycleOwner,
-                { position -> fragTransPlaylist(it.playlists[position]) })
             noPlaylist = it.total
         })
 

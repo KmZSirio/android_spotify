@@ -4,10 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.marginBottom
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +14,6 @@ import com.squareup.picasso.Picasso
 
 class LibraryPlaylistsAdapter :
     RecyclerView.Adapter<LibraryPlaylistsAdapter.LibraryPlaylistsViewHolder>() {
-
-    val itemPosition = MutableLiveData<Int>()
 
     private val differCallback = object : DiffUtil.ItemCallback<Playlist>() {
         override fun areItemsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
@@ -68,12 +63,16 @@ class LibraryPlaylistsAdapter :
                 holder.ivPlaylistYourLibraryItem.setImageResource(R.drawable.no_artist)
             }
 
-            holder.itemView.setOnClickListener {
-                itemPosition.postValue(position)
+            setOnClickListener {
+                onItemClickListener?.let { it(playlist) }
             }
         }
+    }
 
+    private var onItemClickListener: ((Playlist) -> Unit)? = null
 
+    fun setOnItemClickListener(listener: (Playlist) -> Unit) {
+        onItemClickListener = listener
     }
 
     override fun getItemCount(): Int = differ.currentList.size

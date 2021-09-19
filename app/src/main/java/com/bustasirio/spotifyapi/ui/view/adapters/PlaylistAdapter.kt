@@ -5,24 +5,35 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.marginBottom
-import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.data.model.Item
+import com.bustasirio.spotifyapi.data.model.Playlist
 import com.squareup.picasso.Picasso
 
-class PlaylistAdapter(private val items: List<Item>) :
-    RecyclerView.Adapter<PlaylistAdapter.PlaylistHolder>() {
+class PlaylistAdapter :
+    RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
 
-    val previewUrl = MutableLiveData<String>()
+    private val differCallback = object : DiffUtil.ItemCallback<Item>() {
+        override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+            return oldItem.track == newItem.track
+        }
+
+        override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): PlaylistHolder {
+    ): PlaylistViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return PlaylistHolder(
+        return PlaylistViewHolder(
             layoutInflater.inflate(
                 R.layout.playlist_track_item,
                 parent,
@@ -31,27 +42,36 @@ class PlaylistAdapter(private val items: List<Item>) :
         )
     }
 
-    override fun onBindViewHolder(holder: PlaylistHolder, position: Int) {
+    override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
 
-        holder.tvNamePlaylistTrackItem.text = items[position].track.name
-        holder.tvArtistNamePlaylistTrackItem.text = items[position].track.artists[0].name
+        val item = differ.currentList[position]
 
-        if (items[position].track.album.images.isNotEmpty()) {
-            Picasso.get().load(items[position].track.album.images[0].url)
-                .into(holder.ivAlbumPlaylistTrackItem)
-        } else {
-            holder.ivAlbumPlaylistTrackItem.setImageResource(R.drawable.no_artist)
-        }
+        holder.itemView.apply {
+            holder.tvNamePlaylistTrackItem.text = item.track.name
+            holder.tvArtistNamePlaylistTrackItem.text = item.track.artists[0].name
 
-        holder.itemView.setOnClickListener {
-//            Log.d("tagLibraryPlaylistsAdapter","${playlists[position].tracks.href}")
-            previewUrl.postValue(items[position].track.preview_url ?: null)
+            if (item.track.album.images.isNotEmpty()) {
+                Picasso.get().load(item.track.album.images[0].url)
+                    .into(holder.ivAlbumPlaylistTrackItem)
+            } else {
+                holder.ivAlbumPlaylistTrackItem.setImageResource(R.drawable.no_artist)
+            }
+
+            setOnClickListener {
+                onItemClickListener?.let { it(item) }
+            }
         }
     }
 
-    override fun getItemCount(): Int = items.size
+    private var onItemClickListener: ((Item) -> Unit)? = null
 
-    class PlaylistHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    fun setOnItemClickListener(listener: (Item) -> Unit) {
+        onItemClickListener = listener
+    }
+
+    override fun getItemCount(): Int = differ.currentList.size
+
+    class PlaylistViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val ivAlbumPlaylistTrackItem: ImageView = view.findViewById(R.id.ivAlbumPlaylistTrackItem)
         val tvNamePlaylistTrackItem: TextView = view.findViewById(R.id.tvNamePlaylistTrackItem)
         val tvArtistNamePlaylistTrackItem: TextView =

@@ -59,6 +59,7 @@ interface SpotifyApiClient {
     suspend fun getPlaylistItems(
         @Url url: String,
         @Header("Authorization") authorizationWithToken: String,
-        @Query("limit") limit: String
+        @Query("limit") limit: String,
+        @Query("offset") offset: String
     ): Response<TracksListModel>
 }

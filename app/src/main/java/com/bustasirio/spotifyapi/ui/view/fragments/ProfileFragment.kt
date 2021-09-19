@@ -51,4 +51,9 @@ class ProfileFragment : Fragment() {
             removeAnnoyingFrag(requireActivity())
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack);
+    }
 }
