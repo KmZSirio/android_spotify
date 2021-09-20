@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bustasirio.spotifyapi.core.Constants
+import com.bustasirio.spotifyapi.core.Constants.Companion.REDIRECT_URI
 import com.bustasirio.spotifyapi.data.model.AuthorizationModel
 import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.data.model.PlaylistsModel
@@ -15,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LibraryFragmentViewModel @Inject constructor(
+class LibraryViewModel @Inject constructor(
     private val apiService: SpotifyApiService,
     private val accountsService: SpotifyAccountsService
 ) : ViewModel() {
@@ -35,7 +37,6 @@ class LibraryFragmentViewModel @Inject constructor(
 
     // * To renew token
     val refreshToken = MutableLiveData<String>() // prefs
-    private val redirectUri: String = "bustasirio://callback"
 
     fun fetchCurrentUserProfile() = viewModelScope.launch {
         apiService.getCurrentUserProfile(
@@ -52,7 +53,7 @@ class LibraryFragmentViewModel @Inject constructor(
                         authorizationBasic.value!!,
                         "refresh_token",
                         refreshToken.value!!,
-                        redirectUri
+                        REDIRECT_URI
                     ).let { accServiceResp ->
                         if (accServiceResp.isSuccessful && accServiceResp.code() == 200) {
                             val authWithToken =
@@ -112,7 +113,7 @@ class LibraryFragmentViewModel @Inject constructor(
                         authorizationBasic.value!!,
                         "refresh_token",
                         refreshToken.value!!,
-                        redirectUri
+                        REDIRECT_URI
                     ).let { accServiceResp ->
                         if (accServiceResp.isSuccessful && accServiceResp.code() == 200) {
                             val authWithToken =

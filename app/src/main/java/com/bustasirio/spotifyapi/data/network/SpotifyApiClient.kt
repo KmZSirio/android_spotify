@@ -62,4 +62,14 @@ interface SpotifyApiClient {
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<TracksListModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("/v1/me/player/recently-played")
+    suspend fun getRecentlyPlayed(
+        @Header("Authorization") authorizationWithToken: String
+    ): Response<RecentlyPlayedModel>
 }

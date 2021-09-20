@@ -1,8 +1,9 @@
 package com.bustasirio.spotifyapi.ui.view.fragments
 
 import android.content.Context
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,32 +12,30 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.core.view.marginBottom
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.Constants
-import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_LIBRARY_SIZE
+import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_SIZE
 import com.bustasirio.spotifyapi.core.convertDpToPx
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
 import com.bustasirio.spotifyapi.data.model.Playlist
-import com.bustasirio.spotifyapi.databinding.FragmentLibraryBinding
 import com.bustasirio.spotifyapi.databinding.FragmentPlaylistBinding
-import com.bustasirio.spotifyapi.ui.view.adapters.LibraryPlaylistsAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.PlaylistAdapter
-import com.bustasirio.spotifyapi.ui.viewmodel.PlaylistFragmentViewModel
+import com.bustasirio.spotifyapi.ui.viewmodel.PlaylistViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class PlaylistFragment : Fragment() {
 
-    private val playlistFragmentVM: PlaylistFragmentViewModel by viewModels()
+    private val playlistVM: PlaylistViewModel by viewModels()
 
     private lateinit var playlistAdapter: PlaylistAdapter
+
+    var mediaPlayer: MediaPlayer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,15 +51,15 @@ class PlaylistFragment : Fragment() {
 
         val arguments = arguments
         val playlist = arguments!!.getParcelable<Playlist>(getString(R.string.tracks_url))
-        playlistFragmentVM.tracksUrl.value = playlist!!.tracks.href
+        playlistVM.tracksUrl.value = playlist!!.tracks.href
 
         val binding = FragmentPlaylistBinding.bind(view)
         setupRecyclerView(binding)
 
-        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlueGrey);
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlueGrey)
 
         getPrefs()
-        playlistFragmentVM.fetchPlaylistItems()
+        playlistVM.fetchPlaylistItems()
 
         binding.collapsingPlaylist.contentScrim = resources.getDrawable(R.drawable.gradient_collapsed, resources.newTheme())
         binding.rvPlaylist.overScrollMode = View.OVER_SCROLL_NEVER
@@ -87,7 +86,7 @@ class PlaylistFragment : Fragment() {
         }
 
         binding.ibBackPlaylist.setOnClickListener {
-            removeAnnoyingFrag(requireActivity())
+            removeAnnoyingFrag(requireActivity().supportFragmentManager)
         }
 
         // * To hide title from the collapsing bar when extended
@@ -107,23 +106,31 @@ class PlaylistFragment : Fragment() {
         })
 
         playlistAdapter.setOnItemClickListener {
-            Log.d("tagPlaylistFragment", "preview_url: ${it.track.preview_url}")
+            var url = it.track.preview_url
+            Log.d("tagPlaylistFragment", "preview_url: $url")
+            if (url != null) {
+                mediaPlayer = MediaPlayer.create(requireContext(), Uri.parse(url))
+                mediaPlayer?.start()
+            } else {
+                Toast.makeText(requireContext(), "This track cannot be reproduced.", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
 
         // * TracksResponse
-        playlistFragmentVM.tracksResponse.observe(viewLifecycleOwner, {
+        playlistVM.tracksResponse.observe(viewLifecycleOwner, {
             hideProgressBar(view)
 
             playlistAdapter.differ.submitList(it.items.toList())
-            val totalPages = it.total / QUERY_LIBRARY_SIZE + 1
-            isLastPage = playlistFragmentVM.page == totalPages
+            val totalPages = it.total / QUERY_SIZE + 1
+            isLastPage = playlistVM.page == totalPages
         })
 
-        playlistFragmentVM.loading.observe(viewLifecycleOwner, {
+        playlistVM.loading.observe(viewLifecycleOwner, {
             if (it) showProgressBar(view)
         })
 
-        playlistFragmentVM.errorResponse.observe(viewLifecycleOwner, {
+        playlistVM.errorResponse.observe(viewLifecycleOwner, {
             if (it != null) {
                 Toast.makeText(requireContext(), "Error: $it, try again later.", Toast.LENGTH_SHORT)
                     .show()
@@ -135,7 +142,7 @@ class PlaylistFragment : Fragment() {
 
 
         // ! FIXME Send <<it>> to a fun on helpers
-        playlistFragmentVM.newTokensResponse.observe(viewLifecycleOwner, {
+        playlistVM.newTokensResponse.observe(viewLifecycleOwner, {
 //            Log.d("tagHomeActivityResponseNewTokens", it.toString())
 
             val sharedPrefs = requireContext().getSharedPreferences(
@@ -193,12 +200,12 @@ class PlaylistFragment : Fragment() {
             val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_LIBRARY_SIZE
+            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_SIZE
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning
                     && isTotalMoreThanVisible && isScrolling
 
             if (shouldPaginate) {
-                playlistFragmentVM.fetchPlaylistItems()
+                playlistVM.fetchPlaylistItems()
                 isScrolling = false
             }
         }
@@ -225,9 +232,9 @@ class PlaylistFragment : Fragment() {
         val refreshToken: String? =
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
-        playlistFragmentVM.authorizationWithToken.value = "$tokenType $accessToken"
-        playlistFragmentVM.authorizationBasic.value =
+        playlistVM.authorizationWithToken.value = "$tokenType $accessToken"
+        playlistVM.authorizationBasic.value =
             resources.getString(R.string.spotify_basic)
-        playlistFragmentVM.refreshToken.value = refreshToken
+        playlistVM.refreshToken.value = refreshToken
     }
 }

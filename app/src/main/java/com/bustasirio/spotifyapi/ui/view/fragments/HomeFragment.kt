@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.databinding.FragmentHomeBinding
-import com.bustasirio.spotifyapi.ui.viewmodel.HomeFragmentViewModel
+import com.bustasirio.spotifyapi.ui.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 
 import android.widget.Toast
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
@@ -26,7 +25,7 @@ import java.util.*
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val homeFragmentVM: HomeFragmentViewModel by viewModels()
+    private val homeVM: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +33,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        removeAnnoyingFrag(requireActivity())
+        removeAnnoyingFrag(requireActivity().supportFragmentManager)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -42,7 +41,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentHomeBinding.bind(view)
-        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack);
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack)
 
         binding.tvWelcomeMessageHome.text = setWelcomeMessage()
 
@@ -59,10 +58,10 @@ class HomeFragment : Fragment() {
 
         if (isLogged()) {
             getPrefs()
-            homeFragmentVM.fetchTopArtists()
-            homeFragmentVM.fetchTopTracks("short_term")
-            homeFragmentVM.fetchTopTracks("medium_term")
-            homeFragmentVM.fetchTopTracks("long_term")
+            homeVM.fetchTopArtists()
+            homeVM.fetchTopTracks("short_term")
+            homeVM.fetchTopTracks("medium_term")
+            homeVM.fetchTopTracks("long_term")
         }
 
         binding.ibLogOutHome.setOnClickListener {
@@ -109,30 +108,30 @@ class HomeFragment : Fragment() {
 
         // * viewLifecycleOwner instead of this, if you are on a fragment
         // * TopArtistsResponse
-        homeFragmentVM.topArtistsResponse.observe(viewLifecycleOwner, {
+        homeVM.topArtistsResponse.observe(viewLifecycleOwner, {
             val adapter = TopArtistsAdapter(it.artists)
             binding.rvTopArtists.adapter = adapter
         })
 
         // * TopTracksResponse
-        homeFragmentVM.topTracksMonthResponse.observe(viewLifecycleOwner, {
+        homeVM.topTracksMonthResponse.observe(viewLifecycleOwner, {
             val adapter = TopTracksAdapter(it.tracks)
             binding.rvTopTracksMonth.adapter = adapter
         })
 
-        homeFragmentVM.topTracksSixMonthsResponse.observe(viewLifecycleOwner, {
+        homeVM.topTracksSixMonthsResponse.observe(viewLifecycleOwner, {
             val adapter = TopTracksAdapter(it.tracks)
             binding.rvTopTracksSixMonths.adapter = adapter
         })
 
-        homeFragmentVM.topTracksLifetimeResponse.observe(viewLifecycleOwner, {
+        homeVM.topTracksLifetimeResponse.observe(viewLifecycleOwner, {
             val adapter = TopTracksAdapter(it.tracks)
             binding.rvTopTracksLifetime.adapter = adapter
         })
 
         // ! FIXME reduce code repetition!
         // ! FIXME one error will create multiple toasts, one per endpoint call
-        homeFragmentVM.errorResponse.observe(viewLifecycleOwner, {
+        homeVM.errorResponse.observe(viewLifecycleOwner, {
             if (it != null) {
                 Toast.makeText(requireContext(), "Error: $it, try again later.", Toast.LENGTH_SHORT)
                     .show()
@@ -144,7 +143,7 @@ class HomeFragment : Fragment() {
 
         // ! FIXME reduce code repetition!
         // * Save new tokens
-        homeFragmentVM.newTokensResponse.observe(viewLifecycleOwner, {
+        homeVM.newTokensResponse.observe(viewLifecycleOwner, {
 //            Log.d("tagHomeActivityResponseNewTokens", it.toString())
 
             val sharedPrefs = requireContext().getSharedPreferences(
@@ -188,10 +187,10 @@ class HomeFragment : Fragment() {
         val refreshToken: String? =
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
-        homeFragmentVM.authorizationWithToken.value = "$tokenType $accessToken"
-        homeFragmentVM.authorizationBasic.value =
+        homeVM.authorizationWithToken.value = "$tokenType $accessToken"
+        homeVM.authorizationBasic.value =
             resources.getString(R.string.spotify_basic)
-        homeFragmentVM.refreshToken.value = refreshToken
+        homeVM.refreshToken.value = refreshToken
     }
 
     private fun isLogged(): Boolean {

@@ -12,8 +12,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import com.bustasirio.spotifyapi.R
+import com.bustasirio.spotifyapi.core.Constants.Companion.CLIENT_ID
+import com.bustasirio.spotifyapi.core.Constants.Companion.REDIRECT_URI
 import com.bustasirio.spotifyapi.databinding.ActivityMainBinding
-import com.bustasirio.spotifyapi.ui.viewmodel.MainActivityViewModel
+import com.bustasirio.spotifyapi.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,15 +23,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val mainViewModel: MainActivityViewModel by viewModels()
+    private val mainVM: MainViewModel by viewModels()
 
     private val baseUrl: String = "https://accounts.spotify.com"
     private val endpoint: String = "/authorize"
-    private val clientId: String = "151eea6d2b7a4630ace40005f01405b6"
     private val stateSpotify: String = "34fFs29kd09"
     private val responseType: String = "code"
-    private val scope: String = "playlist-read-private playlist-read-collaborative user-top-read user-read-email"
-    private val redirectUri: String = "bustasirio://callback"
+    private val scope: String = "playlist-read-private playlist-read-collaborative user-top-read user-read-email user-read-recently-played"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             val customTabsIntent = builder.build()
             customTabsIntent.launchUrl(
                 this,
-                Uri.parse("$baseUrl$endpoint?client_id=$clientId&response_type=$responseType&redirect_uri=$redirectUri&scope=$scope&state=$stateSpotify")
+                Uri.parse("$baseUrl$endpoint?client_id=$CLIENT_ID&response_type=$responseType&redirect_uri=$REDIRECT_URI&scope=$scope&state=$stateSpotify")
             )
 
         }
@@ -61,17 +61,17 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         val uri: Uri? = intent.data
 
-        if (uri != null && uri.toString().startsWith(redirectUri) && !uri.toString()
+        if (uri != null && uri.toString().startsWith(REDIRECT_URI) && !uri.toString()
                 .contains("access_denied")
         ) {
             Log.i("uri", "$uri")
 
-            mainViewModel.code.value = uri.getQueryParameter("code")!!
-            mainViewModel.authorizationBasic.value = resources.getString(R.string.spotify_basic)
+            mainVM.code.value = uri.getQueryParameter("code")!!
+            mainVM.authorizationBasic.value = resources.getString(R.string.spotify_basic)
 
-            mainViewModel.getAuth()
+            mainVM.getAuth()
 
-            mainViewModel.response.observe(this, {
+            mainVM.response.observe(this, {
 //                Log.d("tagMainActivityResponse", it.accessToken)
 
                 val sharedPrefs = getSharedPreferences(
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                 finish()
             })
 
-            mainViewModel.errorResponse.observe(this, {
+            mainVM.errorResponse.observe(this, {
                 if (it != null) {
                     Toast.makeText(this, "Error: $it, try again later.", Toast.LENGTH_SHORT).show()
                 } else {

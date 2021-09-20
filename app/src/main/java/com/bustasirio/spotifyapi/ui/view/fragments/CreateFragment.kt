@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
 
-class SearchFragment : Fragment() {
+class CreateFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -17,16 +17,14 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        removeAnnoyingFrag(requireActivity().supportFragmentManager)
-        return inflater.inflate(R.layout.fragment_search, container, false)
+//        removeAnnoyingFrag(requireActivity())
+        return inflater.inflate(R.layout.fragment_create, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack)
-
-        Log.d("tagSearchFragment", "${requireActivity().supportFragmentManager.fragments}")
 
     }
 }

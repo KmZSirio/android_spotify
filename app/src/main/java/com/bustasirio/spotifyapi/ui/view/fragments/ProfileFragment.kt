@@ -32,7 +32,7 @@ class ProfileFragment : Fragment() {
 
         val binding = FragmentProfileBinding.bind(view)
 
-        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyGreen);
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyGreen)
 
         if (user != null) {
             binding.tvNameProfile.text = user!!.display_name
@@ -48,12 +48,12 @@ class ProfileFragment : Fragment() {
         }
 
         binding.ibBackProfile.setOnClickListener {
-            removeAnnoyingFrag(requireActivity())
+            removeAnnoyingFrag(requireActivity().supportFragmentManager)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack);
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack)
     }
 }

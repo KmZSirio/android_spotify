@@ -42,7 +42,6 @@ class LibraryPlaylistsAdapter :
     }
 
     override fun onBindViewHolder(holder: LibraryPlaylistsViewHolder, position: Int) {
-
         val playlist = differ.currentList[position]
 
         var type = "playlist"

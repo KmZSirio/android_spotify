@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="96dp"
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:gravity="bottom"
+    android:background="@color/spotifyBlack">
+
+    <TextView
+        android:id="@+id/tvDateRecentlyItem"
+        tools:text="21:23, September 19th"
+        android:ellipsize="end"
+        android:maxLength="40"
+        android:maxLines="1"
+        android:textColor="@color/spotifyGreen"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="66dp">
+
+        <ImageView
+            android:id="@+id/ivAlbumRecentlyItem"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/artist_picture"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/no_image" />
+
+        <TextView
+            android:id="@+id/tvNameRecentlyItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLength="40"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintStart_toEndOf="@+id/ivAlbumRecentlyItem"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="I've got you under my skin  you under my skin" />
+
+        <TextView
+            android:id="@+id/tvArtistRecentlyItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginEnd="18dp"
+            android:ellipsize="end"
+            android:maxLength="40"
+            android:maxLines="1"
+            android:textColor="@color/spotifyGreyLighter"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivAlbumRecentlyItem"
+            tools:text="Frank Sinatra" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

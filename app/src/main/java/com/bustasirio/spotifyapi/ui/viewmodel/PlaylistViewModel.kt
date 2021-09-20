@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_SIZE
+import com.bustasirio.spotifyapi.core.Constants.Companion.REDIRECT_URI
 import com.bustasirio.spotifyapi.data.model.AuthorizationModel
 import com.bustasirio.spotifyapi.data.model.TracksListModel
 import com.bustasirio.spotifyapi.data.network.SpotifyAccountsService
@@ -13,14 +15,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PlaylistFragmentViewModel @Inject constructor(
+class PlaylistViewModel @Inject constructor(
     private val apiService: SpotifyApiService,
     private val accountsService: SpotifyAccountsService
 ) : ViewModel() {
 
-    private val limit = 20
     var page = 0
-    var items: TracksListModel? = null
+    private var items: TracksListModel? = null
 
     val tracksResponse = MutableLiveData<TracksListModel>()
     val errorResponse = MutableLiveData<Int>()
@@ -34,15 +35,14 @@ class PlaylistFragmentViewModel @Inject constructor(
 
     // * To renew token
     val refreshToken = MutableLiveData<String>() // prefs
-    private val redirectUri: String = "bustasirio://callback"
 
     fun fetchPlaylistItems() = viewModelScope.launch {
         loading.postValue(true)
         apiService.getPlaylistItems(
             tracksUrl.value!!,
             authorizationWithToken.value!!,
-            "$limit",
-            "${page * limit}"
+            "$QUERY_SIZE",
+            "${page * QUERY_SIZE}"
         ).let { apiServiceResp ->
             when {
                 apiServiceResp.isSuccessful -> {
@@ -63,16 +63,17 @@ class PlaylistFragmentViewModel @Inject constructor(
                         authorizationBasic.value!!,
                         "refresh_token",
                         refreshToken.value!!,
-                        redirectUri
+                        REDIRECT_URI
                     ).let { accServiceResp ->
+
                         if (accServiceResp.isSuccessful && accServiceResp.code() == 200) {
                             val authWithToken =
                                 "${accServiceResp.body()!!.tokenType} ${accServiceResp.body()!!.accessToken}"
                             apiService.getPlaylistItems(
                                 tracksUrl.value!!,
                                 authWithToken,
-                                "$limit",
-                                "${page * limit}"
+                                "$QUERY_SIZE",
+                                "${page * QUERY_SIZE}"
                             ).let {
                                 if (it.isSuccessful) {
                                     // ! ---------------------------------------------

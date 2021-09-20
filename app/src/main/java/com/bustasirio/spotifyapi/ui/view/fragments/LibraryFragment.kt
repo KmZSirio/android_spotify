@@ -11,7 +11,6 @@ import com.bustasirio.spotifyapi.core.getCroppedBitmap
 import com.bustasirio.spotifyapi.databinding.FragmentLibraryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.widget.AbsListView
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -19,18 +18,19 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.core.CircleTransformation
-import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_LIBRARY_SIZE
+import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_SIZE
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
+import com.bustasirio.spotifyapi.core.replaceFrag
 import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.data.model.User
 import com.bustasirio.spotifyapi.ui.view.adapters.LibraryPlaylistsAdapter
-import com.bustasirio.spotifyapi.ui.viewmodel.LibraryFragmentViewModel
+import com.bustasirio.spotifyapi.ui.viewmodel.LibraryViewModel
 import com.squareup.picasso.Picasso
 
 @AndroidEntryPoint
 class LibraryFragment : Fragment() {
 
-    private val libraryFragmentVM: LibraryFragmentViewModel by viewModels()
+    private val libraryVM: LibraryViewModel by viewModels()
 
     private lateinit var libraryAdapter: LibraryPlaylistsAdapter
 
@@ -40,7 +40,7 @@ class LibraryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        removeAnnoyingFrag(requireActivity())
+        removeAnnoyingFrag(requireActivity().supportFragmentManager)
         return inflater.inflate(R.layout.fragment_library, container, false)
     }
 
@@ -49,11 +49,8 @@ class LibraryFragment : Fragment() {
 
         val binding = FragmentLibraryBinding.bind(view)
         setupRecyclerView(binding)
-//        layoutManager = LinearLayoutManager(requireContext())
-//        binding.rvPlaylistsLibrary.layoutManager = layoutManager
-//        binding.rvPlaylistsLibrary.addOnScrollListener(this@LibraryFragment.scrollListener)
 
-        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack);
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack)
 
         var user: User? = null
         var noPlaylist: Int? = null
@@ -61,19 +58,18 @@ class LibraryFragment : Fragment() {
         binding.rvPlaylistsLibrary.overScrollMode = View.OVER_SCROLL_NEVER
 
         getPrefs()
-        libraryFragmentVM.fetchCurrentUserPlaylists()
-        libraryFragmentVM.fetchCurrentUserProfile()
+        libraryVM.fetchCurrentUserPlaylists()
+        libraryVM.fetchCurrentUserProfile()
 
+        binding.ibHistoryLibrary.setOnClickListener { replaceFrag(requireActivity(), RecentlyFragment()) }
+        binding.ibAddLibrary.setOnClickListener { replaceFrag(requireActivity(), CreateFragment()) }
 
         binding.ivProfileLibrary.setOnClickListener {
-
-            if (user != null && noPlaylist != null) {
-                fragTransProfile(user, noPlaylist)
-            }
+            if (user != null && noPlaylist != null) fragTransProfile(user, noPlaylist)
         }
 
         // * UserResponse
-        libraryFragmentVM.userResponse.observe(viewLifecycleOwner, {
+        libraryVM.userResponse.observe(viewLifecycleOwner, {
             if (!it.images.isNullOrEmpty()) {
                 Picasso.get().load(it.images[0].url).transform(CircleTransformation())
                     .into(binding.ivProfileLibrary)
@@ -87,25 +83,23 @@ class LibraryFragment : Fragment() {
             user = it
         })
 
-        libraryAdapter.setOnItemClickListener {
-            fragTransPlaylist(it)
-        }
+        libraryAdapter.setOnItemClickListener { fragTransPlaylist(it) }
 
         // * PlaylistsResponse
-        libraryFragmentVM.playlistsResponse.observe(viewLifecycleOwner, {
+        libraryVM.playlistsResponse.observe(viewLifecycleOwner, {
             hideProgressBar(view)
             libraryAdapter.differ.submitList(it.playlists.toList())
-            val totalPages = it.total / QUERY_LIBRARY_SIZE + 1
-            isLastPage = libraryFragmentVM.page == totalPages
+            val totalPages = it.total / QUERY_SIZE + 1
+            isLastPage = libraryVM.page == totalPages
 
             noPlaylist = it.total
         })
 
-        libraryFragmentVM.loading.observe(viewLifecycleOwner, {
+        libraryVM.loading.observe(viewLifecycleOwner, {
             if (it) showProgressBar(view)
         })
 
-        libraryFragmentVM.errorResponse.observe(viewLifecycleOwner, {
+        libraryVM.errorResponse.observe(viewLifecycleOwner, {
             if (it != null) {
                 Toast.makeText(requireContext(), "Error: $it, try again later.", Toast.LENGTH_SHORT)
                     .show()
@@ -115,7 +109,7 @@ class LibraryFragment : Fragment() {
             }
         })
 
-        libraryFragmentVM.newTokensResponse.observe(viewLifecycleOwner, {
+        libraryVM.newTokensResponse.observe(viewLifecycleOwner, {
 
             val sharedPrefs = requireContext().getSharedPreferences(
                 getString(R.string.preference_file_key),
@@ -152,7 +146,7 @@ class LibraryFragment : Fragment() {
     var isLastPage = false
     var isScrolling = false
 
-    val scrollListener = object: RecyclerView.OnScrollListener() {
+    private val scrollListener = object: RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
 
@@ -172,12 +166,12 @@ class LibraryFragment : Fragment() {
             val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible = totalItemCount >= QUERY_LIBRARY_SIZE
+            val isTotalMoreThanVisible = totalItemCount >= QUERY_SIZE
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning
                     && isTotalMoreThanVisible && isScrolling
 
             if (shouldPaginate) {
-                libraryFragmentVM.fetchCurrentUserPlaylists()
+                libraryVM.fetchCurrentUserPlaylists()
                 isScrolling = false
             }
         }
@@ -198,10 +192,8 @@ class LibraryFragment : Fragment() {
         val bundle = Bundle()
         bundle.putParcelable(getString(R.string.tracks_url), playlist)
         fragment.arguments = bundle
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment_activity_lobby, fragment)
-        transaction.disallowAddToBackStack()
-        transaction.commit()
+
+        replaceFrag(requireActivity(), fragment)
     }
 
     private fun fragTransProfile(user: User?, noPlaylists: Int?) {
@@ -211,10 +203,8 @@ class LibraryFragment : Fragment() {
         bundle.putParcelable(getString(R.string.user_object), user)
         bundle.putInt(getString(R.string.no_playlists), noPlaylists!!)
         fragment.arguments = bundle
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment_activity_lobby, fragment)
-        transaction.disallowAddToBackStack()
-        transaction.commit()
+
+        replaceFrag(requireActivity(), fragment)
     }
 
     private fun getPrefs() {
@@ -229,9 +219,9 @@ class LibraryFragment : Fragment() {
         val refreshToken: String? =
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
-        libraryFragmentVM.authorizationWithToken.value = "$tokenType $accessToken"
-        libraryFragmentVM.authorizationBasic.value =
+        libraryVM.authorizationWithToken.value = "$tokenType $accessToken"
+        libraryVM.authorizationBasic.value =
             resources.getString(R.string.spotify_basic)
-        libraryFragmentVM.refreshToken.value = refreshToken
+        libraryVM.refreshToken.value = refreshToken
     }
 }

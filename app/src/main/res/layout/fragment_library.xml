@@ -46,16 +46,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/ibSearchLibrary"
+            android:id="@+id/ibHistoryLibrary"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@color/trans"
             android:backgroundTint="@color/trans"
-            android:contentDescription="@string/search_image_button"
+            android:contentDescription="Recently played tracks button"
             android:elevation="0dp"
             android:outlineAmbientShadowColor="@color/trans"
             android:outlineSpotShadowColor="@color/trans"
-            android:src="@drawable/ic_baseline_search_30"
+            android:src="@drawable/ic_baseline_history_30"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ibAddLibrary"
             app:layout_constraintTop_toTopOf="parent"

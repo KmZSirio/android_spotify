@@ -73,4 +73,14 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
             )
         }
     }
+
+    suspend fun getRecentlyPlayed(
+        authorizationWithToken: String
+    ): Response<RecentlyPlayedModel> {
+        return withContext(Dispatchers.IO) {
+            api.getRecentlyPlayed(
+                authorizationWithToken
+            )
+        }
+    }
 }
