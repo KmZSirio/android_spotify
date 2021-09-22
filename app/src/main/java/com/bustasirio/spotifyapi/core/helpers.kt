@@ -65,7 +65,8 @@ fun removeAnnoyingFrag(supportFragManager: FragmentManager): Boolean {
 }
 
 
-fun convertDpToPx(dp: Int, resources: Resources): Int = (dp * (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
+fun convertDpToPx(dp: Int, resources: Resources): Int =
+    (dp * (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
 
 
 fun replaceFrag(activity: FragmentActivity, fragment: Fragment) {
@@ -75,14 +76,8 @@ fun replaceFrag(activity: FragmentActivity, fragment: Fragment) {
     transaction.commit()
 }
 
-//fun detachFrag(activity: FragmentActivity, fragment: Fragment) {
-//    val transaction = activity.supportFragmentManager.beginTransaction()
-//    transaction.detach(fragment)
-//    transaction.attach(fragment)
-//    transaction.commit()
-//}
 
-fun tracksToJson(tracks: List<Track>) : RequestBody {
+fun tracksToJson(tracks: List<Track>): RequestBody {
     var json = "{\"uris\":["
 
     tracks.forEach {
@@ -91,15 +86,16 @@ fun tracksToJson(tracks: List<Track>) : RequestBody {
 
     json = json.dropLast(1)
     json = "$json]}"
-    return RequestBody.create(MediaType.parse("text/plain"), json )
+    return RequestBody.create(MediaType.parse("text/plain"), json)
 }
 
-fun fragTransPlaylist(activity: FragmentActivity,key: String, playlist: Playlist) {
+
+fun fragTransPlaylist(activity: FragmentActivity, key: String, playlist: Playlist) {
     val fragment = PlaylistFragment()
 
     val bundle = Bundle()
     bundle.putParcelable(key, playlist)
     fragment.arguments = bundle
 
-    replaceFrag( activity, fragment)
+    replaceFrag(activity, fragment)
 }

@@ -2,7 +2,6 @@ package com.bustasirio.spotifyapi.data.network
 
 import com.bustasirio.spotifyapi.data.model.*
 import okhttp3.RequestBody
-import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -98,4 +97,40 @@ interface SpotifyApiClient {
         @Path("playlist_id") playlistId: String,
         @Body body: RequestBody
     ): Response<Snapshot>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("/v1/me/tracks")
+    suspend fun getLikedSongs(
+        @Header("Authorization") authorizationWithToken: String,
+        @Query("limit") limit: String,
+        @Query("offset") offset: String
+    ): Response<SavedTracksModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("/v1/me/episodes")
+    suspend fun getYourEpisodes(
+        @Header("Authorization") authorizationWithToken: String,
+        @Query("limit") limit: String,
+        @Query("offset") offset: String
+    ): Response<SavedEpisodesModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("/v1/me/shows")
+    suspend fun getSavedShows(
+        @Header("Authorization") authorizationWithToken: String,
+        @Query("limit") limit: String,
+        @Query("offset") offset: String
+    ): Response<SavedShowsModel>
 }

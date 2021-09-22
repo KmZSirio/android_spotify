@@ -44,4 +44,6 @@
     <string name="size">Size</string>
     <string name="reload_library">reload_library</string>
     <string name="createfragment">CreateFragment</string>
+    <string name="saved_shows">Saved Shows</string>
+    <string name="your_episodes">Your Episodes</string>
 </resources>

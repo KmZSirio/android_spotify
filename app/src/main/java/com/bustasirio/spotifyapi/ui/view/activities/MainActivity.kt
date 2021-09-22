@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private val scope: String =
         "playlist-read-private playlist-read-collaborative user-top-read " +
         "user-read-email user-read-recently-played playlist-modify-public " +
-        "playlist-modify-private"
+        "playlist-modify-private user-library-read"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

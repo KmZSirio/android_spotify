@@ -15,6 +15,7 @@ import android.widget.AbsListView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.core.*
@@ -23,8 +24,9 @@ import com.bustasirio.spotifyapi.data.model.User
 import com.bustasirio.spotifyapi.ui.view.adapters.LibraryPlaylistsAdapter
 import com.bustasirio.spotifyapi.ui.viewmodel.LibraryViewModel
 import com.squareup.picasso.Picasso
-import java.util.Timer
-import kotlin.concurrent.schedule
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LibraryFragment : Fragment() {
@@ -33,19 +35,21 @@ class LibraryFragment : Fragment() {
 
     private lateinit var libraryAdapter: LibraryPlaylistsAdapter
 
+    private var reloading = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        removeAnnoyingFrag(requireActivity().supportFragmentManager)
+//        removeAnnoyingFrag(requireActivity().supportFragmentManager)
         return inflater.inflate(R.layout.fragment_library, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        Log.d("tagLibraryFragment", "onViewCreated")
+        Log.d("tagLibraryFragment", "onViewCreated")
 
         val binding = FragmentLibraryBinding.bind(view)
         setupRecyclerView(binding)
@@ -67,9 +71,7 @@ class LibraryFragment : Fragment() {
                 RecentlyFragment()
             )
         }
-        binding.ibCreateLibrary.setOnClickListener {
-            if (user != null) fragTransCreate(user)
-        }
+        binding.ibCreateLibrary.setOnClickListener { if (user != null) fragTransCreate(user) }
 
         binding.ivProfileLibrary.setOnClickListener {
             if (user != null && noPlaylist != null) fragTransProfile(
@@ -109,6 +111,14 @@ class LibraryFragment : Fragment() {
             isLastPage = libraryVM.page == totalPages
 
             noPlaylist = it.total
+
+            if (reloading) {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    delay(200)
+                    binding.rvPlaylistsLibrary.layoutManager?.scrollToPosition(0)
+                }
+                reloading = false
+            }
         })
 
         libraryVM.loading.observe(viewLifecycleOwner, {
@@ -144,6 +154,19 @@ class LibraryFragment : Fragment() {
                 apply()
             }
         })
+
+        requireActivity().supportFragmentManager.setFragmentResultListener(getString(R.string.createfragment), viewLifecycleOwner) { _, bundle ->
+
+            val result = bundle.getString(getString(R.string.createfragment))
+            if (result == "reload") {
+                reloading = true
+                libraryVM.playlists = null
+                libraryVM.page = 0
+
+//              getPrefs()
+                libraryVM.fetchCurrentUserPlaylists()
+            }
+        }
     }
 
     private fun hideProgressBar(view: View) {

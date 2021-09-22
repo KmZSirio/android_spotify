@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
+import com.bustasirio.spotifyapi.core.replaceFrag
 import com.bustasirio.spotifyapi.data.model.User
 import com.bustasirio.spotifyapi.databinding.FragmentCreateBinding
 import com.bustasirio.spotifyapi.ui.viewmodel.CreateViewModel
@@ -101,12 +102,12 @@ class CreateFragment : Fragment() {
         // * PlaylistsResponse
         createVM.playlistResponse.observe(viewLifecycleOwner, {
             hideProgressBar(view)
-//            fragTransPlaylist(
-//                requireActivity(),
-//                getString(R.string.tracks_url),
-//                it
-//            )
+//
+            val bundle = Bundle()
+            bundle.putString(getString(R.string.createfragment), "reload")
+            requireActivity().supportFragmentManager.setFragmentResult(getString(R.string.createfragment), bundle)
             removeAnnoyingFrag(requireActivity().supportFragmentManager)
+//            replaceFrag(requireActivity(), LibraryFragment())
 
             Toast.makeText(requireContext(), "Playlist Created", Toast.LENGTH_SHORT)
                 .show()

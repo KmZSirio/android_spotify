@@ -113,4 +113,46 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
             )
         }
     }
+
+    suspend fun getLikedSongs(
+        authorizationWithToken: String,
+        limit: String,
+        offset: String
+    ) : Response<SavedTracksModel> {
+        return withContext(Dispatchers.IO) {
+            api.getLikedSongs(
+                authorizationWithToken,
+                limit,
+                offset
+            )
+        }
+    }
+
+    suspend fun getYourEpisodes(
+        authorizationWithToken: String,
+        limit: String,
+        offset: String
+    ) : Response<SavedEpisodesModel> {
+        return withContext(Dispatchers.IO) {
+            api.getYourEpisodes(
+                authorizationWithToken,
+                limit,
+                offset
+            )
+        }
+    }
+
+    suspend fun getSavedShows(
+        authorizationWithToken: String,
+        limit: String,
+        offset: String
+    ) : Response<SavedShowsModel> {
+        return withContext(Dispatchers.IO) {
+            api.getSavedShows(
+                authorizationWithToken,
+                limit,
+                offset
+            )
+        }
+    }
 }
