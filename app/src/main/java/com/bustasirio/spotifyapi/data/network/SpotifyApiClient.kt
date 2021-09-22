@@ -1,6 +1,8 @@
 package com.bustasirio.spotifyapi.data.network
 
 import com.bustasirio.spotifyapi.data.model.*
+import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -72,4 +74,28 @@ interface SpotifyApiClient {
     suspend fun getRecentlyPlayed(
         @Header("Authorization") authorizationWithToken: String
     ): Response<RecentlyPlayedModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST
+    suspend fun postPlaylist(
+        @Url url: String,
+        @Header("Authorization") authorizationWithToken: String,
+        @Body body: RequestBody
+    ): Response<Playlist>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST("/v1/playlists/{playlist_id}/tracks")
+    suspend fun postItemsToPlaylist(
+        @Header("Authorization") authorizationWithToken: String,
+        @Path("playlist_id") playlistId: String,
+        @Body body: RequestBody
+    ): Response<Snapshot>
 }

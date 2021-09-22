@@ -86,23 +86,24 @@ class HomeFragment : Fragment() {
         }
 
         // * Chips related
-        binding.chipGroupHome.setOnCheckedChangeListener { chipGroup, id ->
+        binding.chipGroupHome.setOnCheckedChangeListener { chipGroup, _ ->
 
-// *           Log.d("tagHomeFragment", "test: ${chipGroup.findViewById<Chip>(id).text}")
-            if (binding.chipFirstHome.id == chipGroup.checkedChipId) {
-                binding.rvTopTracksMonth.visibility = View.VISIBLE
-                binding.rvTopTracksSixMonths.visibility = View.GONE
-                binding.rvTopTracksLifetime.visibility = View.GONE
-            }
-            if (binding.chipSecondHome.id == chipGroup.checkedChipId) {
-                binding.rvTopTracksMonth.visibility = View.GONE
-                binding.rvTopTracksSixMonths.visibility = View.VISIBLE
-                binding.rvTopTracksLifetime.visibility = View.GONE
-            }
-            if (binding.chipThirdHome.id == chipGroup.checkedChipId) {
-                binding.rvTopTracksMonth.visibility = View.GONE
-                binding.rvTopTracksSixMonths.visibility = View.GONE
-                binding.rvTopTracksLifetime.visibility = View.VISIBLE
+            when (chipGroup.checkedChipId) {
+                binding.chipFirstHome.id -> {
+                    binding.rvTopTracksMonth.visibility = View.VISIBLE
+                    binding.rvTopTracksSixMonths.visibility = View.GONE
+                    binding.rvTopTracksLifetime.visibility = View.GONE
+                }
+                binding.chipSecondHome.id -> {
+                    binding.rvTopTracksMonth.visibility = View.GONE
+                    binding.rvTopTracksSixMonths.visibility = View.VISIBLE
+                    binding.rvTopTracksLifetime.visibility = View.GONE
+                }
+                binding.chipThirdHome.id -> {
+                    binding.rvTopTracksMonth.visibility = View.GONE
+                    binding.rvTopTracksSixMonths.visibility = View.GONE
+                    binding.rvTopTracksLifetime.visibility = View.VISIBLE
+                }
             }
         }
 

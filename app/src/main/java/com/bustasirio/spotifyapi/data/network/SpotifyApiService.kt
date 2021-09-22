@@ -3,6 +3,8 @@ package com.bustasirio.spotifyapi.data.network
 import com.bustasirio.spotifyapi.data.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -80,6 +82,34 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
         return withContext(Dispatchers.IO) {
             api.getRecentlyPlayed(
                 authorizationWithToken
+            )
+        }
+    }
+
+    suspend fun postPlaylist(
+        url: String,
+        authorizationWithToken: String,
+        body: RequestBody
+    ) : Response<Playlist> {
+        return withContext(Dispatchers.IO) {
+            api.postPlaylist(
+                url,
+                authorizationWithToken,
+                body
+            )
+        }
+    }
+
+    suspend fun postItemsToPlaylist(
+        authorizationWithToken: String,
+        playlistId: String,
+        body: RequestBody
+    ) : Response<Snapshot> {
+        return withContext(Dispatchers.IO) {
+            api.postItemsToPlaylist(
+                authorizationWithToken,
+                playlistId,
+                body
             )
         }
     }

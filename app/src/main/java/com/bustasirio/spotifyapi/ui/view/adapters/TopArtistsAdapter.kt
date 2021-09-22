@@ -29,7 +29,7 @@ class TopArtistsAdapter(private val artists: List<Artist>) :
         if (artists[position].images.isNotEmpty()) {
             Picasso.get().load(artists[position].images[0].url).into(holder.ivArtistImage)
         } else {
-            holder.ivArtistImage.setImageResource(R.drawable.no_artist)
+            holder.ivArtistImage.setImageResource(R.drawable.artist_cover)
         }
     }
 

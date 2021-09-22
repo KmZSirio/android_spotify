@@ -59,7 +59,7 @@ class LibraryPlaylistsAdapter :
                 Picasso.get().load(playlist.images[0].url)
                     .into(holder.ivPlaylistYourLibraryItem)
             } else {
-                holder.ivPlaylistYourLibraryItem.setImageResource(R.drawable.no_artist)
+                holder.ivPlaylistYourLibraryItem.setImageResource(R.drawable.playlist_cover)
             }
 
             setOnClickListener {

@@ -2,25 +2,169 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/spotifyBlack"
-    tools:context=".ui.view.fragments.CreateFragment" >
+    android:background="@color/spotifyBlack">
 
-    <TextView
-        android:id="@+id/text_create"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:text="Create"
-        android:textColor="@color/white"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:theme="@style/Theme.SpotifyAPI">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarCreate"
+                app:title="@string/create_title"
+                app:titleTextAppearance="@style/TitleCollapsed"
+                app:navigationIcon="@drawable/ic_baseline_arrow_back_34"
+                android:background="@drawable/gradient_collapsed"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:layout_collapseMode="pin"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:paddingTop="20dp"
+            android:paddingBottom="60dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_range"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="16sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cgTimeCreate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/cFirstTimeCreate"
+                        style="@style/CustomChipStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="@string/last_month" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/cSecondTimeCreate"
+                        style="@style/CustomChipStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="@string/last_6_months" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/cThirdTimeCreate"
+                        style="@style/CustomChipStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="@string/lifetime" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/size"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="16sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_marginTop="10dp"/>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cgNumberCreate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/cFirstNumberCreate"
+                        style="@style/CustomChipStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="@string/_10_songs" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/cSecondNumberCreate"
+                        style="@style/CustomChipStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="@string/_20_songs" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/cThirdNumberCreate"
+                        style="@style/CustomChipStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="@string/_50_songs" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <Button
+                    android:id="@+id/buttonCreate"
+                    android:theme="@style/SignUpGreenButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="56dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="CREATE"
+                    android:textAllCaps="false"
+                    android:textColor="@color/spotifyBlack"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:text="* The playlist will have a default name based on the params you selected, you can change details later."
+                    android:textColor="@color/spotifyGreyLighter"
+                    android:fontFamily="sans-serif-thin"
+                    android:textSize="14sp"
+                    android:ellipsize="end"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="10dp"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <ProgressBar
+        android:id="@+id/progressCreate"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:indeterminateDrawable="@drawable/progress"
+        android:max="500"
+        android:progress="0"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

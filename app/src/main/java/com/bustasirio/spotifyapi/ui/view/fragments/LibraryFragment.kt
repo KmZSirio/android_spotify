@@ -7,25 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bustasirio.spotifyapi.R
-import com.bustasirio.spotifyapi.core.getCroppedBitmap
 import com.bustasirio.spotifyapi.databinding.FragmentLibraryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.widget.AbsListView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bustasirio.spotifyapi.core.CircleTransformation
+import com.bustasirio.spotifyapi.core.*
 import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_SIZE
-import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
-import com.bustasirio.spotifyapi.core.replaceFrag
-import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.data.model.User
 import com.bustasirio.spotifyapi.ui.view.adapters.LibraryPlaylistsAdapter
 import com.bustasirio.spotifyapi.ui.viewmodel.LibraryViewModel
 import com.squareup.picasso.Picasso
+import java.util.Timer
+import kotlin.concurrent.schedule
 
 @AndroidEntryPoint
 class LibraryFragment : Fragment() {
@@ -46,6 +45,7 @@ class LibraryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        Log.d("tagLibraryFragment", "onViewCreated")
 
         val binding = FragmentLibraryBinding.bind(view)
         setupRecyclerView(binding)
@@ -61,11 +61,21 @@ class LibraryFragment : Fragment() {
         libraryVM.fetchCurrentUserPlaylists()
         libraryVM.fetchCurrentUserProfile()
 
-        binding.ibHistoryLibrary.setOnClickListener { replaceFrag(requireActivity(), RecentlyFragment()) }
-        binding.ibAddLibrary.setOnClickListener { replaceFrag(requireActivity(), CreateFragment()) }
+        binding.ibHistoryLibrary.setOnClickListener {
+            replaceFrag(
+                requireActivity(),
+                RecentlyFragment()
+            )
+        }
+        binding.ibCreateLibrary.setOnClickListener {
+            if (user != null) fragTransCreate(user)
+        }
 
         binding.ivProfileLibrary.setOnClickListener {
-            if (user != null && noPlaylist != null) fragTransProfile(user, noPlaylist)
+            if (user != null && noPlaylist != null) fragTransProfile(
+                user,
+                noPlaylist
+            )
         }
 
         // * UserResponse
@@ -83,7 +93,13 @@ class LibraryFragment : Fragment() {
             user = it
         })
 
-        libraryAdapter.setOnItemClickListener { fragTransPlaylist(it) }
+        libraryAdapter.setOnItemClickListener {
+            fragTransPlaylist(
+                requireActivity(),
+                getString(R.string.tracks_url),
+                it
+            )
+        }
 
         // * PlaylistsResponse
         libraryVM.playlistsResponse.observe(viewLifecycleOwner, {
@@ -146,7 +162,7 @@ class LibraryFragment : Fragment() {
     var isLastPage = false
     var isScrolling = false
 
-    private val scrollListener = object: RecyclerView.OnScrollListener() {
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
 
@@ -186,22 +202,22 @@ class LibraryFragment : Fragment() {
         }
     }
 
-    private fun fragTransPlaylist(playlist: Playlist) {
-        val fragment = PlaylistFragment()
-
-        val bundle = Bundle()
-        bundle.putParcelable(getString(R.string.tracks_url), playlist)
-        fragment.arguments = bundle
-
-        replaceFrag(requireActivity(), fragment)
-    }
-
     private fun fragTransProfile(user: User?, noPlaylists: Int?) {
         val fragment = ProfileFragment()
 
         val bundle = Bundle()
         bundle.putParcelable(getString(R.string.user_object), user)
         bundle.putInt(getString(R.string.no_playlists), noPlaylists!!)
+        fragment.arguments = bundle
+
+        replaceFrag(requireActivity(), fragment)
+    }
+
+    private fun fragTransCreate(user: User?) {
+        val fragment = CreateFragment()
+
+        val bundle = Bundle()
+        bundle.putParcelable(getString(R.string.user_object), user)
         fragment.arguments = bundle
 
         replaceFrag(requireActivity(), fragment)

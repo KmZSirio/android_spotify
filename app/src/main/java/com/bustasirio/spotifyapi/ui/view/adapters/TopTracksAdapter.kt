@@ -27,7 +27,7 @@ class TopTracksAdapter(private val tracks: List<Track>) :
         if (tracks[position].album.images.isNotEmpty()) {
             Picasso.get().load(tracks[position].album.images[0].url).into(holder.ivTrackImage)
         } else {
-            holder.ivTrackImage.setImageResource(R.drawable.no_artist)
+            holder.ivTrackImage.setImageResource(R.drawable.playlist_cover)
         }
     }
 

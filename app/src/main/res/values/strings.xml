@@ -33,4 +33,15 @@
     <string name="back_to_library_button">Back to library button</string>
     <string name="log_out_button">Log out button</string>
     <string name="profile">Profile</string>
+    <string name="last_month">Last month</string>
+    <string name="last_6_months">Last 6 months</string>
+    <string name="lifetime">Lifetime</string>
+    <string name="_10_songs">10 songs</string>
+    <string name="_20_songs">20 songs</string>
+    <string name="_50_songs">50 songs</string>
+    <string name="create_title">Create top tracks playlist</string>
+    <string name="time_range">Time range</string>
+    <string name="size">Size</string>
+    <string name="reload_library">reload_library</string>
+    <string name="createfragment">CreateFragment</string>
 </resources>

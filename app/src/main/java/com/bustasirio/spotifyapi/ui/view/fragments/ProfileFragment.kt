@@ -43,7 +43,7 @@ class ProfileFragment : Fragment() {
                 Picasso.get().load(user.images[0].url).transform(CircleTransformation())
                     .into(binding.ivProfile)
             } else {
-                binding.ivProfile.setImageResource(R.drawable.no_artist)
+                binding.ivProfile.setImageResource(R.drawable.user_cover)
             }
         }
 

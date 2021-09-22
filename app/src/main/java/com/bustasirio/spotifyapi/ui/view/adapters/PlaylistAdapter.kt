@@ -54,7 +54,7 @@ class PlaylistAdapter :
                 Picasso.get().load(item.track.album.images[0].url)
                     .into(holder.ivAlbumPlaylistTrackItem)
             } else {
-                holder.ivAlbumPlaylistTrackItem.setImageResource(R.drawable.no_artist)
+                holder.ivAlbumPlaylistTrackItem.setImageResource(R.drawable.playlist_cover)
             }
 
             setOnClickListener {

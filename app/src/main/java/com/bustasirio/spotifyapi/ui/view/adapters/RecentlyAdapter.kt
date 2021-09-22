@@ -11,6 +11,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.data.model.PlayHistory
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+import android.R.attr.name
+import org.joda.time.format.ISODateTimeFormat
+import java.text.DateFormat
+import android.R.attr.name
+
+
+
+
 
 class RecentlyAdapter :
     RecyclerView.Adapter<RecentlyAdapter.RecentlyViewHolder>() {
@@ -45,7 +60,12 @@ class RecentlyAdapter :
         val playHistory = differ.currentList[position]
 
         holder.itemView.apply {
-            holder.tvDateRecentlyItem.text = playHistory.played_at
+
+            val string = playHistory.played_at
+            val fmt: org.joda.time.format.DateTimeFormatter = ISODateTimeFormat.dateTime()
+            holder.tvTimeRecentlyItem.text = fmt.parseDateTime(string).toString("HH:mm")
+            holder.tvDateRecentlyItem.text = fmt.parseDateTime(string).toString("MMM dd")
+
             holder.tvNameRecentlyItem.text = playHistory.track.name
             holder.tvArtistRecentlyItem.text = playHistory.track.artists[0].name
 
@@ -53,7 +73,7 @@ class RecentlyAdapter :
                 Picasso.get().load(playHistory.track.album.images[0].url)
                     .into(holder.ivAlbumRecentlyItem)
             } else {
-                holder.ivAlbumRecentlyItem.setImageResource(R.drawable.no_artist)
+                holder.ivAlbumRecentlyItem.setImageResource(R.drawable.playlist_cover)
             }
 
             setOnClickListener {
@@ -72,6 +92,7 @@ class RecentlyAdapter :
 
     class RecentlyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val ivAlbumRecentlyItem: ImageView = view.findViewById(R.id.ivAlbumRecentlyItem)
+        val tvTimeRecentlyItem: TextView = view.findViewById(R.id.tvTimeRecentlyItem)
         val tvDateRecentlyItem: TextView = view.findViewById(R.id.tvDateRecentlyItem)
         val tvNameRecentlyItem: TextView = view.findViewById(R.id.tvNameRecentlyItem)
         val tvArtistRecentlyItem: TextView =

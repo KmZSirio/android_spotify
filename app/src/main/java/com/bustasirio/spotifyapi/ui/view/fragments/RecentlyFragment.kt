@@ -47,12 +47,16 @@ class RecentlyFragment : Fragment() {
         val binding = FragmentRecentlyBinding.bind(view)
         setupRecyclerView(binding)
 
-        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack)
+        requireActivity().window.statusBarColor =
+            requireActivity().getColor(R.color.spotifyBlueGrey)
+
 
         binding.rvRecently.overScrollMode = View.OVER_SCROLL_NEVER
 
         getPrefs()
         recentlyVM.fetchRecentlyPlayed()
+
+        binding.toolbarRecently.setNavigationOnClickListener { removeAnnoyingFrag(requireActivity().supportFragmentManager) }
 
         // * RecentlyResponse
         recentlyVM.recentlyResponse.observe(viewLifecycleOwner, {
@@ -66,7 +70,11 @@ class RecentlyFragment : Fragment() {
                 mediaPlayer = MediaPlayer.create(requireContext(), Uri.parse(url))
                 mediaPlayer?.start()
             } else {
-                Toast.makeText(requireContext(), "This track cannot be reproduced.", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(),
+                    "This track cannot be reproduced.",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
@@ -128,5 +136,10 @@ class RecentlyFragment : Fragment() {
         recentlyVM.authorizationBasic.value =
             resources.getString(R.string.spotify_basic)
         recentlyVM.refreshToken.value = refreshToken
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack)
     }
 }

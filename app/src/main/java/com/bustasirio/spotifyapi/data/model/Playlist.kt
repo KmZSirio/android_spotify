@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Playlist(
     val collaborative: Boolean,
-    val description: String,
+    val description: String?,
     val external_urls: ExternalUrls,
     val href: String,
     val id: String,

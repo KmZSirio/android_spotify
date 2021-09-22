@@ -22,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    // ! FIXME Crash when app doesn't have internet
 
     private val mainVM: MainViewModel by viewModels()
 
@@ -29,7 +30,10 @@ class MainActivity : AppCompatActivity() {
     private val endpoint: String = "/authorize"
     private val stateSpotify: String = "34fFs29kd09"
     private val responseType: String = "code"
-    private val scope: String = "playlist-read-private playlist-read-collaborative user-top-read user-read-email user-read-recently-played"
+    private val scope: String =
+        "playlist-read-private playlist-read-collaborative user-top-read " +
+        "user-read-email user-read-recently-played playlist-modify-public " +
+        "playlist-modify-private"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -43,7 +43,6 @@ class HomeViewModel @Inject constructor(
         ).let { apiServiceResp ->
             when {
                 apiServiceResp.isSuccessful -> {
-//                    Log.d("tagHomeViewModel", "Line 40. ${apiServiceResp.body()}")
                     topArtistsResponse.postValue(apiServiceResp.body())
                 }
                 apiServiceResp.code() == 401 -> {
@@ -62,26 +61,18 @@ class HomeViewModel @Inject constructor(
                                 "10"
                             ).let {
                                 if (it.isSuccessful) {
-//                                    Log.d("tagHomeViewModel", "Line 60. ${it.body()!!.artists[0].name}")
                                     topArtistsResponse.postValue(it.body())
                                     newTokensResponse.postValue(accServiceResp.body())
-                                } else {
-                                    Log.d("tagHomeViewModel", "line 67")
-                                    errorResponse.postValue(it.code())
                                 }
+                                else errorResponse.postValue(it.code())
                             }
 
-                        } else {
-                            Log.d("tagHomeViewModel", "line 73")
-                            errorResponse.postValue(accServiceResp.code())
                         }
+                        else errorResponse.postValue(accServiceResp.code())
                     }
 
                 }
-                else -> {
-                    Log.d("tagHomeViewModel", "line 80")
-                    errorResponse.postValue(apiServiceResp.code())
-                }
+                else -> errorResponse.postValue(apiServiceResp.code())
             }
         }
     }
@@ -94,7 +85,6 @@ class HomeViewModel @Inject constructor(
         ).let { apiServiceResp ->
             when {
                 apiServiceResp.isSuccessful -> {
-//                    Log.d("tagHomeViewModel", "Line 40. ${apiServiceResp.body()}")
                     if (term == "short_term") topTracksMonthResponse.postValue(apiServiceResp.body())
                     if (term == "medium_term") topTracksSixMonthsResponse.postValue(apiServiceResp.body())
                     if (term == "long_term") topTracksLifetimeResponse.postValue(apiServiceResp.body())
@@ -116,28 +106,20 @@ class HomeViewModel @Inject constructor(
                                 "10"
                             ).let {
                                 if (it.isSuccessful) {
-//                                    Log.d("tagHomeViewModel", "Line 60. ${it.body()!!.artists[0].name}")
                                     if (term == "short_term") topTracksMonthResponse.postValue(it.body())
                                     if (term == "medium_term") topTracksSixMonthsResponse.postValue(it.body())
                                     if (term == "long_term") topTracksLifetimeResponse.postValue(it.body())
                                     newTokensResponse.postValue(accServiceResp.body())
-                                } else {
-                                    Log.d("tagHomeViewModel", "line 117")
-                                    errorResponse.postValue(it.code())
                                 }
+                                else errorResponse.postValue(it.code())
                             }
 
-                        } else {
-                            Log.d("tagHomeViewModel", "line 123")
-                            errorResponse.postValue(accServiceResp.code())
                         }
+                        else errorResponse.postValue(accServiceResp.code())
                     }
 
                 }
-                else -> {
-                    Log.d("tagHomeViewModel", "line 130")
-                    errorResponse.postValue(apiServiceResp.code())
-                }
+                else -> errorResponse.postValue(apiServiceResp.code())
             }
         }
     }

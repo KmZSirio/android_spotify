@@ -16,7 +16,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
-import com.bustasirio.spotifyapi.core.Constants
 import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_SIZE
 import com.bustasirio.spotifyapi.core.convertDpToPx
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
@@ -35,7 +34,7 @@ class PlaylistFragment : Fragment() {
 
     private lateinit var playlistAdapter: PlaylistAdapter
 
-    var mediaPlayer: MediaPlayer? = null
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,63 +55,68 @@ class PlaylistFragment : Fragment() {
         val binding = FragmentPlaylistBinding.bind(view)
         setupRecyclerView(binding)
 
-        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlueGrey)
-
         getPrefs()
         playlistVM.fetchPlaylistItems()
 
-        binding.collapsingPlaylist.contentScrim = resources.getDrawable(R.drawable.gradient_collapsed, resources.newTheme())
+//        binding.collapsingPlaylist.contentScrim =
+//            resources.getDrawable(R.drawable.gradient_collapsed, resources.newTheme())
+
         binding.rvPlaylist.overScrollMode = View.OVER_SCROLL_NEVER
 
-        binding.tvTitlePlaylist.text = playlist!!.name
-        binding.tvDescriptionPlaylist.text = playlist!!.description
-        binding.tvOwnerPlaylist.text = playlist!!.owner.display_name
+        binding.tvTitlePlaylist.text = playlist.name
+        binding.tvOwnerPlaylist.text = playlist.owner.display_name
 
         // * Appbar height depending if the playlist has a description
-        if (playlist!!.description.isNullOrEmpty()){
+        if (playlist.description.isNullOrEmpty()) {
             val paramsAppBar = binding.appBarPlaylist.layoutParams
             paramsAppBar.height = convertDpToPx(330, resources)
             binding.appBarPlaylist.layoutParams = paramsAppBar
 
-            val paramsMargin : ViewGroup.MarginLayoutParams = binding.llDetailsPlaylist.layoutParams as ViewGroup.MarginLayoutParams
+            val paramsMargin: ViewGroup.MarginLayoutParams =
+                binding.llDetailsPlaylist.layoutParams as ViewGroup.MarginLayoutParams
             paramsMargin.bottomMargin = convertDpToPx(10, resources)
             binding.tvDescriptionPlaylist.visibility = View.GONE
         }
+        else binding.tvDescriptionPlaylist.text = playlist.description
 
-        if (playlist.images.isNotEmpty()) {
-            Picasso.get().load(playlist.images[0].url).into(binding.ivPlaylist)
-        } else {
-            binding.ivPlaylist.setImageResource(R.drawable.no_artist)
-        }
+        if (playlist.images.isNotEmpty()) Picasso.get().load(playlist.images[0].url)
+            .into(binding.ivPlaylist)
+        else binding.ivPlaylist.setImageResource(R.drawable.playlist_cover)
 
-        binding.ibBackPlaylist.setOnClickListener {
-            removeAnnoyingFrag(requireActivity().supportFragmentManager)
-        }
+        binding.ibBackPlaylist.setOnClickListener { removeAnnoyingFrag(requireActivity().supportFragmentManager) }
 
         // * To hide title from the collapsing bar when extended
         var isShow = true
         var scrollRange = -1
         binding.appBarPlaylist.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
-            if (scrollRange == -1){
+            if (scrollRange == -1) {
                 scrollRange = barLayout?.totalScrollRange!!
             }
-            if (scrollRange + verticalOffset == 0){
-                binding.collapsingPlaylist.title = playlist!!.name
+            if (scrollRange + verticalOffset == 0) {
+                binding.collapsingPlaylist.title = playlist.name
                 isShow = true
-            } else if (isShow){
-                binding.collapsingPlaylist.title = " " //careful there should a space between double quote otherwise it wont work
+                binding.toolbarPlaylist.background =
+                    resources.getDrawable(R.drawable.gradient_collapsed, resources.newTheme())
+            } else if (isShow) {
+                binding.collapsingPlaylist.title =
+                    " " //careful there should a space between double quote otherwise it wont work
                 isShow = false
+                binding.toolbarPlaylist.background = null
             }
         })
 
         playlistAdapter.setOnItemClickListener {
-            var url = it.track.preview_url
+            val url = it.track.preview_url
             Log.d("tagPlaylistFragment", "preview_url: $url")
             if (url != null) {
                 mediaPlayer = MediaPlayer.create(requireContext(), Uri.parse(url))
                 mediaPlayer?.start()
             } else {
-                Toast.makeText(requireContext(), "This track cannot be reproduced.", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(),
+                    "This track cannot be reproduced.",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
@@ -124,6 +128,9 @@ class PlaylistFragment : Fragment() {
             playlistAdapter.differ.submitList(it.items.toList())
             val totalPages = it.total / QUERY_SIZE + 1
             isLastPage = playlistVM.page == totalPages
+
+            requireActivity().window.statusBarColor =
+                requireActivity().getColor(R.color.spotifyBlueGrey)
         })
 
         playlistVM.loading.observe(viewLifecycleOwner, {
@@ -180,7 +187,7 @@ class PlaylistFragment : Fragment() {
     var isLastPage = false
     var isScrolling = false
 
-    val scrollListener = object: RecyclerView.OnScrollListener() {
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
 
@@ -200,7 +207,7 @@ class PlaylistFragment : Fragment() {
             val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_SIZE
+            val isTotalMoreThanVisible = totalItemCount >= QUERY_SIZE
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning
                     && isTotalMoreThanVisible && isScrolling
 
@@ -236,5 +243,10 @@ class PlaylistFragment : Fragment() {
         playlistVM.authorizationBasic.value =
             resources.getString(R.string.spotify_basic)
         playlistVM.refreshToken.value = refreshToken
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack)
     }
 }

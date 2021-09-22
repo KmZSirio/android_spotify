@@ -2,12 +2,21 @@ package com.bustasirio.spotifyapi.core
 
 import android.content.res.Resources
 import android.graphics.*
+import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
+import androidx.core.util.Preconditions.checkArgument
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.bustasirio.spotifyapi.R
+import com.bustasirio.spotifyapi.data.model.Playlist
+import com.bustasirio.spotifyapi.data.model.Track
 import com.bustasirio.spotifyapi.ui.view.fragments.CreateFragment
+import com.bustasirio.spotifyapi.ui.view.fragments.LibraryFragment
+import com.bustasirio.spotifyapi.ui.view.fragments.PlaylistFragment
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import kotlin.math.roundToInt
 
 
@@ -64,4 +73,33 @@ fun replaceFrag(activity: FragmentActivity, fragment: Fragment) {
     transaction.replace(R.id.nav_host_fragment_activity_lobby, fragment)
     transaction.disallowAddToBackStack()
     transaction.commit()
+}
+
+//fun detachFrag(activity: FragmentActivity, fragment: Fragment) {
+//    val transaction = activity.supportFragmentManager.beginTransaction()
+//    transaction.detach(fragment)
+//    transaction.attach(fragment)
+//    transaction.commit()
+//}
+
+fun tracksToJson(tracks: List<Track>) : RequestBody {
+    var json = "{\"uris\":["
+
+    tracks.forEach {
+        json = "$json\"${it.uri}\","
+    }
+
+    json = json.dropLast(1)
+    json = "$json]}"
+    return RequestBody.create(MediaType.parse("text/plain"), json )
+}
+
+fun fragTransPlaylist(activity: FragmentActivity,key: String, playlist: Playlist) {
+    val fragment = PlaylistFragment()
+
+    val bundle = Bundle()
+    bundle.putParcelable(key, playlist)
+    fragment.arguments = bundle
+
+    replaceFrag( activity, fragment)
 }
