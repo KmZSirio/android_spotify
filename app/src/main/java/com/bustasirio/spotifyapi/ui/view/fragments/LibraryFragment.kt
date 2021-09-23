@@ -121,19 +121,9 @@ class LibraryFragment : Fragment() {
             }
         })
 
-        libraryVM.loading.observe(viewLifecycleOwner, {
-            if (it) showProgressBar(view)
-        })
+        libraryVM.loading.observe(viewLifecycleOwner, { if (it) showProgressBar(view) })
 
-        libraryVM.errorResponse.observe(viewLifecycleOwner, {
-            if (it != null) {
-                Toast.makeText(requireContext(), "Error: $it, try again later.", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(requireContext(), "Error. Try again later.", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        })
+        libraryVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
         libraryVM.newTokensResponse.observe(viewLifecycleOwner, {
 

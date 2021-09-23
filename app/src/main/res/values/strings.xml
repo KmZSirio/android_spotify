@@ -46,4 +46,6 @@
     <string name="createfragment">CreateFragment</string>
     <string name="saved_shows">Saved Shows</string>
     <string name="your_episodes">Your Episodes</string>
+    <string name="arg_saved_from_home">saved_from_home</string>
+    <string name="liked_songs">Liked Songs</string>
 </resources>

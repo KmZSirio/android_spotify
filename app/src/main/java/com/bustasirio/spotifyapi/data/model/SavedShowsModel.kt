@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class SavedShowsModel(
     val href: String,
     @SerializedName("items")
-    val savedShows: List<SavedShow>,
+    val savedShows: MutableList<SavedShow>,
     val limit: Int,
     val offset: Int,
     val total: Int

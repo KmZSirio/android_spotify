@@ -15,6 +15,8 @@ import android.content.Context
 import android.content.Intent
 
 import android.widget.Toast
+import com.bustasirio.spotifyapi.core.errorToast
+import com.bustasirio.spotifyapi.core.fragTransSaved
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
 import com.bustasirio.spotifyapi.ui.view.activities.MainActivity
 
@@ -63,6 +65,10 @@ class HomeFragment : Fragment() {
             homeVM.fetchTopTracks("medium_term")
             homeVM.fetchTopTracks("long_term")
         }
+
+        binding.cvSongsHome.setOnClickListener { openFrag("songs") }
+        binding.cvEpisodesHome.setOnClickListener { openFrag("episodes") }
+        binding.cvShowsHome.setOnClickListener { openFrag("shows") }
 
         binding.ibLogOutHome.setOnClickListener {
 
@@ -130,17 +136,8 @@ class HomeFragment : Fragment() {
             binding.rvTopTracksLifetime.adapter = adapter
         })
 
-        // ! FIXME reduce code repetition!
         // ! FIXME one error will create multiple toasts, one per endpoint call
-        homeVM.errorResponse.observe(viewLifecycleOwner, {
-            if (it != null) {
-                Toast.makeText(requireContext(), "Error: $it, try again later.", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(requireContext(), "Error. Try again later.", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        })
+        homeVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
         // ! FIXME reduce code repetition!
         // * Save new tokens
@@ -166,6 +163,8 @@ class HomeFragment : Fragment() {
         })
 
     }
+
+    private fun openFrag(type: String) = fragTransSaved( requireActivity(), getString(R.string.arg_saved_from_home), type)
 
     private fun setWelcomeMessage(): String {
         val currentHour: Int = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)

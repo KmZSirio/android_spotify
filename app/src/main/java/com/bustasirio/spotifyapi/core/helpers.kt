@@ -1,10 +1,12 @@
 package com.bustasirio.spotifyapi.core
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.widget.Toast
 import androidx.core.util.Preconditions.checkArgument
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -15,6 +17,7 @@ import com.bustasirio.spotifyapi.data.model.Track
 import com.bustasirio.spotifyapi.ui.view.fragments.CreateFragment
 import com.bustasirio.spotifyapi.ui.view.fragments.LibraryFragment
 import com.bustasirio.spotifyapi.ui.view.fragments.PlaylistFragment
+import com.bustasirio.spotifyapi.ui.view.fragments.SavedFragment
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import kotlin.math.roundToInt
@@ -98,4 +101,26 @@ fun fragTransPlaylist(activity: FragmentActivity, key: String, playlist: Playlis
     fragment.arguments = bundle
 
     replaceFrag(activity, fragment)
+}
+
+
+fun fragTransSaved(activity: FragmentActivity, key: String, type: String) {
+    val fragment = SavedFragment()
+
+    val bundle = Bundle()
+    bundle.putString(key, type)
+    fragment.arguments = bundle
+
+    replaceFrag(activity, fragment)
+}
+
+
+fun errorToast(it: Int, context: Context) {
+    if (it != null) {
+        Toast.makeText(context, "Error: $it, try again later.", Toast.LENGTH_SHORT)
+            .show()
+    } else {
+        Toast.makeText(context, "Error. Try again later.", Toast.LENGTH_SHORT)
+            .show()
+    }
 }

@@ -72,7 +72,9 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cvSongsHome"
                     app:cardBackgroundColor="@color/spotifyGreyDarker"
+                    android:clickable="true"
                     app:cardCornerRadius="5dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
@@ -95,7 +97,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Liked Songs"
+                            android:text="@string/liked_songs"
                             style="@style/HomeCardsText"
                             android:paddingStart="10dp"
                             android:paddingEnd="0dp"
@@ -106,7 +108,9 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cvEpisodesHome"
                     app:cardBackgroundColor="@color/spotifyGreyDarker"
+                    android:clickable="true"
                     app:cardCornerRadius="5dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
@@ -168,7 +172,9 @@
                 android:layout_marginBottom="20dp">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cvShowsHome"
                     app:cardBackgroundColor="@color/spotifyGreyDarker"
+                    android:clickable="true"
                     app:cardCornerRadius="5dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
