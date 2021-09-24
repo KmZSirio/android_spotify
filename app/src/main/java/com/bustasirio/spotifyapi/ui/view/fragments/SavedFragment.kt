@@ -19,9 +19,9 @@ import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.Constants
 import com.bustasirio.spotifyapi.core.errorToast
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
-import com.bustasirio.spotifyapi.databinding.FragmentPlaylistBinding
 import com.bustasirio.spotifyapi.databinding.FragmentSavedBinding
-import com.bustasirio.spotifyapi.ui.view.adapters.PlaylistAdapter
+import com.bustasirio.spotifyapi.ui.view.adapters.SavedEpisodeAdapter
+import com.bustasirio.spotifyapi.ui.view.adapters.SavedShowAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedSongsAdapter
 import com.bustasirio.spotifyapi.ui.viewmodel.SavedViewModel
 import com.google.android.material.appbar.AppBarLayout
@@ -34,7 +34,9 @@ class SavedFragment : Fragment() {
 
     private val savedVM: SavedViewModel by viewModels()
 
-    private lateinit var savedSongsAdapter: SavedSongsAdapter
+    private var savedSongsAdapter = SavedSongsAdapter()
+    private var savedEpisodeAdapter = SavedEpisodeAdapter()
+    private var savedShowAdapter = SavedShowAdapter()
 
     private var mediaPlayer: MediaPlayer? = null
 
@@ -74,14 +76,14 @@ class SavedFragment : Fragment() {
                 title = getString(R.string.your_episodes)
                 binding.tvTitleSaved.text = title
                 binding.ivSaved.setImageResource(R.drawable.your_episodes)
-//                savedVM.fetchSavedEpisodes()
+                savedVM.fetchSavedEpisodes()
                 setupRWEpisodes(binding)
             }
             "shows" -> {
                 title = getString(R.string.saved_shows)
                 binding.tvTitleSaved.text = title
                 binding.ivSaved.setImageResource(R.drawable.saved_shows)
-//                savedVM.fetchSavedShows()
+                savedVM.fetchSavedShows()
                 setupRWShows(binding)
             }
         }
@@ -119,8 +121,32 @@ class SavedFragment : Fragment() {
             requireActivity().window.statusBarColor =
                 requireActivity().getColor(R.color.spotifyBlueGrey)
         })
-
         savedSongsAdapter.setOnItemClickListener { reproduce(it.track.preview_url) }
+
+        // * EPISODES
+        savedVM.episodesResponse.observe(viewLifecycleOwner, {
+            hideProgressBar(view)
+
+            savedEpisodeAdapter.differ.submitList(it.savedEpisodes.toList())
+            val totalPages = it.total / Constants.QUERY_SIZE + 1
+            isLastPage = savedVM.page == totalPages
+
+            requireActivity().window.statusBarColor =
+                requireActivity().getColor(R.color.spotifyBlueGrey)
+        })
+        savedEpisodeAdapter.setOnItemClickListener { reproduce(it.episode.audio_preview_url) }
+
+        // * SHOWS
+        savedVM.showsResponse.observe(viewLifecycleOwner, {
+            hideProgressBar(view)
+
+            savedShowAdapter.differ.submitList(it.savedShows.toList())
+            val totalPages = it.total / Constants.QUERY_SIZE + 1
+            isLastPage = savedVM.page == totalPages
+
+            requireActivity().window.statusBarColor =
+                requireActivity().getColor(R.color.spotifyBlueGrey)
+        })
 
         savedVM.loading.observe(viewLifecycleOwner, { if (it) showProgressBar(view) })
 
@@ -156,21 +182,21 @@ class SavedFragment : Fragment() {
     }
 
     private fun setupRWEpisodes(binding: FragmentSavedBinding) {
-//        episodesAdapter = EpisodesAdapter()
-//        binding.rvSaved.apply {
-//            adapter = episodesAdapter
-//            layoutManager = LinearLayoutManager(activity)
-//            addOnScrollListener(this@SavedFragment.scrollListener)
-//        }
+        savedEpisodeAdapter = SavedEpisodeAdapter()
+        binding.rvSaved.apply {
+            adapter = savedEpisodeAdapter
+            layoutManager = LinearLayoutManager(activity)
+            addOnScrollListener(this@SavedFragment.scrollListener)
+        }
     }
 
     private fun setupRWShows(binding: FragmentSavedBinding) {
-//        showsAdapter = ShowsAdapter()
-//        binding.rvSaved.apply {
-//            adapter = showsAdapter
-//            layoutManager = LinearLayoutManager(activity)
-//            addOnScrollListener(this@SavedFragment.scrollListener)
-//        }
+        savedShowAdapter = SavedShowAdapter()
+        binding.rvSaved.apply {
+            adapter = savedShowAdapter
+            layoutManager = LinearLayoutManager(activity)
+            addOnScrollListener(this@SavedFragment.scrollListener)
+        }
     }
 
     private fun reproduce(url: String?) {

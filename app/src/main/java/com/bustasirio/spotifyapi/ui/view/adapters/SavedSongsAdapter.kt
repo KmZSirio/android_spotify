@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
-import com.bustasirio.spotifyapi.data.model.Item
-import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.data.model.SavedTrack
 import com.squareup.picasso.Picasso
 
