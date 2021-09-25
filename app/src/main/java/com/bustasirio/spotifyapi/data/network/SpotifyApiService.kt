@@ -155,4 +155,34 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
             )
         }
     }
+
+    suspend fun getCategories(
+        authorizationWithToken: String,
+        limit: String,
+        offset: String
+    ) : Response<CategoryModel> {
+        return withContext(Dispatchers.IO) {
+            api.getCategories(
+                authorizationWithToken,
+                limit,
+                offset
+            )
+        }
+    }
+
+    suspend fun getCategoryPlaylists(
+        auth: String,
+        categoryId: String,
+        limit: String,
+        offset: String
+    ) : Response<CategoryPlaylistsModel> {
+        return withContext(Dispatchers.IO) {
+            api.getCategoryPlaylists(
+                auth,
+                categoryId,
+                limit,
+                offset
+            )
+        }
+    }
 }

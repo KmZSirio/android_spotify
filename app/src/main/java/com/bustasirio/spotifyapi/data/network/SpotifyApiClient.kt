@@ -133,4 +133,29 @@ interface SpotifyApiClient {
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<SavedShowsModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("/v1/browse/categories")
+    suspend fun getCategories(
+        @Header("Authorization") authorizationWithToken: String,
+        @Query("limit") limit: String,
+        @Query("offset") offset: String
+    ): Response<CategoryModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("/v1/browse/categories/{category_id}/playlists")
+    suspend fun getCategoryPlaylists(
+        @Header("Authorization") auth: String,
+        @Path("category_id") categoryId: String,
+        @Query("limit") limit: String,
+        @Query("offset") offset: String
+    ): Response<CategoryPlaylistsModel>
 }

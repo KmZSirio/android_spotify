@@ -43,7 +43,7 @@ class LibraryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-//        removeAnnoyingFrag(requireActivity().supportFragmentManager)
+        removeAnnoyingFrag(requireActivity().supportFragmentManager)
         return inflater.inflate(R.layout.fragment_library, container, false)
     }
 
