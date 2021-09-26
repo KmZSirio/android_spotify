@@ -34,12 +34,15 @@ class SearchViewModel @Inject constructor(
     // * To renew token
     val refreshToken = MutableLiveData<String>() // prefs
 
+    val country = MutableLiveData<String>()
+
     // * CATEGORIES
     fun fetchCategories() = viewModelScope.launch {
         loading.postValue(true)
 
         apiService.getCategories(
             authorizationWithToken.value!!,
+            if (country.value!!.isEmpty()) null else country.value!!,
             "$QUERY_GRID_SIZE",
             "${page * QUERY_GRID_SIZE}"
         ).let { apiServiceResp ->
@@ -60,6 +63,7 @@ class SearchViewModel @Inject constructor(
 
                             apiService.getCategories(
                                 authWithToken,
+                                if (country.value!!.isEmpty()) null else country.value!!,
                                 "$QUERY_GRID_SIZE",
                                 "${page * QUERY_GRID_SIZE}"
                             ).let {

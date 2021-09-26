@@ -19,6 +19,8 @@
     <string name="spotify_access_token">SpotifyAccessToken</string>
     <string name="spotify_token_type">SpotifyTokenType</string>
     <string name="spotify_refresh_token">SpotifyRefreshToken</string>
+    <string name="spotify_country_pos">SpotifyCountryPos</string>
+    <string name="spotify_country">SpotifyCountry</string>
     <string name="spotify_logged">SpotifyLogged</string>
     <string name="most_played_songs">Most played songs</string>
     <string name="current_user_profile_image">Current user profile image</string>
@@ -31,7 +33,7 @@
     <string name="playlist_cover_image">Playlist cover image</string>
     <string name="random_play_button">Random play button</string>
     <string name="back_to_library_button">Back to library button</string>
-    <string name="log_out_button">Log out button</string>
+    <string name="settings_button">Go to settings button</string>
     <string name="profile">Profile</string>
     <string name="last_month">Last month</string>
     <string name="last_6_months">Last 6 months</string>
@@ -50,4 +52,9 @@
     <string name="liked_songs">Liked Songs</string>
     <string name="category_image">Category image</string>
     <string name="category_playlists">category_playlists</string>
+    <string name="settings">Settings</string>
+    <string name="log_out">Log out</string>
+    <string name="country_details_settings">Worldwide queries will be relevant to all countries</string>
+    <string name="country_settings">Select country</string>
+    <string name="worldwide">Worldwide</string>
 </resources>

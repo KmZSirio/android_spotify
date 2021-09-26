@@ -158,12 +158,14 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
 
     suspend fun getCategories(
         authorizationWithToken: String,
+        country: String?,
         limit: String,
         offset: String
     ) : Response<CategoryModel> {
         return withContext(Dispatchers.IO) {
             api.getCategories(
                 authorizationWithToken,
+                country,
                 limit,
                 offset
             )
@@ -182,6 +184,16 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
                 categoryId,
                 limit,
                 offset
+            )
+        }
+    }
+
+    suspend fun getAvailableMarkets(
+        auth: String
+    ) : Response<MarketsModel> {
+        return withContext(Dispatchers.IO) {
+            api.getAvailableMarkets(
+                auth
             )
         }
     }

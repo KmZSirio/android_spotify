@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
 import com.bustasirio.spotifyapi.core.replaceFrag
+import com.bustasirio.spotifyapi.core.saveTokens
 import com.bustasirio.spotifyapi.data.model.User
 import com.bustasirio.spotifyapi.databinding.FragmentCreateBinding
 import com.bustasirio.spotifyapi.ui.viewmodel.CreateViewModel
@@ -93,10 +94,10 @@ class CreateFragment : Fragment() {
             val title = "Top $size songs in the $timeRange"
             val json = "{\"name\":\"$title\"}"
 
-            val body = RequestBody.create(MediaType.parse("text/plain"), json )
+            val body = RequestBody.create(MediaType.parse("text/plain"), json)
             createVM.requestBody.value = body
             getPrefs()
-            createVM.createPlaylist(range,size)
+            createVM.createPlaylist(range, size)
         }
 
         // * PlaylistsResponse
@@ -105,7 +106,10 @@ class CreateFragment : Fragment() {
 //
             val bundle = Bundle()
             bundle.putString(getString(R.string.createfragment), "reload")
-            requireActivity().supportFragmentManager.setFragmentResult(getString(R.string.createfragment), bundle)
+            requireActivity().supportFragmentManager.setFragmentResult(
+                getString(R.string.createfragment),
+                bundle
+            )
             removeAnnoyingFrag(requireActivity().supportFragmentManager)
 //            replaceFrag(requireActivity(), LibraryFragment())
 
@@ -127,25 +131,7 @@ class CreateFragment : Fragment() {
             }
         })
 
-        createVM.newTokensResponse.observe(viewLifecycleOwner, {
-
-            val sharedPrefs = requireContext().getSharedPreferences(
-                getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            )
-            with(sharedPrefs.edit()) {
-                putString(
-                    getString(R.string.spotify_access_token),
-                    it.accessToken
-                )
-                putString(
-                    getString(R.string.spotify_token_type),
-                    it.tokenType
-                )
-                putBoolean(getString(R.string.spotify_logged), true)
-                apply()
-            }
-        })
+        createVM.newTokensResponse.observe(viewLifecycleOwner, { saveTokens(it, requireContext()) })
     }
 
     private fun hideProgressBar(view: View) {

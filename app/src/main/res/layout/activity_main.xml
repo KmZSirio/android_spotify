@@ -52,7 +52,7 @@
     <Button
         android:id="@+id/facebookButton"
         android:theme="@style/ContinueBlackButton"
-        app:icon="@drawable/ic_facebook"
+        app:icon="@drawable/ic_facebook_24"
         app:iconTint="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
     <Button
         android:id="@+id/googleButton"
         android:theme="@style/ContinueBlackButton"
-        app:icon="@drawable/ic_google"
+        app:icon="@drawable/ic_google_24"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -96,7 +96,7 @@
     <Button
         android:id="@+id/phoneButton"
         android:theme="@style/ContinueBlackButton"
-        app:icon="@drawable/ic_phone"
+        app:icon="@drawable/ic_cellphone_24"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"

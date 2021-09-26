@@ -4,7 +4,6 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +19,7 @@ import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_SIZE
 import com.bustasirio.spotifyapi.core.convertDpToPx
 import com.bustasirio.spotifyapi.core.errorToast
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
+import com.bustasirio.spotifyapi.core.saveTokens
 import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.databinding.FragmentPlaylistBinding
 import com.bustasirio.spotifyapi.ui.view.adapters.PlaylistAdapter
@@ -48,11 +48,8 @@ class PlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        // ? ------------------------------------------------------------
         val arguments = arguments
         val playlist = arguments!!.getParcelable<Playlist>(getString(R.string.tracks_url))
-
 
         playlistVM.tracksUrl.value = playlist!!.tracks.href
 
@@ -64,7 +61,6 @@ class PlaylistFragment : Fragment() {
 
         binding.rvPlaylist.overScrollMode = View.OVER_SCROLL_NEVER
 
-        // ? ------------------------------------------------------------
         binding.tvTitlePlaylist.text = playlist.name
         binding.tvOwnerPlaylist.text = playlist.owner.display_name
 
@@ -107,20 +103,7 @@ class PlaylistFragment : Fragment() {
             }
         })
 
-        playlistAdapter.setOnItemClickListener {
-            val url = it.track.preview_url
-            Log.d("tagPlaylistFragment", "preview_url: $url")
-            if (url != null) {
-                mediaPlayer = MediaPlayer.create(requireContext(), Uri.parse(url))
-                mediaPlayer?.start()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "This track cannot be reproduced.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
+        playlistAdapter.setOnItemClickListener { reproduce(it.track.preview_url) }
 
         // * TracksResponse
         playlistVM.tracksResponse.observe(viewLifecycleOwner, {
@@ -138,28 +121,22 @@ class PlaylistFragment : Fragment() {
 
         playlistVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
+        playlistVM.newTokensResponse.observe(
+            viewLifecycleOwner,
+            { saveTokens(it, requireContext()) })
+    }
 
-        // ! FIXME Send <<it>> to a fun on helpers
-        playlistVM.newTokensResponse.observe(viewLifecycleOwner, {
-//            Log.d("tagHomeActivityResponseNewTokens", it.toString())
-
-            val sharedPrefs = requireContext().getSharedPreferences(
-                getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            )
-            with(sharedPrefs.edit()) {
-                putString(
-                    getString(R.string.spotify_access_token),
-                    it.accessToken
-                )
-                putString(
-                    getString(R.string.spotify_token_type),
-                    it.tokenType
-                )
-                putBoolean(getString(R.string.spotify_logged), true)
-                apply()
-            }
-        })
+    private fun reproduce(url: String?) {
+        if (url != null) {
+            mediaPlayer = MediaPlayer.create(requireContext(), Uri.parse(url))
+            mediaPlayer?.start()
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "This track cannot be reproduced.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun hideProgressBar(view: View) {

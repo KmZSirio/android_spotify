@@ -22,7 +22,6 @@ class MainViewModel @Inject constructor(
     // ! TODO encode basic myself!
     val authorizationBasic = MutableLiveData<String>()
 
-
     fun getAuth() = viewModelScope.launch {
         service.getAuth(
             authorizationBasic.value!!,

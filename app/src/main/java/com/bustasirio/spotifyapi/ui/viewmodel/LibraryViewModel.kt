@@ -14,6 +14,7 @@ import com.bustasirio.spotifyapi.data.network.SpotifyAccountsService
 import com.bustasirio.spotifyapi.data.network.SpotifyApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,10 +44,7 @@ class LibraryViewModel @Inject constructor(
             authorizationWithToken.value!!
         ).let { apiServiceResp ->
             when {
-                apiServiceResp.isSuccessful -> {
-//                    Log.d("tagHomeViewModel", "Line 40. ${apiServiceResp.body()}")
-                    userResponse.postValue(apiServiceResp.body())
-                }
+                apiServiceResp.isSuccessful -> userResponse.postValue(apiServiceResp.body())
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
@@ -55,33 +53,25 @@ class LibraryViewModel @Inject constructor(
                         refreshToken.value!!,
                         REDIRECT_URI
                     ).let { accServiceResp ->
+
                         if (accServiceResp.isSuccessful && accServiceResp.code() == 200) {
                             val authWithToken =
                                 "${accServiceResp.body()!!.tokenType} ${accServiceResp.body()!!.accessToken}"
+
                             apiService.getCurrentUserProfile(
                                 authWithToken
                             ).let {
                                 if (it.isSuccessful) {
-//                                    Log.d("tagHomeViewModel", "Line 60. ${it.body()!!.artists[0].name}")
                                     userResponse.postValue(it.body())
                                     newTokensResponse.postValue(accServiceResp.body())
-                                } else {
-                                    Log.d("tagLibraryViewModel", "line 67")
-                                    errorResponse.postValue(it.code())
                                 }
+                                else errorResponse.postValue(it.code())
                             }
-
-                        } else {
-                            Log.d("tagLibraryViewModel", "line 73")
-                            errorResponse.postValue(accServiceResp.code())
                         }
+                        else errorResponse.postValue(accServiceResp.code())
                     }
-
                 }
-                else -> {
-                    Log.d("tagLibraryViewModel", "line 80")
-                    errorResponse.postValue(apiServiceResp.code())
-                }
+                else -> errorResponse.postValue(apiServiceResp.code())
             }
         }
     }
@@ -95,18 +85,7 @@ class LibraryViewModel @Inject constructor(
             "${page * limit}"
         ).let { apiServiceResp ->
             when {
-                apiServiceResp.isSuccessful -> {
-                    // ! ---------------------------------------------
-                    page++
-                    if (playlists == null) {
-                        playlists = apiServiceResp.body()
-                    } else {
-                        val oldPlaylists = playlists?.playlists
-                        val newPlaylists = apiServiceResp.body()?.playlists
-                        oldPlaylists?.addAll(newPlaylists!!)
-                    }
-                    playlistsResponse.postValue(playlists ?: apiServiceResp.body())
-                }
+                apiServiceResp.isSuccessful -> { playlistsSuccessful(apiServiceResp) }
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
@@ -124,35 +103,29 @@ class LibraryViewModel @Inject constructor(
                                 "${page * limit}"
                             ).let {
                                 if (it.isSuccessful) {
-                                    // ! ---------------------------------------------
-                                    page++
-                                    if (playlists == null) {
-                                        playlists = apiServiceResp.body()
-                                    } else {
-                                        val oldPlaylists = playlists?.playlists
-                                        val newPlaylists = apiServiceResp.body()?.playlists
-                                        oldPlaylists?.addAll(newPlaylists!!)
-                                    }
-                                    playlistsResponse.postValue(playlists ?: apiServiceResp.body())
+                                    playlistsSuccessful(it)
                                     newTokensResponse.postValue(accServiceResp.body())
-                                } else {
-                                    Log.d("tagLibraryViewModel", "line 67")
-                                    errorResponse.postValue(it.code())
                                 }
+                                else errorResponse.postValue(it.code())
                             }
-
-                        } else {
-                            Log.d("tagLibraryViewModel", "line 73")
-                            errorResponse.postValue(accServiceResp.code())
                         }
+                        else errorResponse.postValue(accServiceResp.code())
                     }
-
                 }
-                else -> {
-                    Log.d("tagLibraryViewModel", "line 80")
-                    errorResponse.postValue(apiServiceResp.code())
-                }
+                else -> errorResponse.postValue(apiServiceResp.code())
             }
         }
+    }
+
+    private fun playlistsSuccessful(response: Response<PlaylistsModel>) {
+        page++
+        if (playlists == null) {
+            playlists = response.body()
+        } else {
+            val oldPlaylists = playlists?.playlists
+            val newPlaylists = response.body()?.playlists
+            oldPlaylists?.addAll(newPlaylists!!)
+        }
+        playlistsResponse.postValue(playlists ?: response.body())
     }
 }

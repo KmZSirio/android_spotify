@@ -125,27 +125,14 @@ class LibraryFragment : Fragment() {
 
         libraryVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
-        libraryVM.newTokensResponse.observe(viewLifecycleOwner, {
+        libraryVM.newTokensResponse.observe(
+            viewLifecycleOwner,
+            { saveTokens(it, requireContext()) })
 
-            val sharedPrefs = requireContext().getSharedPreferences(
-                getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            )
-            with(sharedPrefs.edit()) {
-                putString(
-                    getString(R.string.spotify_access_token),
-                    it.accessToken
-                )
-                putString(
-                    getString(R.string.spotify_token_type),
-                    it.tokenType
-                )
-                putBoolean(getString(R.string.spotify_logged), true)
-                apply()
-            }
-        })
-
-        requireActivity().supportFragmentManager.setFragmentResultListener(getString(R.string.createfragment), viewLifecycleOwner) { _, bundle ->
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            getString(R.string.createfragment),
+            viewLifecycleOwner
+        ) { _, bundle ->
 
             val result = bundle.getString(getString(R.string.createfragment))
             if (result == "reload") {

@@ -13,11 +13,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 import android.content.Context
 import android.content.Intent
+import com.bustasirio.spotifyapi.core.*
 
-import android.widget.Toast
-import com.bustasirio.spotifyapi.core.errorToast
-import com.bustasirio.spotifyapi.core.fragTransSaved
-import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
 import com.bustasirio.spotifyapi.ui.view.activities.MainActivity
 
 import com.bustasirio.spotifyapi.ui.view.adapters.TopArtistsAdapter
@@ -70,26 +67,7 @@ class HomeFragment : Fragment() {
         binding.cvEpisodesHome.setOnClickListener { openFrag("episodes") }
         binding.cvShowsHome.setOnClickListener { openFrag("shows") }
 
-        binding.ibLogOutHome.setOnClickListener {
-
-            requireActivity().supportFragmentManager.popBackStack()
-
-            val sharedPrefs = requireContext().getSharedPreferences(
-                getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            )
-            with(sharedPrefs.edit()) {
-                putString(getString(R.string.spotify_access_token), "")
-                putString(getString(R.string.spotify_token_type), "")
-                putString(getString(R.string.spotify_refresh_token), "")
-                putBoolean(getString(R.string.spotify_logged), false)
-                apply()
-            }
-
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
+        binding.ibSettingsHome.setOnClickListener { replaceFrag(requireActivity(), SettingsFragment()) }
 
         // * Chips related
         binding.chipGroupHome.setOnCheckedChangeListener { chipGroup, _ ->
@@ -139,32 +117,13 @@ class HomeFragment : Fragment() {
         // ! FIXME one error will create multiple toasts, one per endpoint call
         homeVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
-        // ! FIXME reduce code repetition!
         // * Save new tokens
-        homeVM.newTokensResponse.observe(viewLifecycleOwner, {
-//            Log.d("tagHomeActivityResponseNewTokens", it.toString())
-
-            val sharedPrefs = requireContext().getSharedPreferences(
-                getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            )
-            with(sharedPrefs.edit()) {
-                putString(
-                    getString(R.string.spotify_access_token),
-                    it.accessToken
-                )
-                putString(
-                    getString(R.string.spotify_token_type),
-                    it.tokenType
-                )
-                putBoolean(getString(R.string.spotify_logged), true)
-                apply()
-            }
-        })
+        homeVM.newTokensResponse.observe(viewLifecycleOwner, { saveTokens(it, requireContext()) })
 
     }
 
-    private fun openFrag(type: String) = fragTransSaved( requireActivity(), getString(R.string.arg_saved_from_home), type)
+    private fun openFrag(type: String) =
+        fragTransSaved(requireActivity(), getString(R.string.arg_saved_from_home), type)
 
     private fun setWelcomeMessage(): String {
         val currentHour: Int = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -174,7 +133,6 @@ class HomeFragment : Fragment() {
         return "Good evening"
     }
 
-    // ! FIXME reduce code repetition!
     private fun getPrefs() {
         val sharedPrefs =
             requireContext().getSharedPreferences(

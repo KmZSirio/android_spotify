@@ -28,14 +28,14 @@ class ProfileFragment : Fragment() {
 
         val arguments = arguments
         val user = arguments!!.getParcelable<User>(getString(R.string.user_object))
-        val noPlaylists = arguments!!.getInt(getString(R.string.no_playlists))
+        val noPlaylists = arguments.getInt(getString(R.string.no_playlists))
 
         val binding = FragmentProfileBinding.bind(view)
 
         requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyGreen)
 
         if (user != null) {
-            binding.tvNameProfile.text = user!!.display_name
+            binding.tvNameProfile.text = user.display_name
             binding.tvFollowersProfile.text = "${user.followers.total}"
             binding.tvPlaylistProfile.text = "$noPlaylists"
 

@@ -46,7 +46,6 @@ class CreateViewModel @Inject constructor(
         ).let { apiServiceResp ->
             when {
                 apiServiceResp.code() == 201 -> {
-                    // ? -----------------------------------------------------
                     playlist = apiServiceResp.body()!!
                     fetchTopTracks(range, size, authorizationWithToken.value!! )
                 }
@@ -68,7 +67,6 @@ class CreateViewModel @Inject constructor(
                                 requestBody.value!!
                             ).let {
                                 if (it.code() == 201) {
-                                    // ? -----------------------------------------------------
                                     playlist = it.body()!!
                                     fetchTopTracks(range, size, authWithToken)
                                     newTokensResponse.postValue(accServiceResp.body())
@@ -94,7 +92,6 @@ class CreateViewModel @Inject constructor(
         ).let { apiServiceResp ->
             when {
                 apiServiceResp.isSuccessful -> {
-                    // ? -----------------------------------------------------
                     val response = apiServiceResp.body()
                     val body = tracksToJson(response!!.tracks)
                     fillPlaylist(authToken, body)
@@ -117,7 +114,6 @@ class CreateViewModel @Inject constructor(
                                 size
                             ).let {
                                 if (it.isSuccessful) {
-                                    // ? -----------------------------------------------------
                                     val response = it.body()
                                     val body = tracksToJson(response!!.tracks)
                                     fillPlaylist(authWithToken, body)
@@ -142,10 +138,7 @@ class CreateViewModel @Inject constructor(
             body
         ).let { apiServiceResp ->
             when {
-                apiServiceResp.isSuccessful -> {
-                    // ? -----------------------------------------------------
-                    playlistResponse.postValue(playlist)
-                }
+                apiServiceResp.isSuccessful -> playlistResponse.postValue(playlist)
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
@@ -164,7 +157,6 @@ class CreateViewModel @Inject constructor(
                                 body
                             ).let {
                                 if (it.isSuccessful) {
-                                    // ? -----------------------------------------------------
                                     playlistResponse.postValue(playlist)
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }

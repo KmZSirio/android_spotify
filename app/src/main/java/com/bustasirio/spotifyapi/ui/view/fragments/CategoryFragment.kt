@@ -18,6 +18,7 @@ import com.bustasirio.spotifyapi.core.Constants
 import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_GRID_SIZE
 import com.bustasirio.spotifyapi.core.fragTransPlaylist
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
+import com.bustasirio.spotifyapi.core.saveTokens
 import com.bustasirio.spotifyapi.data.model.Category
 import com.bustasirio.spotifyapi.databinding.FragmentCategoryBinding
 import com.bustasirio.spotifyapi.ui.view.adapters.CategoryPlaylistAdapter
@@ -130,24 +131,9 @@ class CategoryFragment : Fragment() {
             }
         })
 
-        categoryVM.newTokensResponse.observe(viewLifecycleOwner, {
-            val sharedPrefs = requireContext().getSharedPreferences(
-                getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            )
-            with(sharedPrefs.edit()) {
-                putString(
-                    getString(R.string.spotify_access_token),
-                    it.accessToken
-                )
-                putString(
-                    getString(R.string.spotify_token_type),
-                    it.tokenType
-                )
-                putBoolean(getString(R.string.spotify_logged), true)
-                apply()
-            }
-        })
+        categoryVM.newTokensResponse.observe(
+            viewLifecycleOwner,
+            { saveTokens(it, requireContext()) })
     }
 
     private fun setupRW(binding: FragmentCategoryBinding) {

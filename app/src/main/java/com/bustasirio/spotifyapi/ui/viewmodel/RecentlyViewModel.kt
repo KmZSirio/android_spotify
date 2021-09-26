@@ -12,6 +12,7 @@ import com.bustasirio.spotifyapi.data.network.SpotifyAccountsService
 import com.bustasirio.spotifyapi.data.network.SpotifyApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,16 +38,7 @@ class RecentlyViewModel @Inject constructor(
             authorizationWithToken.value!!
         ).let { apiServiceResp ->
             when {
-                apiServiceResp.code() == 200 -> {
-                    if (items == null) {
-                        items = apiServiceResp.body()
-                    } else {
-                        val oldItems = items?.play_histories
-                        val newItems = apiServiceResp.body()?.play_histories
-                        oldItems?.addAll(newItems!!)
-                    }
-                    recentlyResponse.postValue(items ?: apiServiceResp.body())
-                }
+                apiServiceResp.code() == 200 -> recentlySuccessful(apiServiceResp)
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
@@ -63,31 +55,28 @@ class RecentlyViewModel @Inject constructor(
                                 authWithToken,
                             ).let {
                                 if (it.isSuccessful) {
-                                    if (items == null) {
-                                        items = apiServiceResp.body()
-                                    } else {
-                                        val oldItems = items?.play_histories
-                                        val newItems = apiServiceResp.body()?.play_histories
-                                        oldItems?.addAll(newItems!!)
-                                    }
-                                    recentlyResponse.postValue(items ?: apiServiceResp.body())
+                                    recentlySuccessful(it)
                                     newTokensResponse.postValue(accServiceResp.body())
-                                } else {
-                                    Log.d("tagRecentlyViewModel", "line 76")
-                                    errorResponse.postValue(it.code())
                                 }
+                                else errorResponse.postValue(it.code())
                             }
-                        } else {
-                            Log.d("tagRecentlyViewModel", "line 81")
-                            errorResponse.postValue(accServiceResp.code())
                         }
+                        else errorResponse.postValue(accServiceResp.code())
                     }
                 }
-                else -> {
-                    Log.d("tagRecentlyViewModel", "line 87")
-                    errorResponse.postValue(apiServiceResp.code())
-                }
+                else -> errorResponse.postValue(apiServiceResp.code())
             }
         }
+    }
+
+    private fun recentlySuccessful(response: Response<RecentlyPlayedModel>) {
+        if (items == null) {
+            items = response.body()
+        } else {
+            val oldItems = items?.play_histories
+            val newItems = response.body()?.play_histories
+            oldItems?.addAll(newItems!!)
+        }
+        recentlyResponse.postValue(items ?: response.body())
     }
 }

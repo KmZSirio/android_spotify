@@ -14,11 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
-import com.bustasirio.spotifyapi.core.Constants
+import com.bustasirio.spotifyapi.core.*
 import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_GRID_SIZE
-import com.bustasirio.spotifyapi.core.errorToast
-import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
-import com.bustasirio.spotifyapi.core.replaceFrag
 import com.bustasirio.spotifyapi.data.model.Category
 import com.bustasirio.spotifyapi.data.model.User
 import com.bustasirio.spotifyapi.databinding.FragmentSavedBinding
@@ -77,24 +74,7 @@ class SearchFragment : Fragment() {
 
         searchVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
-        searchVM.newTokensResponse.observe(viewLifecycleOwner, {
-            val sharedPrefs = requireContext().getSharedPreferences(
-                getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            )
-            with(sharedPrefs.edit()) {
-                putString(
-                    getString(R.string.spotify_access_token),
-                    it.accessToken
-                )
-                putString(
-                    getString(R.string.spotify_token_type),
-                    it.tokenType
-                )
-                putBoolean(getString(R.string.spotify_logged), true)
-                apply()
-            }
-        })
+        searchVM.newTokensResponse.observe(viewLifecycleOwner, { saveTokens(it, requireContext()) })
     }
 
     private fun setupCategoryRW(binding: FragmentSearchBinding) {
@@ -171,6 +151,12 @@ class SearchFragment : Fragment() {
         val refreshToken: String? =
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
+        val country =
+            sharedPrefs.getString(getString(R.string.spotify_country), "") ?: ""
+
+        Log.d("tagSearchFragment", country)
+
+        searchVM.country.value = country
         searchVM.authorizationWithToken.value = "$tokenType $accessToken"
         searchVM.authorizationBasic.value =
             resources.getString(R.string.spotify_basic)

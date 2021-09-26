@@ -42,9 +42,7 @@ class HomeViewModel @Inject constructor(
             "10"
         ).let { apiServiceResp ->
             when {
-                apiServiceResp.isSuccessful -> {
-                    topArtistsResponse.postValue(apiServiceResp.body())
-                }
+                apiServiceResp.isSuccessful -> topArtistsResponse.postValue(apiServiceResp.body())
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(

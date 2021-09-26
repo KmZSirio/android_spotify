@@ -4,7 +4,6 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.Constants
 import com.bustasirio.spotifyapi.core.errorToast
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
+import com.bustasirio.spotifyapi.core.saveTokens
 import com.bustasirio.spotifyapi.databinding.FragmentSavedBinding
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedEpisodeAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedShowAdapter
@@ -152,24 +152,7 @@ class SavedFragment : Fragment() {
 
         savedVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
-        savedVM.newTokensResponse.observe(viewLifecycleOwner, {
-            val sharedPrefs = requireContext().getSharedPreferences(
-                getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            )
-            with(sharedPrefs.edit()) {
-                putString(
-                    getString(R.string.spotify_access_token),
-                    it.accessToken
-                )
-                putString(
-                    getString(R.string.spotify_token_type),
-                    it.tokenType
-                )
-                putBoolean(getString(R.string.spotify_logged), true)
-                apply()
-            }
-        })
+        savedVM.newTokensResponse.observe(viewLifecycleOwner, { saveTokens(it, requireContext()) })
     }
 
     private fun setupRWSongs(binding: FragmentSavedBinding) {

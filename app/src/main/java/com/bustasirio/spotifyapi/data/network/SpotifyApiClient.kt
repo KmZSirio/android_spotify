@@ -142,6 +142,7 @@ interface SpotifyApiClient {
     @GET("/v1/browse/categories")
     suspend fun getCategories(
         @Header("Authorization") authorizationWithToken: String,
+        @Query("country") country: String?,
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<CategoryModel>
@@ -158,4 +159,14 @@ interface SpotifyApiClient {
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<CategoryPlaylistsModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("/v1/markets")
+    suspend fun getAvailableMarkets(
+        @Header("Authorization") auth: String
+    ): Response<MarketsModel>
 }

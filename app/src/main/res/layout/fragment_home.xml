@@ -46,17 +46,17 @@
                     tools:text="@string/good_afternoon" />
 
                 <ImageButton
-                    android:id="@+id/ibLogOutHome"
+                    android:id="@+id/ibSettingsHome"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="end"
                     android:background="@color/trans"
                     android:backgroundTint="@color/trans"
-                    android:contentDescription="@string/log_out_button"
+                    android:contentDescription="@string/settings_button"
                     android:elevation="0dp"
                     android:outlineAmbientShadowColor="@color/trans"
                     android:outlineSpotShadowColor="@color/trans"
-                    android:src="@drawable/ic_baseline_login_24"
+                    android:src="@drawable/ic_baseline_settings_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
