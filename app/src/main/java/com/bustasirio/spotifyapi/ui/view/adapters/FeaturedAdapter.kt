@@ -12,18 +12,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.data.model.Category
+import com.bustasirio.spotifyapi.data.model.Playlist
 import com.squareup.picasso.Picasso
 import kotlin.random.Random
 
-class CategoryAdapter :
-    RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class FeaturedAdapter :
+    RecyclerView.Adapter<FeaturedAdapter.FeaturedViewHolder>() {
 
-    private val differCallback = object : DiffUtil.ItemCallback<Category>() {
-        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+    private val differCallback = object : DiffUtil.ItemCallback<Playlist>() {
+        override fun areItemsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
             return oldItem.href == newItem.href
         }
 
-        override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+        override fun areContentsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
             return oldItem == newItem
         }
     }
@@ -33,9 +34,9 @@ class CategoryAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CategoryViewHolder {
+    ): FeaturedViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return CategoryViewHolder(
+        return FeaturedViewHolder(
             layoutInflater.inflate(
                 R.layout.category_item,
                 parent,
@@ -44,8 +45,8 @@ class CategoryAdapter :
         )
     }
 
-    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val category = differ.currentList[position]
+    override fun onBindViewHolder(holder: FeaturedViewHolder, position: Int) {
+        val playlist = differ.currentList[position]
 
         holder.itemView.apply {
             holder.cvCategoryItem.setCardBackgroundColor(
@@ -57,27 +58,26 @@ class CategoryAdapter :
                 )
             )
 
-//            holder.tvCategoryItem.text = "${category.name} - ${position + 1}"
-            holder.tvCategoryItem.text = category.name
-            if (category.icons.isNotEmpty()) {
-                Picasso.get().load(category.icons[0].url)
+            holder.tvCategoryItem.text = playlist.name
+            if (playlist.images.isNotEmpty()) {
+                Picasso.get().load(playlist.images[0].url)
                     .into(holder.ivCategoryItem)
             }
             else holder.ivCategoryItem.setImageResource(R.drawable.playlist_cover)
 
-            setOnClickListener { onItemClickListener?.let { it(category) } }
+            setOnClickListener { onItemClickListener?.let { it(playlist) } }
         }
     }
 
-    private var onItemClickListener: ((Category) -> Unit)? = null
+    private var onItemClickListener: ((Playlist) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Category) -> Unit) {
+    fun setOnItemClickListener(listener: (Playlist) -> Unit) {
         onItemClickListener = listener
     }
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    class CategoryViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    class FeaturedViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val tvCategoryItem: TextView = view.findViewById(R.id.tvCategoryItem)
         val ivCategoryItem: ImageView = view.findViewById(R.id.ivCategoryItem)
         val cvCategoryItem: CardView = view.findViewById(R.id.cvCategoryItem)

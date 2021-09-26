@@ -200,6 +200,10 @@ class CategoryFragment : Fragment() {
         val refreshToken: String? =
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
+        val country =
+            sharedPrefs.getString(getString(R.string.spotify_country), "") ?: ""
+
+        categoryVM.country.value = country
         categoryVM.authorizationWithToken.value = "$tokenType $accessToken"
         categoryVM.authorizationBasic.value =
             resources.getString(R.string.spotify_basic)

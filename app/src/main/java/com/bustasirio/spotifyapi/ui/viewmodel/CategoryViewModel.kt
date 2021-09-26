@@ -39,13 +39,16 @@ class CategoryViewModel @Inject constructor(
     // * To renew token
     val refreshToken = MutableLiveData<String>() // prefs
 
-    // * CATEGORIES
+    val country = MutableLiveData<String>()
+
+    // * CATEGORY'S PLAYLISTS
     fun fetchCategoryPlaylists() = viewModelScope.launch {
         loading.postValue(true)
 
         apiService.getCategoryPlaylists(
             authorizationWithToken.value!!,
             categoryId.value ?: "",
+            if (country.value!!.isEmpty()) null else country.value!!,
             "$QUERY_GRID_SIZE",
             "${page * QUERY_GRID_SIZE}"
         ).let { apiServiceResp ->
@@ -67,6 +70,7 @@ class CategoryViewModel @Inject constructor(
                             apiService.getCategoryPlaylists(
                                 authWithToken,
                                 categoryId.value ?: "",
+                                if (country.value!!.isEmpty()) null else country.value!!,
                                 "$QUERY_GRID_SIZE",
                                 "${page * QUERY_GRID_SIZE}"
                             ).let {
