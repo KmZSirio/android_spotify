@@ -3,6 +3,7 @@ package com.bustasirio.spotifyapi.ui.view.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -61,10 +62,20 @@ class PlaylistAdapter :
                 onItemClickListener?.let { it(item) }
             }
         }
+
+        holder.ibMenuPlaylistTrackItem.apply {
+            setOnClickListener {
+                onMenuClickListener?.let { it(item) }
+            }
+        }
+    }
+
+    private var onMenuClickListener: ((Item) -> Unit)? = null
+    fun setOnMenuClickListener(listener: (Item) -> Unit) {
+        onMenuClickListener = listener
     }
 
     private var onItemClickListener: ((Item) -> Unit)? = null
-
     fun setOnItemClickListener(listener: (Item) -> Unit) {
         onItemClickListener = listener
     }
@@ -76,5 +87,7 @@ class PlaylistAdapter :
         val tvNamePlaylistTrackItem: TextView = view.findViewById(R.id.tvNamePlaylistTrackItem)
         val tvArtistNamePlaylistTrackItem: TextView =
             view.findViewById(R.id.tvArtistNamePlaylistTrackItem)
+        val ibMenuPlaylistTrackItem: ImageButton =
+            view.findViewById(R.id.ibMenuPlaylistTrackItem)
     }
 }

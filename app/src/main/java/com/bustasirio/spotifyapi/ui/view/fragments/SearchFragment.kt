@@ -2,16 +2,13 @@ package com.bustasirio.spotifyapi.ui.view.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.*
 import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_GRID_SIZE
@@ -40,7 +37,7 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        removeAnnoyingFrag(requireActivity().supportFragmentManager)
+        removeAnnoyingFrags(requireActivity().supportFragmentManager)
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
@@ -85,7 +82,9 @@ class SearchFragment : Fragment() {
             fragTransPlaylist(
                 requireActivity(),
                 getString(R.string.tracks_url),
-                it
+                it,
+                getString(R.string.owner_boolean),
+                false
             )
         }
 
@@ -148,13 +147,16 @@ class SearchFragment : Fragment() {
 
         val country =
             sharedPrefs.getString(getString(R.string.spotify_country), "") ?: ""
+        val language =
+            sharedPrefs.getString(getString(R.string.spotify_language), "en_US") ?: "en_US"
 
 //        Log.d("tagSearchFragment", country)
 
+        searchVM.language.value = language
         searchVM.country.value = country
         searchVM.authorizationWithToken.value = "$tokenType $accessToken"
-        searchVM.authorizationBasic.value =
-            resources.getString(R.string.spotify_basic)
+        searchVM.auth.value =
+            resources.getString(R.string.esl)
         searchVM.refreshToken.value = refreshToken
     }
 }

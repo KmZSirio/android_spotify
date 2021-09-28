@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +16,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
+import com.bustasirio.spotifyapi.core.*
 import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_SIZE
-import com.bustasirio.spotifyapi.core.convertDpToPx
-import com.bustasirio.spotifyapi.core.errorToast
-import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
-import com.bustasirio.spotifyapi.core.saveTokens
 import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.databinding.FragmentPlaylistBinding
 import com.bustasirio.spotifyapi.ui.view.adapters.PlaylistAdapter
@@ -49,12 +47,15 @@ class PlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val arguments = arguments
-        val playlist = arguments!!.getParcelable<Playlist>(getString(R.string.tracks_url))
+        val playlist = arguments!!.getParcelable<Playlist>(getString(R.string.tracks_url))!!
+        val isOwner = arguments.getBoolean(getString(R.string.owner_boolean))
 
-        playlistVM.tracksUrl.value = playlist!!.tracks.href
+        playlistVM.tracksUrl.value = playlist.tracks.href
 
         val binding = FragmentPlaylistBinding.bind(view)
         setupRecyclerView(binding)
+
+        if (isOwner) binding.ibMenuPlaylist.visibility = View.VISIBLE
 
         getPrefs()
         playlistVM.fetchPlaylistItems()
@@ -104,6 +105,9 @@ class PlaylistFragment : Fragment() {
         })
 
         playlistAdapter.setOnItemClickListener { reproduce(it.track.preview_url) }
+        playlistAdapter.setOnMenuClickListener {
+            showBottomSheet(requireActivity(), getString(R.string.arg_bottom_sheet_track), it.track)
+        }
 
         // * TracksResponse
         playlistVM.tracksResponse.observe(viewLifecycleOwner, {
@@ -208,8 +212,8 @@ class PlaylistFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         playlistVM.authorizationWithToken.value = "$tokenType $accessToken"
-        playlistVM.authorizationBasic.value =
-            resources.getString(R.string.spotify_basic)
+        playlistVM.auth.value =
+            resources.getString(R.string.esl)
         playlistVM.refreshToken.value = refreshToken
     }
 

@@ -20,20 +20,17 @@ class MainViewModel @Inject constructor(
     val code = MutableLiveData<String>()
 
     // ! TODO encode basic myself!
-    val authorizationBasic = MutableLiveData<String>()
+    val auth = MutableLiveData<String>()
 
     fun getAuth() = viewModelScope.launch {
         service.getAuth(
-            authorizationBasic.value!!,
+            auth.value!!,
             "authorization_code",
             code.value!!,
             REDIRECT_URI
         ).let {
-            if (it.isSuccessful) {
-                response.postValue(it.body())
-            } else {
-                errorResponse.postValue(it.code())
-            }
+            if (it.isSuccessful) response.postValue(it.body())
+            else errorResponse.postValue(it.code())
         }
     }
 }

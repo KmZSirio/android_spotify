@@ -14,11 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
-import com.bustasirio.spotifyapi.core.Constants
+import com.bustasirio.spotifyapi.core.*
 import com.bustasirio.spotifyapi.core.Constants.Companion.QUERY_GRID_SIZE
-import com.bustasirio.spotifyapi.core.fragTransPlaylist
-import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
-import com.bustasirio.spotifyapi.core.saveTokens
 import com.bustasirio.spotifyapi.data.model.Category
 import com.bustasirio.spotifyapi.databinding.FragmentCategoryBinding
 import com.bustasirio.spotifyapi.ui.view.adapters.CategoryPlaylistAdapter
@@ -100,7 +97,7 @@ class CategoryFragment : Fragment() {
             isLastPage = categoryVM.page == totalPages
         })
         categoryPlaylistAdapter.setOnItemClickListener {
-            fragTransPlaylist(
+            fragAddPlaylist(
                 requireActivity(),
                 getString(R.string.tracks_url),
                 it
@@ -205,8 +202,8 @@ class CategoryFragment : Fragment() {
 
         categoryVM.country.value = country
         categoryVM.authorizationWithToken.value = "$tokenType $accessToken"
-        categoryVM.authorizationBasic.value =
-            resources.getString(R.string.spotify_basic)
+        categoryVM.auth.value =
+            resources.getString(R.string.esl)
         categoryVM.refreshToken.value = refreshToken
     }
 

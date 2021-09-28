@@ -30,12 +30,13 @@ class SearchViewModel @Inject constructor(
     val loading = MutableLiveData<Boolean>()
 
     val authorizationWithToken = MutableLiveData<String>() // "$tokenType $accessToken"
-    val authorizationBasic = MutableLiveData<String>() // prefs
+    val auth = MutableLiveData<String>() // prefs
 
     // * To renew token
     val refreshToken = MutableLiveData<String>() // prefs
 
     val country = MutableLiveData<String>()
+    val language = MutableLiveData<String>()
     val timestamp = MutableLiveData<String>()
 
     // * CATEGORIES
@@ -45,6 +46,7 @@ class SearchViewModel @Inject constructor(
         apiService.getCategories(
             authorizationWithToken.value!!,
             if (country.value!!.isEmpty()) null else country.value!!,
+            language.value!!,
             "$QUERY_GRID_SIZE",
             "${page * QUERY_GRID_SIZE}"
         ).let { apiServiceResp ->
@@ -53,7 +55,7 @@ class SearchViewModel @Inject constructor(
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
-                        authorizationBasic.value!!,
+                        auth.value!!,
                         "refresh_token",
                         refreshToken.value!!,
                         Constants.REDIRECT_URI
@@ -66,6 +68,7 @@ class SearchViewModel @Inject constructor(
                             apiService.getCategories(
                                 authWithToken,
                                 if (country.value!!.isEmpty()) null else country.value!!,
+                                language.value!!,
                                 "$QUERY_GRID_SIZE",
                                 "${page * QUERY_GRID_SIZE}"
                             ).let {
@@ -90,6 +93,7 @@ class SearchViewModel @Inject constructor(
         apiService.getFeaturedPlaylists(
             authorizationWithToken.value!!,
             if (country.value!!.isEmpty()) null else country.value!!,
+            language.value!!,
             timestamp.value!!,
             "$QUERY_GRID_SIZE",
             "${page * QUERY_GRID_SIZE}"
@@ -99,7 +103,7 @@ class SearchViewModel @Inject constructor(
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
-                        authorizationBasic.value!!,
+                        auth.value!!,
                         "refresh_token",
                         refreshToken.value!!,
                         Constants.REDIRECT_URI
@@ -112,6 +116,7 @@ class SearchViewModel @Inject constructor(
                             apiService.getFeaturedPlaylists(
                                 authWithToken,
                                 if (country.value!!.isEmpty()) null else country.value!!,
+                                language.value!!,
                                 timestamp.value!!,
                                 "$QUERY_GRID_SIZE",
                                 "${page * QUERY_GRID_SIZE}"

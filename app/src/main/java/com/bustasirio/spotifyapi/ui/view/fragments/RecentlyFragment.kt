@@ -4,7 +4,6 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -106,8 +105,8 @@ class RecentlyFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         recentlyVM.authorizationWithToken.value = "$tokenType $accessToken"
-        recentlyVM.authorizationBasic.value =
-            resources.getString(R.string.spotify_basic)
+        recentlyVM.auth.value =
+            resources.getString(R.string.esl)
         recentlyVM.refreshToken.value = refreshToken
     }
 

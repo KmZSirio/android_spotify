@@ -11,25 +11,25 @@ import javax.inject.Inject
 class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
 
     suspend fun getTopArtists(
-        authorizationWithToken: String,
+        auth: String,
         limit: String
     ): Response<TopArtistsModel> {
         return withContext(Dispatchers.IO) {
             api.getTopArtists(
-                authorizationWithToken,
+                auth,
                 limit
             )
         }
     }
 
     suspend fun getTopTracks(
-        authorizationWithToken: String,
+        auth: String,
         timeRange: String,
         limit: String
     ): Response<TopTracksModel> {
         return withContext(Dispatchers.IO) {
             api.getTopTracks(
-                authorizationWithToken,
+                auth,
                 timeRange,
                 limit
             )
@@ -37,13 +37,13 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
     }
 
     suspend fun getCurrentUserPlaylists(
-        authorizationWithToken: String,
+        auth: String,
         limit: String,
         offset: String
     ): Response<PlaylistsModel> {
         return withContext(Dispatchers.IO) {
             api.getCurrentUserPlaylists(
-                authorizationWithToken,
+                auth,
                 limit,
                 offset
             )
@@ -51,25 +51,25 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
     }
 
     suspend fun getCurrentUserProfile(
-        authorizationWithToken: String
+        auth: String
     ): Response<User> {
         return withContext(Dispatchers.IO) {
             api.getCurrentUserProfile(
-                authorizationWithToken
+                auth
             )
         }
     }
 
     suspend fun getPlaylistItems(
         url: String,
-        authorizationWithToken: String,
+        auth: String,
         limit: String,
         offset: String
     ): Response<TracksListModel> {
         return withContext(Dispatchers.IO) {
             api.getPlaylistItems(
                 url,
-                authorizationWithToken,
+                auth,
                 limit,
                 offset
             )
@@ -77,37 +77,37 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
     }
 
     suspend fun getRecentlyPlayed(
-        authorizationWithToken: String
+        auth: String
     ): Response<RecentlyPlayedModel> {
         return withContext(Dispatchers.IO) {
             api.getRecentlyPlayed(
-                authorizationWithToken
+                auth
             )
         }
     }
 
     suspend fun postPlaylist(
         url: String,
-        authorizationWithToken: String,
+        auth: String,
         body: RequestBody
     ) : Response<Playlist> {
         return withContext(Dispatchers.IO) {
             api.postPlaylist(
                 url,
-                authorizationWithToken,
+                auth,
                 body
             )
         }
     }
 
     suspend fun postItemsToPlaylist(
-        authorizationWithToken: String,
+        auth: String,
         playlistId: String,
         body: RequestBody
     ) : Response<Snapshot> {
         return withContext(Dispatchers.IO) {
             api.postItemsToPlaylist(
-                authorizationWithToken,
+                auth,
                 playlistId,
                 body
             )
@@ -115,13 +115,13 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
     }
 
     suspend fun getLikedSongs(
-        authorizationWithToken: String,
+        auth: String,
         limit: String,
         offset: String
     ) : Response<SavedTracksModel> {
         return withContext(Dispatchers.IO) {
             api.getLikedSongs(
-                authorizationWithToken,
+                auth,
                 limit,
                 offset
             )
@@ -129,13 +129,13 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
     }
 
     suspend fun getYourEpisodes(
-        authorizationWithToken: String,
+        auth: String,
         limit: String,
         offset: String
     ) : Response<SavedEpisodesModel> {
         return withContext(Dispatchers.IO) {
             api.getYourEpisodes(
-                authorizationWithToken,
+                auth,
                 limit,
                 offset
             )
@@ -143,13 +143,13 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
     }
 
     suspend fun getSavedShows(
-        authorizationWithToken: String,
+        auth: String,
         limit: String,
         offset: String
     ) : Response<SavedShowsModel> {
         return withContext(Dispatchers.IO) {
             api.getSavedShows(
-                authorizationWithToken,
+                auth,
                 limit,
                 offset
             )
@@ -157,15 +157,17 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
     }
 
     suspend fun getCategories(
-        authorizationWithToken: String,
+        auth: String,
         country: String?,
+        locale: String,
         limit: String,
         offset: String
     ) : Response<CategoryModel> {
         return withContext(Dispatchers.IO) {
             api.getCategories(
-                authorizationWithToken,
+                auth,
                 country,
+                locale,
                 limit,
                 offset
             )
@@ -201,19 +203,35 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
     }
 
     suspend fun getFeaturedPlaylists(
-        authorizationWithToken: String,
+        auth: String,
         country: String?,
+        locale: String,
         timestamp: String,
         limit: String,
         offset: String
     ) : Response<FeaturedPlaylistsModel> {
         return withContext(Dispatchers.IO) {
             api.getFeaturedPlaylists(
-                authorizationWithToken,
+                auth,
                 country,
+                locale,
                 timestamp,
                 limit,
                 offset
+            )
+        }
+    }
+
+    suspend fun putPlaylistDetails(
+        auth: String,
+        playlistId: String,
+        body: RequestBody
+    ) {
+        return withContext(Dispatchers.IO) {
+            api.putPlaylistDetails(
+                auth,
+                playlistId,
+                body
             )
         }
     }

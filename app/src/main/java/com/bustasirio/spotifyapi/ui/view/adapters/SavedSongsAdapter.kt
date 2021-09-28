@@ -3,12 +3,14 @@ package com.bustasirio.spotifyapi.ui.view.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
+import com.bustasirio.spotifyapi.data.model.Item
 import com.bustasirio.spotifyapi.data.model.SavedTrack
 import com.squareup.picasso.Picasso
 
@@ -60,10 +62,20 @@ class SavedSongsAdapter :
                 onItemClickListener?.let { it(savedTrack) }
             }
         }
+
+        holder.ibMenuPlaylistTrackItem.apply {
+            setOnClickListener {
+                onMenuClickListener?.let { it(savedTrack) }
+            }
+        }
+    }
+
+    private var onMenuClickListener: ((SavedTrack) -> Unit)? = null
+    fun setOnMenuClickListener(listener: (SavedTrack) -> Unit) {
+        onMenuClickListener = listener
     }
 
     private var onItemClickListener: ((SavedTrack) -> Unit)? = null
-
     fun setOnItemClickListener(listener: (SavedTrack) -> Unit) {
         onItemClickListener = listener
     }
@@ -75,5 +87,7 @@ class SavedSongsAdapter :
         val tvNamePlaylistTrackItem: TextView = view.findViewById(R.id.tvNamePlaylistTrackItem)
         val tvArtistNamePlaylistTrackItem: TextView =
             view.findViewById(R.id.tvArtistNamePlaylistTrackItem)
+        val ibMenuPlaylistTrackItem: ImageButton =
+            view.findViewById(R.id.ibMenuPlaylistTrackItem)
     }
 }

@@ -13,7 +13,7 @@ interface SpotifyApiClient {
     )
     @GET("/v1/me/top/artists")
     suspend fun getTopArtists(
-        @Header("Authorization") authorizationWithToken: String,
+        @Header("Authorization") auth: String,
         @Query("limit") limit: String
     ): Response<TopArtistsModel>
 
@@ -24,7 +24,7 @@ interface SpotifyApiClient {
     )
     @GET("/v1/me/top/tracks")
     suspend fun getTopTracks(
-        @Header("Authorization") authorizationWithToken: String,
+        @Header("Authorization") auth: String,
         @Query("time_range") timeRange: String,
         @Query("limit") limit: String
     ): Response<TopTracksModel>
@@ -36,7 +36,7 @@ interface SpotifyApiClient {
     )
     @GET("/v1/me/playlists")
     suspend fun getCurrentUserPlaylists(
-        @Header("Authorization") authorizationWithToken: String,
+        @Header("Authorization") auth: String,
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<PlaylistsModel>
@@ -48,7 +48,7 @@ interface SpotifyApiClient {
     )
     @GET("/v1/me")
     suspend fun getCurrentUserProfile(
-        @Header("Authorization") authorizationWithToken: String
+        @Header("Authorization") auth: String
     ): Response<User>
 
 
@@ -59,7 +59,7 @@ interface SpotifyApiClient {
     @GET
     suspend fun getPlaylistItems(
         @Url url: String,
-        @Header("Authorization") authorizationWithToken: String,
+        @Header("Authorization") auth: String,
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<TracksListModel>
@@ -71,7 +71,7 @@ interface SpotifyApiClient {
     )
     @GET("/v1/me/player/recently-played")
     suspend fun getRecentlyPlayed(
-        @Header("Authorization") authorizationWithToken: String
+        @Header("Authorization") auth: String
     ): Response<RecentlyPlayedModel>
 
 
@@ -82,7 +82,7 @@ interface SpotifyApiClient {
     @POST
     suspend fun postPlaylist(
         @Url url: String,
-        @Header("Authorization") authorizationWithToken: String,
+        @Header("Authorization") auth: String,
         @Body body: RequestBody
     ): Response<Playlist>
 
@@ -93,7 +93,7 @@ interface SpotifyApiClient {
     )
     @POST("/v1/playlists/{playlist_id}/tracks")
     suspend fun postItemsToPlaylist(
-        @Header("Authorization") authorizationWithToken: String,
+        @Header("Authorization") auth: String,
         @Path("playlist_id") playlistId: String,
         @Body body: RequestBody
     ): Response<Snapshot>
@@ -105,7 +105,7 @@ interface SpotifyApiClient {
     )
     @GET("/v1/me/tracks")
     suspend fun getLikedSongs(
-        @Header("Authorization") authorizationWithToken: String,
+        @Header("Authorization") auth: String,
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<SavedTracksModel>
@@ -117,7 +117,7 @@ interface SpotifyApiClient {
     )
     @GET("/v1/me/episodes")
     suspend fun getYourEpisodes(
-        @Header("Authorization") authorizationWithToken: String,
+        @Header("Authorization") auth: String,
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<SavedEpisodesModel>
@@ -129,7 +129,7 @@ interface SpotifyApiClient {
     )
     @GET("/v1/me/shows")
     suspend fun getSavedShows(
-        @Header("Authorization") authorizationWithToken: String,
+        @Header("Authorization") auth: String,
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<SavedShowsModel>
@@ -141,8 +141,9 @@ interface SpotifyApiClient {
     )
     @GET("/v1/browse/categories")
     suspend fun getCategories(
-        @Header("Authorization") authorizationWithToken: String,
+        @Header("Authorization") auth: String,
         @Query("country") country: String?,
+        @Query("locale") locale: String,
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<CategoryModel>
@@ -180,8 +181,21 @@ interface SpotifyApiClient {
     suspend fun getFeaturedPlaylists(
         @Header("Authorization") auth: String,
         @Query("country") country: String?,
+        @Query("locale") locale: String,
         @Query("timestamp") timestamp: String,
         @Query("limit") limit: String,
         @Query("offset") offset: String
     ): Response<FeaturedPlaylistsModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @PUT("/v1/playlists/{playlist_id}")
+    suspend fun putPlaylistDetails(
+        @Header("Authorization") auth: String,
+        @Path("playlist_id") playlistId: String,
+        @Body body: RequestBody
+    )
 }

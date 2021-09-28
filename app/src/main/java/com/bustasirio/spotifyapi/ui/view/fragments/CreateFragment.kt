@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
-import com.bustasirio.spotifyapi.core.replaceFrag
 import com.bustasirio.spotifyapi.core.saveTokens
 import com.bustasirio.spotifyapi.data.model.User
 import com.bustasirio.spotifyapi.databinding.FragmentCreateBinding
@@ -161,8 +160,8 @@ class CreateFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         createVM.authorizationWithToken.value = "$tokenType $accessToken"
-        createVM.authorizationBasic.value =
-            resources.getString(R.string.spotify_basic)
+        createVM.auth.value =
+            resources.getString(R.string.esl)
         createVM.refreshToken.value = refreshToken
     }
 

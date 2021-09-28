@@ -12,10 +12,8 @@ import com.bustasirio.spotifyapi.ui.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 import android.content.Context
-import android.content.Intent
 import com.bustasirio.spotifyapi.core.*
 
-import com.bustasirio.spotifyapi.ui.view.activities.MainActivity
 
 import com.bustasirio.spotifyapi.ui.view.adapters.TopArtistsAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.TopTracksAdapter
@@ -32,7 +30,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        removeAnnoyingFrag(requireActivity().supportFragmentManager)
+        removeAnnoyingFrags(requireActivity().supportFragmentManager)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -67,7 +65,18 @@ class HomeFragment : Fragment() {
         binding.cvEpisodesHome.setOnClickListener { openFrag("episodes") }
         binding.cvShowsHome.setOnClickListener { openFrag("shows") }
 
-        binding.ibSettingsHome.setOnClickListener { replaceFrag(requireActivity(), SettingsFragment()) }
+        binding.ibHistoryLibrary.setOnClickListener {
+            replaceFrag(
+                requireActivity(),
+                RecentlyFragment()
+            )
+        }
+        binding.ibSettingsHome.setOnClickListener {
+            replaceFrag(
+                requireActivity(),
+                SettingsFragment()
+            )
+        }
 
         // * Chips related
         binding.chipGroupHome.setOnCheckedChangeListener { chipGroup, _ ->
@@ -146,8 +155,8 @@ class HomeFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         homeVM.authorizationWithToken.value = "$tokenType $accessToken"
-        homeVM.authorizationBasic.value =
-            resources.getString(R.string.spotify_basic)
+        homeVM.auth.value =
+            resources.getString(R.string.esl)
         homeVM.refreshToken.value = refreshToken
     }
 

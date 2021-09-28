@@ -57,7 +57,7 @@
 
     <Spinner
         android:id="@+id/spCountrySettings"
-        android:backgroundTint="@color/spotifyBlueGrey"
+        android:backgroundTint="@color/spotifyGreen"
         android:layout_marginHorizontal="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,13 +65,79 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCountryDetailsSettings" />
 
-    <Button
-        android:id="@+id/logOutSettings"
-        android:layout_marginTop="30dp"
+    <TextView
+        android:id="@+id/tvLanguageSettings"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/language_settings"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spCountrySettings" />
+
+    <TextView
+        android:id="@+id/tvLanguageDetailsSettings"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/language_details_settings"
+        android:textColor="@color/spotifyGreyLighter"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLanguageSettings" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clSettings"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLanguageDetailsSettings">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFirstSettings"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="@string/english" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipSecondSettings"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="@string/spanish" />
+        </com.google.android.material.chip.ChipGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/logOutSettings"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:drawablePadding="50dp"
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:text="@string/log_out"
@@ -80,8 +146,7 @@
         android:textSize="18sp"
         android:theme="@style/LogInBlackButton"
         app:icon="@drawable/ic_baseline_login_24"
-        android:drawableEnd="@drawable/ic_baseline_login_24"
-        android:drawablePadding="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spCountrySettings" />
+        app:layout_constraintTop_toBottomOf="@+id/clSettings" />
 </androidx.constraintlayout.widget.ConstraintLayout>

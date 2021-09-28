@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/spotifyBlack">
 
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -49,8 +48,7 @@
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|bottom"
-                    android:layout_marginBottom="20dp">
+                    android:layout_gravity="center|bottom">
 
                     <TextView
                         android:id="@+id/tvTitlePlaylist"
@@ -66,13 +64,31 @@
                         tools:text="Huesca RAAZ DLTA STARS CSC TLG zG Busta nR ESL KmZ CtF FA"
                         style="@style/DescriptionExpanded"/>
 
-                    <TextView
-                        android:id="@+id/tvOwnerPlaylist"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        tools:text="Sirio Rodriguez"
-                        style="@style/OwnerExpanded"/>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvOwnerPlaylist"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Sirio Rodriguez"
+                            style="@style/OwnerExpanded"/>
+
+                        <ImageButton
+                            android:id="@+id/ibMenuPlaylist"
+                            android:visibility="visible"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="end"
+                            android:background="@color/trans"
+                            android:contentDescription="@string/settings_button"
+                            android:elevation="0dp"
+                            android:src="@drawable/ic_menu_16"
+                            app:tint="@color/spotifyGreyLighter" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.appcompat.widget.Toolbar
@@ -89,6 +105,7 @@
             android:id="@+id/rvPlaylist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="15dp"
             android:paddingBottom="60dp"
             android:clipToPadding="false"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

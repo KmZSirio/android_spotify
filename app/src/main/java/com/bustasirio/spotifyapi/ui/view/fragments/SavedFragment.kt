@@ -15,10 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
-import com.bustasirio.spotifyapi.core.Constants
-import com.bustasirio.spotifyapi.core.errorToast
-import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
-import com.bustasirio.spotifyapi.core.saveTokens
+import com.bustasirio.spotifyapi.core.*
 import com.bustasirio.spotifyapi.databinding.FragmentSavedBinding
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedEpisodeAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedShowAdapter
@@ -122,6 +119,9 @@ class SavedFragment : Fragment() {
                 requireActivity().getColor(R.color.spotifyBlueGrey)
         })
         savedSongsAdapter.setOnItemClickListener { reproduce(it.track.preview_url) }
+        savedSongsAdapter.setOnMenuClickListener {
+            showBottomSheet(requireActivity(), getString(R.string.arg_bottom_sheet_track), it.track)
+        }
 
         // * EPISODES
         savedVM.episodesResponse.observe(viewLifecycleOwner, {
@@ -255,8 +255,8 @@ class SavedFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         savedVM.authorizationWithToken.value = "$tokenType $accessToken"
-        savedVM.authorizationBasic.value =
-            resources.getString(R.string.spotify_basic)
+        savedVM.auth.value =
+            resources.getString(R.string.esl)
         savedVM.refreshToken.value = refreshToken
     }
 

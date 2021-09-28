@@ -21,6 +21,7 @@
     <string name="spotify_refresh_token">SpotifyRefreshToken</string>
     <string name="spotify_country_pos">SpotifyCountryPos</string>
     <string name="spotify_country">SpotifyCountry</string>
+    <string name="spotify_language">SpotifyLanguage</string>
     <string name="spotify_logged">SpotifyLogged</string>
     <string name="most_played_songs">Most played songs</string>
     <string name="current_user_profile_image">Current user profile image</string>
@@ -28,9 +29,11 @@
     <string name="add_image_button">Add image button</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tracks_url">tracks_url</string>
+    <string name="owner_boolean">owner_boolean</string>
     <string name="no_playlists">no_playlists</string>
     <string name="user_object">user_object</string>
     <string name="playlist_cover_image">Playlist cover image</string>
+    <string name="album_cover_image">Album cover image</string>
     <string name="random_play_button">Random play button</string>
     <string name="back_to_library_button">Back to library button</string>
     <string name="settings_button">Go to settings button</string>
@@ -49,6 +52,8 @@
     <string name="saved_shows">Saved Shows</string>
     <string name="your_episodes">Your Episodes</string>
     <string name="arg_saved_from_home">saved_from_home</string>
+    <string name="arg_bottom_sheet_track">bottom_sheet_track</string>
+    <string name="arg_bottom_sheet_episode">bottom_sheet_episode</string>
     <string name="liked_songs">Liked Songs</string>
     <string name="category_image">Category image</string>
     <string name="category_playlists">category_playlists</string>
@@ -57,4 +62,13 @@
     <string name="country_details_settings">Worldwide queries will be relevant to all countries</string>
     <string name="country_settings">Select country</string>
     <string name="worldwide">Worldwide</string>
+    <string name="language_details_settings">Queries language</string>
+    <string name="language_settings">Select language</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish</string>
+    <string name="recently_played_tracks_button">Recently played tracks button</string>
+    <string name="liked_songs_image">Liked songs image with a heart icon</string>
+    <string name="your_episodes_image">Your episodes image</string>
+    <string name="beta">BETA</string>
+    <string name="saved_shows_image">Saved shows image with a microphone icon</string>
 </resources>

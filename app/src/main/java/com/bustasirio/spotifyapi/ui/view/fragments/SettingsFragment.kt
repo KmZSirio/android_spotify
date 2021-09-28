@@ -24,6 +24,7 @@ class SettingsFragment : Fragment() {
 
     private var country = ""
     private var countryPos = 0
+    private var language = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +43,16 @@ class SettingsFragment : Fragment() {
 
         getPrefs()
         settingsVM.fetchMarkets()
+
+        if (language == "en_US") binding.chipGroupSettings.check(R.id.chipFirstSettings)
+        if (language == "es_MX") binding.chipGroupSettings.check(R.id.chipSecondSettings)
+
+        binding.chipGroupSettings.setOnCheckedChangeListener { chipGroup, _ ->
+            when (chipGroup.checkedChipId) {
+                binding.chipFirstSettings.id -> saveLanguage(requireContext(), "en_US")
+                binding.chipSecondSettings.id -> saveLanguage(requireContext(), "es_MX")
+            }
+        }
 
         binding.toolbarSettings.setNavigationOnClickListener { removeAnnoyingFrag(requireActivity().supportFragmentManager) }
 
@@ -102,6 +113,20 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private fun saveLanguage(context: Context, language: String) {
+        val sharedPrefs = context.getSharedPreferences(
+            context.getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE
+        )
+        with(sharedPrefs.edit()) {
+            putString(
+                context.getString(R.string.spotify_language),
+                language
+            )
+            apply()
+        }
+    }
+
     private fun getPrefs() {
         val sharedPrefs =
             requireContext().getSharedPreferences(
@@ -117,9 +142,11 @@ class SettingsFragment : Fragment() {
         country = sharedPrefs.getString(getString(R.string.spotify_country), "") ?: ""
         countryPos = sharedPrefs.getInt(getString(R.string.spotify_country_pos), 0)
 
+        language = sharedPrefs.getString(getString(R.string.spotify_language), "en_US") ?: "en_US"
+
         settingsVM.authorizationWithToken.value = "$tokenType $accessToken"
-        settingsVM.authorizationBasic.value =
-            resources.getString(R.string.spotify_basic)
+        settingsVM.auth.value =
+            resources.getString(R.string.esl)
         settingsVM.refreshToken.value = refreshToken
     }
 
@@ -135,6 +162,9 @@ class SettingsFragment : Fragment() {
             putString(getString(R.string.spotify_token_type), "")
             putString(getString(R.string.spotify_refresh_token), "")
             putBoolean(getString(R.string.spotify_logged), false)
+            putString(getString(R.string.spotify_country), "")
+            putInt(getString(R.string.spotify_country_pos), 0)
+            putString(getString(R.string.spotify_language), "en_US")
             apply()
         }
 

@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.AbsListView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,13 +42,12 @@ class LibraryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        removeAnnoyingFrag(requireActivity().supportFragmentManager)
+        removeAnnoyingFrags(requireActivity().supportFragmentManager)
         return inflater.inflate(R.layout.fragment_library, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("tagLibraryFragment", "onViewCreated")
 
         val binding = FragmentLibraryBinding.bind(view)
         setupRecyclerView(binding)
@@ -65,12 +63,6 @@ class LibraryFragment : Fragment() {
         libraryVM.fetchCurrentUserPlaylists()
         libraryVM.fetchCurrentUserProfile()
 
-        binding.ibHistoryLibrary.setOnClickListener {
-            replaceFrag(
-                requireActivity(),
-                RecentlyFragment()
-            )
-        }
         binding.ibCreateLibrary.setOnClickListener { if (user != null) fragTransCreate(user) }
 
         binding.ivProfileLibrary.setOnClickListener {
@@ -96,10 +88,13 @@ class LibraryFragment : Fragment() {
         })
 
         libraryAdapter.setOnItemClickListener {
+            val isOwner = user!!.id == it.owner.id
             fragTransPlaylist(
                 requireActivity(),
                 getString(R.string.tracks_url),
-                it
+                it,
+                getString(R.string.owner_boolean),
+                isOwner
             )
         }
 
@@ -129,6 +124,7 @@ class LibraryFragment : Fragment() {
             viewLifecycleOwner,
             { saveTokens(it, requireContext()) })
 
+        // * Listening response from CreateFragment *-*
         requireActivity().supportFragmentManager.setFragmentResultListener(
             getString(R.string.createfragment),
             viewLifecycleOwner
@@ -236,8 +232,8 @@ class LibraryFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         libraryVM.authorizationWithToken.value = "$tokenType $accessToken"
-        libraryVM.authorizationBasic.value =
-            resources.getString(R.string.spotify_basic)
+        libraryVM.auth.value =
+            resources.getString(R.string.esl)
         libraryVM.refreshToken.value = refreshToken
     }
 }

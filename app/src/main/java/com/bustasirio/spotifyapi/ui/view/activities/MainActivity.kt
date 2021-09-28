@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity() {
     private val responseType: String = "code"
     private val scope: String =
         "playlist-read-private playlist-read-collaborative user-top-read " +
-        "user-read-email user-read-recently-played playlist-modify-public " +
-        "playlist-modify-private user-library-read"
+                "user-read-email user-read-recently-played playlist-modify-public " +
+                "playlist-modify-private user-library-read"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,10 +68,8 @@ class MainActivity : AppCompatActivity() {
         if (uri != null && uri.toString().startsWith(REDIRECT_URI) && !uri.toString()
                 .contains("access_denied")
         ) {
-            Log.i("uri", "$uri")
-
             mainVM.code.value = uri.getQueryParameter("code")!!
-            mainVM.authorizationBasic.value = resources.getString(R.string.spotify_basic)
+            mainVM.auth.value = resources.getString(R.string.esl)
 
             mainVM.getAuth()
 

@@ -1,6 +1,5 @@
 package com.bustasirio.spotifyapi.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,7 +29,7 @@ class CreateViewModel @Inject constructor(
     val requestBody = MutableLiveData<RequestBody>()
 
     val authorizationWithToken = MutableLiveData<String>() // "$tokenType $accessToken"
-    val authorizationBasic = MutableLiveData<String>() // prefs
+    val auth = MutableLiveData<String>() // prefs
 
     // * To renew token
     val refreshToken = MutableLiveData<String>() // prefs
@@ -52,7 +51,7 @@ class CreateViewModel @Inject constructor(
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
-                        authorizationBasic.value!!,
+                        auth.value!!,
                         "refresh_token",
                         refreshToken.value!!,
                         REDIRECT_URI
@@ -99,7 +98,7 @@ class CreateViewModel @Inject constructor(
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
-                        authorizationBasic.value!!,
+                        auth.value!!,
                         "refresh_token",
                         refreshToken.value!!,
                         REDIRECT_URI
@@ -142,7 +141,7 @@ class CreateViewModel @Inject constructor(
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
-                        authorizationBasic.value!!,
+                        auth.value!!,
                         "refresh_token",
                         refreshToken.value!!,
                         REDIRECT_URI

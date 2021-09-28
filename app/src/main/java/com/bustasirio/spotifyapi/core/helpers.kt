@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment.STYLE_NORMAL
+import androidx.fragment.app.DialogFragment.STYLE_NO_FRAME
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -14,6 +16,7 @@ import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.data.model.AuthorizationModel
 import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.data.model.Track
+import com.bustasirio.spotifyapi.ui.view.fragments.BottomSheetFragment
 import com.bustasirio.spotifyapi.ui.view.fragments.PlaylistFragment
 import com.bustasirio.spotifyapi.ui.view.fragments.SavedFragment
 import okhttp3.MediaType
@@ -57,10 +60,31 @@ fun getCroppedBitmap(bitmap: Bitmap): Bitmap? {
 fun removeAnnoyingFrag(supportFragManager: FragmentManager): Boolean {
     val sizeFrags = supportFragManager.fragments.size
     if (sizeFrags > 1) {
-        val fragToDelete = supportFragManager.fragments[1]
+        val fragToDelete = supportFragManager.fragments[sizeFrags - 1]
         supportFragManager.beginTransaction()
             .remove(fragToDelete).commit()
         return true
+    }
+    return false
+}
+
+// * Used on onCreateView methods from navbar frags
+fun removeAnnoyingFrags(supportFragManager: FragmentManager): Boolean {
+    when (supportFragManager.fragments.size) {
+        2 -> {
+            val fragToDelete = supportFragManager.fragments[1]
+            supportFragManager.beginTransaction()
+                .remove(fragToDelete).commit()
+        }
+        3 -> {
+            val fragToDelete3 = supportFragManager.fragments[2]
+            supportFragManager.beginTransaction()
+                .remove(fragToDelete3).commit()
+            val fragToDelete2 = supportFragManager.fragments[1]
+            supportFragManager.beginTransaction()
+                .remove(fragToDelete2).commit()
+            return true
+        }
     }
     return false
 }
@@ -73,6 +97,13 @@ fun convertDpToPx(dp: Int, resources: Resources): Int =
 fun replaceFrag(activity: FragmentActivity, fragment: Fragment) {
     val transaction = activity.supportFragmentManager.beginTransaction()
     transaction.replace(R.id.nav_host_fragment_activity_lobby, fragment)
+    transaction.disallowAddToBackStack()
+    transaction.commit()
+}
+
+fun addFrag(activity: FragmentActivity, fragment: Fragment) {
+    val transaction = activity.supportFragmentManager.beginTransaction()
+    transaction.add(R.id.nav_host_fragment_activity_lobby, fragment)
     transaction.disallowAddToBackStack()
     transaction.commit()
 }
@@ -91,14 +122,32 @@ fun tracksToJson(tracks: List<Track>): RequestBody {
 }
 
 
-fun fragTransPlaylist(activity: FragmentActivity, key: String, playlist: Playlist) {
+fun fragTransPlaylist(
+    activity: FragmentActivity,
+    keyPlaylist: String,
+    playlist: Playlist,
+    keyBoolean: String,
+    isOwner: Boolean
+) {
+    val fragment = PlaylistFragment()
+
+    val bundle = Bundle()
+    bundle.putParcelable(keyPlaylist, playlist)
+    bundle.putBoolean(keyBoolean, isOwner)
+    fragment.arguments = bundle
+
+    replaceFrag(activity, fragment)
+}
+
+
+fun fragAddPlaylist(activity: FragmentActivity, key: String, playlist: Playlist) {
     val fragment = PlaylistFragment()
 
     val bundle = Bundle()
     bundle.putParcelable(key, playlist)
     fragment.arguments = bundle
 
-    replaceFrag(activity, fragment)
+    addFrag(activity, fragment)
 }
 
 
@@ -110,6 +159,18 @@ fun fragTransSaved(activity: FragmentActivity, key: String, type: String) {
     fragment.arguments = bundle
 
     replaceFrag(activity, fragment)
+}
+
+
+fun showBottomSheet(activity: FragmentActivity, key: String, it: Track) {
+    val bottomSheetFrag = BottomSheetFragment()
+    bottomSheetFrag.setStyle(STYLE_NO_FRAME, R.style.SheetDialog)
+
+    val bundle = Bundle()
+    bundle.putParcelable(key, it)
+    bottomSheetFrag.arguments = bundle
+
+    bottomSheetFrag.show(activity.supportFragmentManager, "BottomSheetDialog")
 }
 
 

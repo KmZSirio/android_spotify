@@ -32,7 +32,7 @@ class CategoryViewModel @Inject constructor(
     val loading = MutableLiveData<Boolean>()
 
     val authorizationWithToken = MutableLiveData<String>() // "$tokenType $accessToken"
-    val authorizationBasic = MutableLiveData<String>() // prefs
+    val auth = MutableLiveData<String>() // prefs
 
     val categoryId = MutableLiveData<String>()
 
@@ -57,7 +57,7 @@ class CategoryViewModel @Inject constructor(
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
-                        authorizationBasic.value!!,
+                        auth.value!!,
                         "refresh_token",
                         refreshToken.value!!,
                         Constants.REDIRECT_URI

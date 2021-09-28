@@ -33,7 +33,7 @@ class PlaylistViewModel @Inject constructor(
     val tracksUrl = MutableLiveData<String>()
 
     val authorizationWithToken = MutableLiveData<String>() // "$tokenType $accessToken"
-    val authorizationBasic = MutableLiveData<String>() // prefs
+    val auth = MutableLiveData<String>() // prefs
 
     // * To renew token
     val refreshToken = MutableLiveData<String>() // prefs
@@ -52,7 +52,7 @@ class PlaylistViewModel @Inject constructor(
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
-                        authorizationBasic.value!!,
+                        auth.value!!,
                         "refresh_token",
                         refreshToken.value!!,
                         REDIRECT_URI
