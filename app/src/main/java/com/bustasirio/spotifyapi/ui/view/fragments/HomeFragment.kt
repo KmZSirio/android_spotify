@@ -132,7 +132,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun openFrag(type: String) =
-        fragTransSaved(requireActivity(), getString(R.string.arg_saved_from_home), type)
+        fragTransSaved(requireActivity(), getString(R.string.arg_saved_type), type)
 
     private fun setWelcomeMessage(): String {
         val currentHour: Int = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)

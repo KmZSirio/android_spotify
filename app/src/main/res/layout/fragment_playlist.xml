@@ -113,12 +113,13 @@
             app:layoutManager="LinearLayoutManager"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabPlaylist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:baselineAlignBottom="false"
             android:contentDescription="@string/random_play_button"
-            android:src="@drawable/ic_baseline_play_arrow_30"
+            android:src="@drawable/ic_round_play_arrow_30"
             app:fabSize="normal"
             app:layout_anchor="@id/collapsingPlaylist"
             app:layout_anchorGravity="end|bottom"

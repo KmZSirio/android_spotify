@@ -1,8 +1,6 @@
 package com.bustasirio.spotifyapi.ui.view.fragments
 
 import android.content.Context
-import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,26 +14,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.*
+import com.bustasirio.spotifyapi.data.model.Album
 import com.bustasirio.spotifyapi.databinding.FragmentSavedBinding
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedEpisodeAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedShowAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedSongsAdapter
 import com.bustasirio.spotifyapi.ui.viewmodel.SavedViewModel
 import com.google.android.material.appbar.AppBarLayout
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SavedFragment : Fragment() {
 
     private var type = ""
+    private var album: Album? = null
 
     private val savedVM: SavedViewModel by viewModels()
 
     private var savedSongsAdapter = SavedSongsAdapter()
     private var savedEpisodeAdapter = SavedEpisodeAdapter()
     private var savedShowAdapter = SavedShowAdapter()
-
-    private var mediaPlayer: MediaPlayer? = null
 
     var isLoading = false
     var isLastPage = false
@@ -53,9 +52,11 @@ class SavedFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val arguments = arguments
-        type = arguments?.getString(getString(R.string.arg_saved_from_home)) ?: ""
+        type = arguments?.getString(getString(R.string.arg_saved_type)) ?: ""
 
         val binding = FragmentSavedBinding.bind(view)
+
+        binding.fabSaved.setColorFilter(R.color.black)
         binding.rvSaved.overScrollMode = View.OVER_SCROLL_NEVER
 
         var title = ""
@@ -82,6 +83,16 @@ class SavedFragment : Fragment() {
                 binding.ivSaved.setImageResource(R.drawable.saved_shows)
                 savedVM.fetchSavedShows()
                 setupRWShows(binding)
+            }
+            "album" -> {
+                album = arguments?.getParcelable(getString(R.string.arg_album_from_bottom))
+                binding.tvTitleSaved.text = album!!.name
+
+                if (album!!.images.isNotEmpty()) Picasso.get().load(album!!.images[0].url)
+                    .into(binding.ivSaved)
+                else binding.ivSaved.setImageResource(R.drawable.playlist_cover)
+                // TODO: Maybe Moving this to PlaylistFrag
+                // ! Bottom sheet from there shouldn't show View Album again
             }
         }
 
@@ -118,9 +129,27 @@ class SavedFragment : Fragment() {
             requireActivity().window.statusBarColor =
                 requireActivity().getColor(R.color.spotifyBlueGrey)
         })
-        savedSongsAdapter.setOnItemClickListener { reproduce(it.track.preview_url) }
+        savedSongsAdapter.setOnItemClickListener {
+            reproduce(
+                requireContext(),
+                getString(R.string.reproduce_toast),
+                it.track.preview_url
+            )
+        }
         savedSongsAdapter.setOnMenuClickListener {
-            showBottomSheet(requireActivity(), getString(R.string.arg_bottom_sheet_track), it.track)
+            if (type == "album") {
+                showBottomSheet(
+                    requireActivity(), getString(R.string.arg_bottom_sheet_track),
+                    it.track,
+                    getString(R.string.album_boolean),
+                    true
+                )
+            } else {
+                showBottomSheet(
+                    requireActivity(), getString(R.string.arg_bottom_sheet_track),
+                    it.track
+                )
+            }
         }
 
         // * EPISODES
@@ -134,7 +163,13 @@ class SavedFragment : Fragment() {
             requireActivity().window.statusBarColor =
                 requireActivity().getColor(R.color.spotifyBlueGrey)
         })
-        savedEpisodeAdapter.setOnItemClickListener { reproduce(it.episode.audio_preview_url) }
+        savedEpisodeAdapter.setOnItemClickListener {
+            reproduce(
+                requireContext(),
+                getString(R.string.reproduce_toast),
+                it.episode.audio_preview_url
+            )
+        }
 
         // * SHOWS
         savedVM.showsResponse.observe(viewLifecycleOwner, {
@@ -179,19 +214,6 @@ class SavedFragment : Fragment() {
             adapter = savedShowAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@SavedFragment.scrollListener)
-        }
-    }
-
-    private fun reproduce(url: String?) {
-        if (url != null) {
-            mediaPlayer = MediaPlayer.create(requireContext(), Uri.parse(url))
-            mediaPlayer?.start()
-        } else {
-            Toast.makeText(
-                requireContext(),
-                "This track cannot be reproduced.",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 

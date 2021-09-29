@@ -1,10 +1,7 @@
 package com.bustasirio.spotifyapi.ui.view.fragments
 
 import android.content.Context
-import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,8 +30,6 @@ class PlaylistFragment : Fragment() {
 
     private lateinit var playlistAdapter: PlaylistAdapter
 
-    private var mediaPlayer: MediaPlayer? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +55,7 @@ class PlaylistFragment : Fragment() {
         getPrefs()
         playlistVM.fetchPlaylistItems()
 
+        binding.fabPlaylist.setColorFilter(R.color.black)
         binding.rvPlaylist.overScrollMode = View.OVER_SCROLL_NEVER
 
         binding.tvTitlePlaylist.text = playlist.name
@@ -104,9 +100,19 @@ class PlaylistFragment : Fragment() {
             }
         })
 
-        playlistAdapter.setOnItemClickListener { reproduce(it.track.preview_url) }
+        playlistAdapter.setOnItemClickListener {
+            reproduce(
+                requireContext(),
+                getString(R.string.reproduce_toast),
+                it.track.preview_url
+            )
+        }
         playlistAdapter.setOnMenuClickListener {
-            showBottomSheet(requireActivity(), getString(R.string.arg_bottom_sheet_track), it.track)
+            showBottomSheet(
+                requireActivity(),
+                getString(R.string.arg_bottom_sheet_track),
+                it.track
+            )
         }
 
         // * TracksResponse
@@ -128,19 +134,6 @@ class PlaylistFragment : Fragment() {
         playlistVM.newTokensResponse.observe(
             viewLifecycleOwner,
             { saveTokens(it, requireContext()) })
-    }
-
-    private fun reproduce(url: String?) {
-        if (url != null) {
-            mediaPlayer = MediaPlayer.create(requireContext(), Uri.parse(url))
-            mediaPlayer?.start()
-        } else {
-            Toast.makeText(
-                requireContext(),
-                "This track cannot be reproduced.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
     }
 
     private fun hideProgressBar(view: View) {

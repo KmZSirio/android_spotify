@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         binding.logInButton.setOnClickListener {
-
             val colorInt: Int = resources.getColor(R.color.spotifyBlack, resources.newTheme())
 
             val defaultColors = CustomTabColorSchemeParams.Builder()
@@ -57,7 +56,22 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Uri.parse("$baseUrl$endpoint?client_id=$CLIENT_ID&response_type=$responseType&redirect_uri=$REDIRECT_URI&scope=$scope&state=$stateSpotify")
             )
+        }
 
+        binding.phoneButton.setOnClickListener {
+            Toast.makeText(this, getString(R.string.decoration_main), Toast.LENGTH_SHORT).show()
+        }
+
+        binding.googleButton.setOnClickListener {
+            Toast.makeText(this, getString(R.string.decoration_main), Toast.LENGTH_SHORT).show()
+        }
+
+        binding.facebookButton.setOnClickListener {
+            Toast.makeText(this, getString(R.string.decoration_main), Toast.LENGTH_SHORT).show()
+        }
+
+        binding.signUpButton.setOnClickListener {
+            Toast.makeText(this, getString(R.string.decoration_main), Toast.LENGTH_SHORT).show()
         }
     }
 

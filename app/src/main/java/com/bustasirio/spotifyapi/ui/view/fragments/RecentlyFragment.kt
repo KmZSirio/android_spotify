@@ -1,19 +1,17 @@
 package com.bustasirio.spotifyapi.ui.view.fragments
 
 import android.content.Context
-import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.errorToast
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
+import com.bustasirio.spotifyapi.core.reproduce
 import com.bustasirio.spotifyapi.core.saveTokens
 import com.bustasirio.spotifyapi.databinding.FragmentRecentlyBinding
 import com.bustasirio.spotifyapi.ui.view.adapters.RecentlyAdapter
@@ -26,8 +24,6 @@ class RecentlyFragment : Fragment() {
     private val recentlyVM: RecentlyViewModel by viewModels()
 
     private lateinit var recentlyAdapter: RecentlyAdapter
-
-    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,7 +57,13 @@ class RecentlyFragment : Fragment() {
             recentlyAdapter.differ.submitList(it.play_histories.toList())
         })
 
-        recentlyAdapter.setOnItemClickListener { reproduce(it.track.preview_url) }
+        recentlyAdapter.setOnItemClickListener {
+            reproduce(
+                requireContext(),
+                getString(R.string.reproduce_toast),
+                it.track.preview_url
+            )
+        }
 
         recentlyVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
@@ -76,19 +78,6 @@ class RecentlyFragment : Fragment() {
             adapter = recentlyAdapter
             layoutManager = LinearLayoutManager(activity)
 //            addOnScrollListener(this@RecentlyFragment.scrollListener)
-        }
-    }
-
-    private fun reproduce(url: String?) {
-        if (url != null) {
-            mediaPlayer = MediaPlayer.create(requireContext(), Uri.parse(url))
-            mediaPlayer?.start()
-        } else {
-            Toast.makeText(
-                requireContext(),
-                "This track cannot be reproduced.",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 

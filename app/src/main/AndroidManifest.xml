@@ -16,15 +16,18 @@
         <activity
             android:name=".ui.view.activities.SplashActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.view.activities.LobbyActivity" />
-        <activity android:name=".ui.view.activities.MainActivity">
+        <activity android:name=".ui.view.activities.LobbyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.view.activities.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

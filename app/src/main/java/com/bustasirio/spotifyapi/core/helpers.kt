@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.bustasirio.spotifyapi.R
+import com.bustasirio.spotifyapi.data.model.Album
 import com.bustasirio.spotifyapi.data.model.AuthorizationModel
 import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.data.model.Track
@@ -151,23 +152,29 @@ fun fragAddPlaylist(activity: FragmentActivity, key: String, playlist: Playlist)
 }
 
 
-fun fragTransSaved(activity: FragmentActivity, key: String, type: String) {
+fun fragTransSaved(activity: FragmentActivity, key: String, type: String, keyAlbum: String = "", album: Album? = null) {
     val fragment = SavedFragment()
 
     val bundle = Bundle()
     bundle.putString(key, type)
+    if (type == "album" && album != null){
+        bundle.putParcelable(keyAlbum, album)
+    }
     fragment.arguments = bundle
 
     replaceFrag(activity, fragment)
 }
 
 
-fun showBottomSheet(activity: FragmentActivity, key: String, it: Track) {
+fun showBottomSheet(activity: FragmentActivity, key: String, it: Track, keyAlbum: String = "", alreadyOnAlbum: Boolean = false ) {
     val bottomSheetFrag = BottomSheetFragment()
     bottomSheetFrag.setStyle(STYLE_NO_FRAME, R.style.SheetDialog)
 
     val bundle = Bundle()
     bundle.putParcelable(key, it)
+    if (alreadyOnAlbum){
+        bundle.putBoolean(keyAlbum, alreadyOnAlbum)
+    }
     bottomSheetFrag.arguments = bundle
 
     bottomSheetFrag.show(activity.supportFragmentManager, "BottomSheetDialog")
@@ -202,4 +209,32 @@ fun saveTokens(it: AuthorizationModel, context: Context) {
         putBoolean(context.getString(R.string.spotify_logged), true)
         apply()
     }
+}
+
+
+fun reproduce(context: Context, text: String, url: String?) {
+    if (url != null) PlayerSingleton.getPlayerInstance(context, url)!!.start()
+    else {
+        Toast.makeText(
+            context,
+            text,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+}
+
+
+fun screenSize(activity: FragmentActivity): DisplayMetrics {
+    val outMetrics = DisplayMetrics()
+
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+        val display = activity.display
+        display?.getRealMetrics(outMetrics)
+    } else {
+        @Suppress("DEPRECATION")
+        val display = activity.windowManager.defaultDisplay
+        @Suppress("DEPRECATION")
+        display.getMetrics(outMetrics)
+    }
+    return outMetrics
 }

@@ -148,6 +148,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/albumBottomSheet"
                 tools:ignore="RtlHardcoded" />
+
+            <Button
+                android:id="@+id/spotifyBottomSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_spotify_green_24"
+                android:drawablePadding="50dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="start|center"
+                android:text="    Play on Spotify"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:theme="@style/LogInBlackButton"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shareBottomSheet"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
