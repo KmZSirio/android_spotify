@@ -22,10 +22,11 @@ class CreateViewModel @Inject constructor(
 
     val playlistResponse = MutableLiveData<Playlist>()
     val errorResponse = MutableLiveData<Int>()
+    val emptyResponse = MutableLiveData<Boolean>()
     val newTokensResponse = MutableLiveData<AuthorizationModel>()
     val loading = MutableLiveData<Boolean>()
 
-    val endpointUrl = MutableLiveData<String>()
+    val userId = MutableLiveData<String>()
     val requestBody = MutableLiveData<RequestBody>()
 
     val authorizationWithToken = MutableLiveData<String>() // "$tokenType $accessToken"
@@ -35,65 +36,26 @@ class CreateViewModel @Inject constructor(
     val refreshToken = MutableLiveData<String>() // prefs
 
     private lateinit var playlist: Playlist
+    private lateinit var body: RequestBody
 
-    fun createPlaylist(range: String, size: String) = viewModelScope.launch {
+
+    fun fetchTopTracks(range: String, size: String) = viewModelScope.launch {
+
         loading.postValue(true)
-        apiService.postPlaylist(
-            endpointUrl.value!!,
-            authorizationWithToken.value!!,
-            requestBody.value!!
-        ).let { apiServiceResp ->
-            when {
-                apiServiceResp.code() == 201 -> {
-                    playlist = apiServiceResp.body()!!
-                    fetchTopTracks(range, size, authorizationWithToken.value!! )
-                }
-                apiServiceResp.code() == 401 -> {
-
-                    accountsService.getNewToken(
-                        auth.value!!,
-                        "refresh_token",
-                        refreshToken.value!!,
-                        REDIRECT_URI
-                    ).let { accServiceResp ->
-                        if (accServiceResp.isSuccessful && accServiceResp.code() == 200) {
-                            val authWithToken =
-                                "${accServiceResp.body()!!.tokenType} ${accServiceResp.body()!!.accessToken}"
-
-                            apiService.postPlaylist(
-                                endpointUrl.value!!,
-                                authWithToken,
-                                requestBody.value!!
-                            ).let {
-                                if (it.code() == 201) {
-                                    playlist = it.body()!!
-                                    fetchTopTracks(range, size, authWithToken)
-                                    newTokensResponse.postValue(accServiceResp.body())
-                                }
-                                else errorResponse.postValue(it.code())
-                            }
-
-                        }
-                        else errorResponse.postValue(accServiceResp.code())
-                    }
-
-                }
-                else -> errorResponse.postValue(apiServiceResp.code())
-            }
-        }
-    }
-
-    private fun fetchTopTracks(range: String, size: String, authToken: String) = viewModelScope.launch {
         apiService.getTopTracks(
-            authToken,
+            authorizationWithToken.value!!,
             range,
             size
         ).let { apiServiceResp ->
             when {
                 apiServiceResp.isSuccessful -> {
                     val response = apiServiceResp.body()
-                    val body = tracksToJson(response!!.tracks)
-                    fillPlaylist(authToken, body)
+
+                    if (response!!.tracks.isNotEmpty()) {
+                        body = tracksToJson(response.tracks)
+                        createPlaylist(authorizationWithToken.value!!)
+                    }
+                    else emptyResponse.postValue(true)
                 }
                 apiServiceResp.code() == 401 -> {
 
@@ -114,8 +76,12 @@ class CreateViewModel @Inject constructor(
                             ).let {
                                 if (it.isSuccessful) {
                                     val response = it.body()
-                                    val body = tracksToJson(response!!.tracks)
-                                    fillPlaylist(authWithToken, body)
+
+                                    if (response!!.tracks.isNotEmpty()) {
+                                        body = tracksToJson(response.tracks)
+                                        createPlaylist(authWithToken)
+                                    }
+                                    else emptyResponse.postValue(true)
 
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
@@ -130,7 +96,52 @@ class CreateViewModel @Inject constructor(
         }
     }
 
-    private fun fillPlaylist(authToken: String, body: RequestBody) = viewModelScope.launch {
+    private fun createPlaylist(authToken: String) = viewModelScope.launch {
+        apiService.postPlaylist(
+            userId.value!!,
+            authToken,
+            requestBody.value!!
+        ).let { apiServiceResp ->
+            when {
+                apiServiceResp.code() == 201 -> {
+                    playlist = apiServiceResp.body()!!
+                    fillPlaylist(authToken)
+                }
+                apiServiceResp.code() == 401 -> {
+
+                    accountsService.getNewToken(
+                        auth.value!!,
+                        "refresh_token",
+                        refreshToken.value!!,
+                        REDIRECT_URI
+                    ).let { accServiceResp ->
+                        if (accServiceResp.isSuccessful && accServiceResp.code() == 200) {
+                            val authWithToken =
+                                "${accServiceResp.body()!!.tokenType} ${accServiceResp.body()!!.accessToken}"
+
+                            apiService.postPlaylist(
+                                userId.value!!,
+                                authWithToken,
+                                requestBody.value!!
+                            ).let {
+                                if (it.code() == 201) {
+                                    playlist = it.body()!!
+                                    fillPlaylist(authWithToken)
+                                }
+                                else errorResponse.postValue(it.code())
+
+                                newTokensResponse.postValue(accServiceResp.body())
+                            }
+                        }
+                        else errorResponse.postValue(accServiceResp.code())
+                    }
+                }
+                else -> errorResponse.postValue(apiServiceResp.code())
+            }
+        }
+    }
+
+    private fun fillPlaylist(authToken: String) = viewModelScope.launch {
         apiService.postItemsToPlaylist(
             authToken,
             playlist.id,

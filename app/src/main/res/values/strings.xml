@@ -13,7 +13,9 @@
     <string name="search">Search</string>
     <string name="your_library">Your Library</string>
     <string name="your_top_artists_last_6_months">Your top artists (last 6 months)</string>
+    <string name="good_morning">Good morning</string>
     <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
     <string name="artist_picture">Artist picture</string>
     <string name="preference_file_key">com.bustasirio.spotifyapi.PREFERENCE_FILE_KEY</string>
     <string name="spotify_access_token">SpotifyAccessToken</string>
@@ -27,7 +29,6 @@
     <string name="current_user_profile_image">Current user profile image</string>
     <string name="search_image_button">Search image button</string>
     <string name="add_image_button">Add image button</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tracks_url">tracks_url</string>
     <string name="owner_boolean">owner_boolean</string>
     <string name="no_playlists">no_playlists</string>
@@ -51,10 +52,10 @@
     <string name="create_fragment">CreateFragment</string>
     <string name="saved_shows">Saved Shows</string>
     <string name="your_episodes">Your Episodes</string>
+    <string name="liked_songs">Liked Songs</string>
     <string name="arg_saved_type">saved_type</string>
     <string name="arg_bottom_sheet_track">bottom_sheet_track</string>
     <string name="arg_bottom_sheet_episode">bottom_sheet_episode</string>
-    <string name="liked_songs">Liked Songs</string>
     <string name="category_image">Category image</string>
     <string name="category_playlists">category_playlists</string>
     <string name="settings">Settings</string>
@@ -79,10 +80,10 @@
     <string name="edit_playlist">Edit Playlist</string>
     <string name="change_image">Change image</string>
     <string name="add_description">Add description</string>
-    <string name="play_on_spotify_edit">    Play on Spotify</string>
-    <string name="share_edit">    Share</string>
-    <string name="add_to_queue_edit">    Add to Queue</string>
-    <string name="reproduce_sample_edit">    Reproduce Sample</string>
+    <string name="play_on_spotify_edit">Play on Spotify</string>
+    <string name="share_edit">Share</string>
+    <string name="add_to_queue_edit">Add to Queue</string>
+    <string name="reproduce_sample_edit">Reproduce Sample</string>
     <string name="description_edit">Give your playlist a catchy description</string>
     <string name="name_edit">Playlist name</string>
     <string name="arg_playlist_to_edit">playlist_to_edit</string>
@@ -90,4 +91,10 @@
     <string name="queue_403">Feature available with Spotify Premium</string>
     <string name="get_premium">Spotify Premium lets you play any track, ad-free and with better audio quality. Go to spotify.com/premium to try it for free.</string>
     <string name="device_no_found">No active device found</string>
+    <string name="no_data_create">No data available to fill the playlist</string>
+    <string name="recently_played">Recently played</string>
+    <string name="categories">Categories</string>
+    <string name="create_text">* The playlist will have a default name based on the params you selected, you can change details later.</string>
+    <string name="create">Create</string>
+    <string name="followers_caps">FOLLOWERS</string>
 </resources>

@@ -22,7 +22,7 @@
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/category_item.xml" value="0.1" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/category_playlist_item.xml" value="0.32592592592592595" />
-        <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_bottom_sheet.xml" value="0.32592592592592595" />
+        <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_bottom_sheet.xml" value="0.1" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_category.xml" value="0.26944444444444443" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_create.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_dashboard.xml" value="0.33" />
@@ -30,7 +30,7 @@
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_home.xml" value="0.32592592592592595" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_library.xml" value="0.32592592592592595" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_notifications.xml" value="0.32592592592592595" />
-        <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_playlist.xml" value="0.1" />
+        <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_playlist.xml" value="0.32592592592592595" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_recently.xml" value="0.1" />
         <entry key="..\:/Users/busta/AndroidStudioProjects/android_spotify/app/src/main/res/layout/fragment_saved.xml" value="0.24074074074074073" />

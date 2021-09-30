@@ -136,15 +136,14 @@
                     android:paddingStart="40dp"
                     android:paddingEnd="56dp"
                     android:layout_marginBottom="15dp"
-                    android:text="CREATE"
-                    android:textAllCaps="false"
+                    android:text="@string/create"
                     android:textColor="@color/spotifyBlack"
                     android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:text="* The playlist will have a default name based on the params you selected, you can change details later."
+                    android:text="@string/create_text"
                     android:textColor="@color/spotifyGreyLighter"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="14sp"

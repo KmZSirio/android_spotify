@@ -119,6 +119,8 @@ class SavedFragment : Fragment() {
             val totalPages = it.total / Constants.QUERY_SIZE + 1
             isLastPage = savedVM.page == totalPages
 
+            if (it.savedTracks.isEmpty()) binding.ivEmptySaved.visibility = View.VISIBLE
+
             requireActivity().window.statusBarColor =
                 requireActivity().getColor(R.color.spotifyBlueGrey)
         })
@@ -144,6 +146,8 @@ class SavedFragment : Fragment() {
             val totalPages = it.total / Constants.QUERY_SIZE + 1
             isLastPage = savedVM.page == totalPages
 
+            if (it.savedEpisodes.isEmpty()) binding.ivEmptySaved.visibility = View.VISIBLE
+
             requireActivity().window.statusBarColor =
                 requireActivity().getColor(R.color.spotifyBlueGrey)
         })
@@ -162,6 +166,8 @@ class SavedFragment : Fragment() {
             savedShowAdapter.differ.submitList(it.savedShows.toList())
             val totalPages = it.total / Constants.QUERY_SIZE + 1
             isLastPage = savedVM.page == totalPages
+
+            if (it.savedShows.isEmpty()) binding.ivEmptySaved.visibility = View.VISIBLE
 
             requireActivity().window.statusBarColor =
                 requireActivity().getColor(R.color.spotifyBlueGrey)
@@ -239,7 +245,7 @@ class SavedFragment : Fragment() {
 
             if (shouldPaginate) {
                 when (type) {
-                    "songs" -> savedVM.fetchSavedShows()
+                    "songs" -> savedVM.fetchSavedSongs()
                     "episodes" -> savedVM.fetchSavedEpisodes()
                     "shows" -> savedVM.fetchSavedShows()
                 }

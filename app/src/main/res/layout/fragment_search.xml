@@ -50,7 +50,7 @@
                 tools:listitem="@layout/category_item" />
 
             <TextView
-                android:text="Categories"
+                android:text="@string/categories"
                 android:fontFamily="sans-serif-light"
                 android:textColor="@color/white"
                 android:textSize="20sp"

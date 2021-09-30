@@ -20,7 +20,7 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarRecently"
-                app:title="Recently played"
+                app:title="@string/recently_played"
                 app:titleTextAppearance="@style/TitleCollapsed"
                 app:navigationIcon="@drawable/ic_baseline_arrow_back_34"
                 android:background="@drawable/gradient_collapsed"

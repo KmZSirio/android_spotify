@@ -129,6 +129,8 @@ class PlaylistFragment : Fragment() {
             playlistAdapter.differ.submitList(it.items.toList())
             val totalPages = it.total / QUERY_SIZE + 1
             isLastPage = playlistVM.page == totalPages
+
+            if (it.items.isEmpty()) binding.ivEmptyPlaylist.visibility = View.VISIBLE
         })
 
         playlistVM.loading.observe(viewLifecycleOwner, { if (it) showProgressBar(view) })

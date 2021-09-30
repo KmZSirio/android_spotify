@@ -40,6 +40,10 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.bind(view)
         requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack)
 
+        var shortEmpty = false
+        var mediumEmpty = false
+        var longEmpty = false
+
         binding.tvWelcomeMessageHome.text = setWelcomeMessage()
 
         binding.chipGroupHome.check(R.id.chipFirstHome)
@@ -86,16 +90,22 @@ class HomeFragment : Fragment() {
                     binding.rvTopTracksMonth.visibility = View.VISIBLE
                     binding.rvTopTracksSixMonths.visibility = View.GONE
                     binding.rvTopTracksLifetime.visibility = View.GONE
+                    if (shortEmpty) binding.ivEmptyTracks.visibility = View.VISIBLE
+                    else binding.ivEmptyTracks.visibility = View.INVISIBLE
                 }
                 binding.chipSecondHome.id -> {
                     binding.rvTopTracksMonth.visibility = View.GONE
                     binding.rvTopTracksSixMonths.visibility = View.VISIBLE
                     binding.rvTopTracksLifetime.visibility = View.GONE
+                    if (mediumEmpty) binding.ivEmptyTracks.visibility = View.VISIBLE
+                    else binding.ivEmptyTracks.visibility = View.INVISIBLE
                 }
                 binding.chipThirdHome.id -> {
                     binding.rvTopTracksMonth.visibility = View.GONE
                     binding.rvTopTracksSixMonths.visibility = View.GONE
                     binding.rvTopTracksLifetime.visibility = View.VISIBLE
+                    if (longEmpty) binding.ivEmptyTracks.visibility = View.VISIBLE
+                    else binding.ivEmptyTracks.visibility = View.INVISIBLE
                 }
             }
         }
@@ -105,22 +115,29 @@ class HomeFragment : Fragment() {
         homeVM.topArtistsResponse.observe(viewLifecycleOwner, {
             val adapter = TopArtistsAdapter(it.artists)
             binding.rvTopArtists.adapter = adapter
+            if (it.artists.isEmpty()) binding.ivEmptyArtists.visibility = View.VISIBLE
         })
 
         // * TopTracksResponse
         homeVM.topTracksMonthResponse.observe(viewLifecycleOwner, {
             val adapter = TopTracksAdapter(it.tracks)
             binding.rvTopTracksMonth.adapter = adapter
+            if (it.tracks.isEmpty()) {
+                shortEmpty = true
+                binding.ivEmptyTracks.visibility = View.VISIBLE
+            }
         })
 
         homeVM.topTracksSixMonthsResponse.observe(viewLifecycleOwner, {
             val adapter = TopTracksAdapter(it.tracks)
             binding.rvTopTracksSixMonths.adapter = adapter
+            if (it.tracks.isEmpty()) mediumEmpty = true
         })
 
         homeVM.topTracksLifetimeResponse.observe(viewLifecycleOwner, {
             val adapter = TopTracksAdapter(it.tracks)
             binding.rvTopTracksLifetime.adapter = adapter
+            if (it.tracks.isEmpty()) longEmpty = true
         })
 
         // ! FIXME one error will create multiple toasts, one per endpoint call
@@ -137,9 +154,9 @@ class HomeFragment : Fragment() {
     private fun setWelcomeMessage(): String {
         val currentHour: Int = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
-        if (currentHour in 6..11) return "Good morning"
-        if (currentHour in 12..18) return "Good afternoon"
-        return "Good evening"
+        if (currentHour in 6..11) return getString(R.string.good_morning)
+        if (currentHour in 12..18) return getString(R.string.good_afternoon)
+        return getString(R.string.good_evening)
     }
 
     private fun getPrefs() {

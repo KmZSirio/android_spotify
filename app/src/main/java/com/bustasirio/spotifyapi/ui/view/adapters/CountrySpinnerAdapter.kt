@@ -26,7 +26,8 @@ class CountrySpinnerAdapter(context: Context, markets: List<String>) : ArrayAdap
         val locale = Locale("", market!!)
 
         val view = LayoutInflater.from(context).inflate(R.layout.spinner_item, parent, false)
-        view.findViewById<TextView>(R.id.tvSpinnerItem).text = if (position == 0 ) "Worldwide" else locale.displayCountry
+        view.findViewById<TextView>(R.id.tvSpinnerItem).text = if (position == 0 ) context.getString(
+                    R.string.worldwide) else locale.displayCountry
 
         return view
     }

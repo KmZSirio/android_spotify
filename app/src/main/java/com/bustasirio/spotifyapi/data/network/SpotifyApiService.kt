@@ -87,13 +87,13 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
     }
 
     suspend fun postPlaylist(
-        url: String,
+        userId: String,
         auth: String,
         body: RequestBody
     ) : Response<Playlist> {
         return withContext(Dispatchers.IO) {
             api.postPlaylist(
-                url,
+                userId,
                 auth,
                 body
             )

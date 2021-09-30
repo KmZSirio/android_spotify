@@ -13,12 +13,14 @@ import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.errorToast
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
 import com.bustasirio.spotifyapi.core.saveTokens
+import com.bustasirio.spotifyapi.core.showToast
 import com.bustasirio.spotifyapi.data.model.User
 import com.bustasirio.spotifyapi.databinding.FragmentCreateBinding
 import com.bustasirio.spotifyapi.ui.viewmodel.CreateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.joda.time.DateTime
 
 
 @AndroidEntryPoint
@@ -31,8 +33,6 @@ class CreateFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-//        removeAnnoyingFrag(requireActivity())
         return inflater.inflate(R.layout.fragment_create, container, false)
     }
 
@@ -41,7 +41,7 @@ class CreateFragment : Fragment() {
 
         val arguments = arguments
         val user = arguments!!.getParcelable<User>(getString(R.string.user_object))
-        createVM.endpointUrl.value = "https://api.spotify.com/v1/users/${user!!.id}/playlists"
+        createVM.userId.value = user!!.id
 
         val binding = FragmentCreateBinding.bind(view)
 
@@ -91,13 +91,19 @@ class CreateFragment : Fragment() {
                 else -> "error"
             }
 
+            val dt = DateTime()
+
+            var month = dt.monthOfYear.toString()
+            if (month.length == 1) month = "0$month"
+
             val title = "Top $size songs in the $timeRange"
-            val json = "{\"name\":\"$title\"}"
+            val description = "${dt.dayOfMonth}-$month-${dt.year}"
+            val json = "{\"name\":\"$title\", \"description\":\"Generated on $description\"}"
 
             val body = RequestBody.create(MediaType.parse("text/plain"), json)
             createVM.requestBody.value = body
             getPrefs()
-            createVM.createPlaylist(range, size)
+            createVM.fetchTopTracks(range, size)
         }
 
         // * PlaylistsResponse
@@ -115,6 +121,14 @@ class CreateFragment : Fragment() {
 
             Toast.makeText(requireContext(), "Playlist Created", Toast.LENGTH_SHORT)
                 .show()
+        })
+
+        // * EmptyResponse
+        createVM.emptyResponse.observe(viewLifecycleOwner, {
+            if (it) {
+                hideProgressBar(view)
+                showToast(requireContext(), getString(R.string.no_data_create))
+            }
         })
 
         createVM.loading.observe(viewLifecycleOwner, {

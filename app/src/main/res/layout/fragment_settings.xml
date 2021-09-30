@@ -134,10 +134,10 @@
 
     <Button
         android:id="@+id/logOutSettings"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:drawablePadding="50dp"
+        app:iconPadding="10dp"
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:text="@string/log_out"

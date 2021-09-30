@@ -79,9 +79,9 @@ interface SpotifyApiClient {
         "Accept: application/json",
         "Content-Type: application/json"
     )
-    @POST
+    @POST("/v1/users/{user_id}/playlists")
     suspend fun postPlaylist(
-        @Url url: String,
+        @Path("user_id") userId: String,
         @Header("Authorization") auth: String,
         @Body body: RequestBody
     ): Response<Playlist>
