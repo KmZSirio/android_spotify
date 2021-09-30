@@ -2,6 +2,7 @@ package com.bustasirio.spotifyapi.ui.view.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,6 +53,9 @@ class PlaylistFragment : Fragment() {
 
         if (isOwner) binding.ibMenuPlaylist.visibility = View.VISIBLE
 
+        requireActivity().window.statusBarColor =
+            requireActivity().getColor(R.color.spotifyBlueGrey)
+
         getPrefs()
         playlistVM.fetchPlaylistItems()
 
@@ -62,16 +66,8 @@ class PlaylistFragment : Fragment() {
         binding.tvOwnerPlaylist.text = playlist.owner.display_name
 
         // * Appbar height depending if the playlist has a description
-        if (playlist.description.isNullOrEmpty()) {
-            val paramsAppBar = binding.appBarPlaylist.layoutParams
-            paramsAppBar.height = convertDpToPx(330, resources)
-            binding.appBarPlaylist.layoutParams = paramsAppBar
-
-            val paramsMargin: ViewGroup.MarginLayoutParams =
-                binding.llDetailsPlaylist.layoutParams as ViewGroup.MarginLayoutParams
-            paramsMargin.bottomMargin = convertDpToPx(10, resources)
-            binding.tvDescriptionPlaylist.visibility = View.GONE
-        } else binding.tvDescriptionPlaylist.text = playlist.description
+        if (playlist.description.isNullOrEmpty()) descriptionIsEmpty(binding)
+        else binding.tvDescriptionPlaylist.text = playlist.description
 
         if (playlist.images.isNotEmpty()) Picasso.get().load(playlist.images[0].url)
             .into(binding.ivPlaylist)
@@ -79,6 +75,17 @@ class PlaylistFragment : Fragment() {
 
 
         binding.ibBackPlaylist.setOnClickListener { removeAnnoyingFrag(requireActivity().supportFragmentManager) }
+
+        // * Edit playlist
+        binding.ibMenuPlaylist.setOnClickListener {
+
+            val fragment = EditFragment()
+
+            val bundle = Bundle()
+            bundle.putParcelable(getString(R.string.arg_playlist_to_edit), playlist)
+            fragment.arguments = bundle
+            addFrag(requireActivity(), fragment)
+        }
 
         // * To hide title from the collapsing bar when extended
         var isShow = true
@@ -122,9 +129,6 @@ class PlaylistFragment : Fragment() {
             playlistAdapter.differ.submitList(it.items.toList())
             val totalPages = it.total / QUERY_SIZE + 1
             isLastPage = playlistVM.page == totalPages
-
-            requireActivity().window.statusBarColor =
-                requireActivity().getColor(R.color.spotifyBlueGrey)
         })
 
         playlistVM.loading.observe(viewLifecycleOwner, { if (it) showProgressBar(view) })
@@ -181,6 +185,17 @@ class PlaylistFragment : Fragment() {
                 isScrolling = false
             }
         }
+    }
+
+    private fun descriptionIsEmpty(binding: FragmentPlaylistBinding) {
+        val paramsAppBar = binding.appBarPlaylist.layoutParams
+        paramsAppBar.height = convertDpToPx(340, resources)
+        binding.appBarPlaylist.layoutParams = paramsAppBar
+
+        val paramsMargin: ViewGroup.MarginLayoutParams =
+            binding.llDetailsPlaylist.layoutParams as ViewGroup.MarginLayoutParams
+        paramsMargin.bottomMargin = convertDpToPx(10, resources)
+        binding.tvDescriptionPlaylist.visibility = View.GONE
     }
 
     private fun setupRecyclerView(binding: FragmentPlaylistBinding) {

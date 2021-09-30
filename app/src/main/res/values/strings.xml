@@ -48,7 +48,7 @@
     <string name="time_range">Time range</string>
     <string name="size">Size</string>
     <string name="reload_library">reload_library</string>
-    <string name="createfragment">CreateFragment</string>
+    <string name="create_fragment">CreateFragment</string>
     <string name="saved_shows">Saved Shows</string>
     <string name="your_episodes">Your Episodes</string>
     <string name="arg_saved_type">saved_type</string>
@@ -75,4 +75,19 @@
     <string name="decoration_main">Decoration, try with log in button</string>
     <string name="album_boolean">album_boolean</string>
     <string name="arg_album_from_bottom">album_from_bottom</string>
+    <string name="save">Save</string>
+    <string name="edit_playlist">Edit Playlist</string>
+    <string name="change_image">Change image</string>
+    <string name="add_description">Add description</string>
+    <string name="play_on_spotify_edit">    Play on Spotify</string>
+    <string name="share_edit">    Share</string>
+    <string name="add_to_queue_edit">    Add to Queue</string>
+    <string name="reproduce_sample_edit">    Reproduce Sample</string>
+    <string name="description_edit">Give your playlist a catchy description</string>
+    <string name="name_edit">Playlist name</string>
+    <string name="arg_playlist_to_edit">playlist_to_edit</string>
+    <string name="added_to_queue">Added to queue</string>
+    <string name="queue_403">Feature available with Spotify Premium</string>
+    <string name="get_premium">Spotify Premium lets you play any track, ad-free and with better audio quality. Go to spotify.com/premium to try it for free.</string>
+    <string name="device_no_found">No active device found</string>
 </resources>

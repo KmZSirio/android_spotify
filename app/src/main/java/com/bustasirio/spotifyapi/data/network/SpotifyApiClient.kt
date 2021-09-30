@@ -197,5 +197,16 @@ interface SpotifyApiClient {
         @Header("Authorization") auth: String,
         @Path("playlist_id") playlistId: String,
         @Body body: RequestBody
+    ): Response<Unit>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
     )
+    @POST("/v1/me/player/queue")
+    suspend fun postToQueue(
+        @Header("Authorization") auth: String,
+        @Query("uri") uri: String
+    ): Response<Unit>
 }

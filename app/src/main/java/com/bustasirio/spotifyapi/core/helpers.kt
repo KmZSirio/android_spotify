@@ -152,29 +152,23 @@ fun fragAddPlaylist(activity: FragmentActivity, key: String, playlist: Playlist)
 }
 
 
-fun fragTransSaved(activity: FragmentActivity, key: String, type: String, keyAlbum: String = "", album: Album? = null) {
+fun fragTransSaved(activity: FragmentActivity, key: String, type: String) {
     val fragment = SavedFragment()
 
     val bundle = Bundle()
     bundle.putString(key, type)
-    if (type == "album" && album != null){
-        bundle.putParcelable(keyAlbum, album)
-    }
     fragment.arguments = bundle
 
     replaceFrag(activity, fragment)
 }
 
 
-fun showBottomSheet(activity: FragmentActivity, key: String, it: Track, keyAlbum: String = "", alreadyOnAlbum: Boolean = false ) {
+fun showBottomSheet(activity: FragmentActivity, key: String, it: Track) {
     val bottomSheetFrag = BottomSheetFragment()
     bottomSheetFrag.setStyle(STYLE_NO_FRAME, R.style.SheetDialog)
 
     val bundle = Bundle()
     bundle.putParcelable(key, it)
-    if (alreadyOnAlbum){
-        bundle.putBoolean(keyAlbum, alreadyOnAlbum)
-    }
     bottomSheetFrag.arguments = bundle
 
     bottomSheetFrag.show(activity.supportFragmentManager, "BottomSheetDialog")
@@ -238,3 +232,6 @@ fun screenSize(activity: FragmentActivity): DisplayMetrics {
     }
     return outMetrics
 }
+
+fun showToast(context: Context, text: String, long: Boolean = false) =
+    Toast.makeText(context, text, if(long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()

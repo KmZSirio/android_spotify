@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     // ! FIXME Crash when app doesn't have internet
+    // ! FIXME Validate when some track list or library list comes empty!
 
     private val mainVM: MainViewModel by viewModels()
 
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private val scope: String =
         "playlist-read-private playlist-read-collaborative user-top-read " +
                 "user-read-email user-read-recently-played playlist-modify-public " +
-                "playlist-modify-private user-library-read"
+                "playlist-modify-private user-library-read user-modify-playback-state"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

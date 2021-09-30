@@ -2,6 +2,7 @@ package com.bustasirio.spotifyapi.ui.view.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.core.*
 import com.bustasirio.spotifyapi.data.model.Album
+import com.bustasirio.spotifyapi.data.model.Playlist
+import com.bustasirio.spotifyapi.databinding.FragmentPlaylistBinding
 import com.bustasirio.spotifyapi.databinding.FragmentSavedBinding
+import com.bustasirio.spotifyapi.ui.view.adapters.PlaylistAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedEpisodeAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedShowAdapter
 import com.bustasirio.spotifyapi.ui.view.adapters.SavedSongsAdapter
@@ -28,7 +32,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class SavedFragment : Fragment() {
 
     private var type = ""
-    private var album: Album? = null
 
     private val savedVM: SavedViewModel by viewModels()
 
@@ -84,16 +87,6 @@ class SavedFragment : Fragment() {
                 savedVM.fetchSavedShows()
                 setupRWShows(binding)
             }
-            "album" -> {
-                album = arguments?.getParcelable(getString(R.string.arg_album_from_bottom))
-                binding.tvTitleSaved.text = album!!.name
-
-                if (album!!.images.isNotEmpty()) Picasso.get().load(album!!.images[0].url)
-                    .into(binding.ivSaved)
-                else binding.ivSaved.setImageResource(R.drawable.playlist_cover)
-                // TODO: Maybe Moving this to PlaylistFrag
-                // ! Bottom sheet from there shouldn't show View Album again
-            }
         }
 
         binding.ibBackSaved.setOnClickListener { removeAnnoyingFrag(requireActivity().supportFragmentManager) }
@@ -137,19 +130,10 @@ class SavedFragment : Fragment() {
             )
         }
         savedSongsAdapter.setOnMenuClickListener {
-            if (type == "album") {
-                showBottomSheet(
-                    requireActivity(), getString(R.string.arg_bottom_sheet_track),
-                    it.track,
-                    getString(R.string.album_boolean),
-                    true
-                )
-            } else {
-                showBottomSheet(
-                    requireActivity(), getString(R.string.arg_bottom_sheet_track),
-                    it.track
-                )
-            }
+            showBottomSheet(
+                requireActivity(), getString(R.string.arg_bottom_sheet_track),
+                it.track
+            )
         }
 
         // * EPISODES

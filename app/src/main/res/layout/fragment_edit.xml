@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/spotifyBlack"
+    android:paddingHorizontal="5dp"
+    android:paddingTop="5dp"
+    android:clickable="true"
+    tools:context=".ui.view.fragments.EditFragment">
+
+    <Button
+        android:id="@+id/btnSaveEdit"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:theme="@style/LogInBlackButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleEdit"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="@string/edit_playlist"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ibCloseEdit"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+        android:background="@color/trans"
+        android:backgroundTint="@color/trans"
+        android:contentDescription="@string/settings_button"
+        android:elevation="0dp"
+        android:outlineAmbientShadowColor="@color/trans"
+        android:outlineSpotShadowColor="@color/trans"
+        android:src="@drawable/ic_baseline_close_30"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/ivPlaylistEdit"
+        android:layout_marginTop="25dp"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:src="@drawable/playlist_cover"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleEdit"
+        android:contentDescription="@string/playlist_cover_image" />
+
+    <Button
+        android:id="@+id/btnImageEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/change_image"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:theme="@style/LogInBlackButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivPlaylistEdit" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edTxNameEdit"
+        android:inputType="textCapSentences"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/name_edit"
+        android:textColorHighlight="@color/spotifyGreen"
+        android:textCursorDrawable="@color/white"
+        android:backgroundTint="@color/spotifyGreyLighter"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorHint="@color/spotifyGreyLighter"
+        android:textSize="18sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnImageEdit" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edTxDescriptionEdit"
+        android:inputType="textMultiLine|textCapSentences"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="12dp"
+        android:hint="@string/description_edit"
+        android:textColorHighlight="@color/spotifyGreen"
+        android:textCursorDrawable="@color/white"
+        android:backgroundTint="@color/spotifyGreyLighter"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorHint="@color/spotifyGreyLighter"
+        android:textSize="12sp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edTxNameEdit" />
+
+    <Button
+        android:id="@+id/btnAddDescriptionEdit"
+        android:visibility="gone"
+        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:paddingHorizontal="25dp"
+        android:text="@string/add_description"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:theme="@style/ContinueBlackButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edTxDescriptionEdit" />
+</androidx.constraintlayout.widget.ConstraintLayout>

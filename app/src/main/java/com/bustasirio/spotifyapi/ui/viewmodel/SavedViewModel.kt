@@ -4,10 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bustasirio.spotifyapi.core.Constants
-import com.bustasirio.spotifyapi.data.model.AuthorizationModel
-import com.bustasirio.spotifyapi.data.model.SavedEpisodesModel
-import com.bustasirio.spotifyapi.data.model.SavedShowsModel
-import com.bustasirio.spotifyapi.data.model.SavedTracksModel
+import com.bustasirio.spotifyapi.data.model.*
 import com.bustasirio.spotifyapi.data.network.SpotifyAccountsService
 import com.bustasirio.spotifyapi.data.network.SpotifyApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,10 +19,12 @@ class SavedViewModel @Inject constructor(
 ) : ViewModel() {
 
     var page = 0
+    private var items: TracksListModel? = null
     private var songs: SavedTracksModel? = null
     private var episodes: SavedEpisodesModel? = null
     private var shows: SavedShowsModel? = null
 
+    val tracksResponse = MutableLiveData<TracksListModel>()
     val songsResponse = MutableLiveData<SavedTracksModel>()
     val episodesResponse = MutableLiveData<SavedEpisodesModel>()
     val showsResponse = MutableLiveData<SavedShowsModel>()
@@ -34,11 +33,59 @@ class SavedViewModel @Inject constructor(
     val newTokensResponse = MutableLiveData<AuthorizationModel>()
     val loading = MutableLiveData<Boolean>()
 
+    val tracksUrl = MutableLiveData<String>()
+
     val authorizationWithToken = MutableLiveData<String>() // "$tokenType $accessToken"
     val auth = MutableLiveData<String>() // prefs
 
     // * To renew token
     val refreshToken = MutableLiveData<String>() // prefs
+
+    // * PLAYLISTS
+    fun fetchPlaylistItems() = viewModelScope.launch {
+        loading.postValue(true)
+
+        apiService.getPlaylistItems(
+            tracksUrl.value ?: "",
+            authorizationWithToken.value!!,
+            "${Constants.QUERY_SIZE}",
+            "${page * Constants.QUERY_SIZE}"
+        ).let { apiServiceResp ->
+            when {
+                apiServiceResp.isSuccessful -> tracksSuccessful(apiServiceResp)
+                apiServiceResp.code() == 401 -> {
+
+                    accountsService.getNewToken(
+                        auth.value!!,
+                        "refresh_token",
+                        refreshToken.value!!,
+                        Constants.REDIRECT_URI
+                    ).let { accServiceResp ->
+
+                        if (accServiceResp.isSuccessful && accServiceResp.code() == 200) {
+                            val authWithToken =
+                                "${accServiceResp.body()!!.tokenType} ${accServiceResp.body()!!.accessToken}"
+
+                            apiService.getPlaylistItems(
+                                tracksUrl.value!!,
+                                authWithToken,
+                                "${Constants.QUERY_SIZE}",
+                                "${page * Constants.QUERY_SIZE}"
+                            ).let {
+                                if (it.isSuccessful) {
+                                    tracksSuccessful(it)
+                                    newTokensResponse.postValue(accServiceResp.body())
+                                }
+                                else errorResponse.postValue(it.code())
+                            }
+                        }
+                        else errorResponse.postValue(accServiceResp.code())
+                    }
+                }
+                else -> errorResponse.postValue(apiServiceResp.code())
+            }
+        }
+    }
 
     // * SONGS
     fun fetchSavedSongs() = viewModelScope.launch {
@@ -170,6 +217,18 @@ class SavedViewModel @Inject constructor(
                 else -> errorResponse.postValue(apiServiceResp.code())
             }
         }
+    }
+
+    private fun tracksSuccessful(response: Response<TracksListModel>) {
+        page++
+        if (items == null) {
+            items = response.body()
+        } else {
+            val oldItems = items?.items
+            val newItems = response.body()?.items
+            oldItems?.addAll(newItems!!)
+        }
+        tracksResponse.postValue(items ?: response.body())
     }
 
     private fun songsSuccessful(response: Response<SavedTracksModel>) {

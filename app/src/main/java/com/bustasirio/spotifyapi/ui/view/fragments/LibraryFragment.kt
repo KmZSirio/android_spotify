@@ -10,7 +10,6 @@ import com.bustasirio.spotifyapi.R
 import com.bustasirio.spotifyapi.databinding.FragmentLibraryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.widget.AbsListView
 import android.widget.ProgressBar
 import androidx.fragment.app.viewModels
@@ -126,11 +125,11 @@ class LibraryFragment : Fragment() {
 
         // * Listening response from CreateFragment *-*
         requireActivity().supportFragmentManager.setFragmentResultListener(
-            getString(R.string.createfragment),
+            getString(R.string.create_fragment),
             viewLifecycleOwner
         ) { _, bundle ->
 
-            val result = bundle.getString(getString(R.string.createfragment))
+            val result = bundle.getString(getString(R.string.create_fragment))
             if (result == "reload") {
                 reloading = true
                 libraryVM.playlists = null

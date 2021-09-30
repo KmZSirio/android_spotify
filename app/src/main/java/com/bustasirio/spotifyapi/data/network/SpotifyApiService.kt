@@ -226,12 +226,24 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
         auth: String,
         playlistId: String,
         body: RequestBody
-    ) {
+    ) : Response<Unit> {
         return withContext(Dispatchers.IO) {
             api.putPlaylistDetails(
                 auth,
                 playlistId,
                 body
+            )
+        }
+    }
+
+    suspend fun postToQueue(
+        auth: String,
+        uri: String
+    ) : Response<Unit> {
+        return withContext(Dispatchers.IO) {
+            api.postToQueue(
+                auth,
+                uri
             )
         }
     }

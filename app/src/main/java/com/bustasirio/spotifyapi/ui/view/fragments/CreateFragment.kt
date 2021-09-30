@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bustasirio.spotifyapi.R
+import com.bustasirio.spotifyapi.core.errorToast
 import com.bustasirio.spotifyapi.core.removeAnnoyingFrag
 import com.bustasirio.spotifyapi.core.saveTokens
 import com.bustasirio.spotifyapi.data.model.User
@@ -104,9 +105,9 @@ class CreateFragment : Fragment() {
             hideProgressBar(view)
 //
             val bundle = Bundle()
-            bundle.putString(getString(R.string.createfragment), "reload")
+            bundle.putString(getString(R.string.create_fragment), "reload")
             requireActivity().supportFragmentManager.setFragmentResult(
-                getString(R.string.createfragment),
+                getString(R.string.create_fragment),
                 bundle
             )
             removeAnnoyingFrag(requireActivity().supportFragmentManager)
@@ -120,15 +121,7 @@ class CreateFragment : Fragment() {
             if (it) showProgressBar(view)
         })
 
-        createVM.errorResponse.observe(viewLifecycleOwner, {
-            if (it != null) {
-                Toast.makeText(requireContext(), "Error: $it, try again later.", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(requireContext(), "Error. Try again later.", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        })
+        createVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
         createVM.newTokensResponse.observe(viewLifecycleOwner, { saveTokens(it, requireContext()) })
     }

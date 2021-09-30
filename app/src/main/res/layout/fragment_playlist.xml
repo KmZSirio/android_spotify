@@ -79,7 +79,7 @@
 
                         <ImageButton
                             android:id="@+id/ibMenuPlaylist"
-                            android:visibility="visible"
+                            android:visibility="invisible"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:layout_gravity="end"
