@@ -13,9 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LobbyActivity : AppCompatActivity() {
 
-    // FIXME Creating and recreating fragments trigger unnecessary calls!
     private lateinit var binding: ActivityLobbyBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

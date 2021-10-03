@@ -12,14 +12,14 @@ import java.util.*
 class CountrySpinnerAdapter(context: Context, markets: List<String>) : ArrayAdapter<String>(context, 0, markets) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return initView(position, convertView, parent)
+        return initView(position, parent)
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return initView(position, convertView, parent)
+        return initView(position, parent)
     }
 
-    private fun initView(position: Int, convertView: View?, parent: ViewGroup): View {
+    private fun initView(position: Int, parent: ViewGroup): View {
 
         val market = getItem(position)
 

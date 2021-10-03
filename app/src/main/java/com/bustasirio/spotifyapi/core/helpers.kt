@@ -1,19 +1,17 @@
 package com.bustasirio.spotifyapi.core
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment.STYLE_NORMAL
 import androidx.fragment.app.DialogFragment.STYLE_NO_FRAME
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.bustasirio.spotifyapi.R
-import com.bustasirio.spotifyapi.data.model.Album
 import com.bustasirio.spotifyapi.data.model.AuthorizationModel
 import com.bustasirio.spotifyapi.data.model.Playlist
 import com.bustasirio.spotifyapi.data.model.Track
@@ -218,6 +216,8 @@ fun reproduce(context: Context, text: String, url: String?) {
 }
 
 
+//        val size = screenSize(requireActivity())
+//        behavior.peekHeight = (size.heightPixels * 0.7).toInt()
 fun screenSize(activity: FragmentActivity): DisplayMetrics {
     val outMetrics = DisplayMetrics()
 
@@ -235,3 +235,12 @@ fun screenSize(activity: FragmentActivity): DisplayMetrics {
 
 fun showToast(context: Context, text: String, long: Boolean = false) =
     Toast.makeText(context, text, if(long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
+
+fun isItInstalled(name: String, packageManager: PackageManager): Boolean {
+    return try {
+        packageManager.getPackageInfo(name, 0)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
+}

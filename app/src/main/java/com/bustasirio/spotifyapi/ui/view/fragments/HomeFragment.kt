@@ -140,7 +140,6 @@ class HomeFragment : Fragment() {
             if (it.tracks.isEmpty()) longEmpty = true
         })
 
-        // ! FIXME one error will create multiple toasts, one per endpoint call
         homeVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
         // * Save new tokens

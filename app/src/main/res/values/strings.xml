@@ -29,10 +29,10 @@
     <string name="current_user_profile_image">Current user profile image</string>
     <string name="search_image_button">Search image button</string>
     <string name="add_image_button">Add image button</string>
-    <string name="tracks_url">tracks_url</string>
-    <string name="owner_boolean">owner_boolean</string>
-    <string name="no_playlists">no_playlists</string>
-    <string name="user_object">user_object</string>
+    <string name="tracks_url">com.bustasirio.spotifyapi.tracks_url</string>
+    <string name="owner_boolean">com.bustasirio.spotifyapi.owner_boolean</string>
+    <string name="no_playlists">com.bustasirio.spotifyapi.no_playlists</string>
+    <string name="user_object">com.bustasirio.spotifyapi.user_object</string>
     <string name="playlist_cover_image">Playlist cover image</string>
     <string name="album_cover_image">Album cover image</string>
     <string name="random_play_button">Random play button</string>
@@ -53,9 +53,9 @@
     <string name="saved_shows">Saved Shows</string>
     <string name="your_episodes">Your Episodes</string>
     <string name="liked_songs">Liked Songs</string>
-    <string name="arg_saved_type">saved_type</string>
-    <string name="arg_bottom_sheet_track">bottom_sheet_track</string>
-    <string name="arg_bottom_sheet_episode">bottom_sheet_episode</string>
+    <string name="arg_saved_type">com.bustasirio.spotifyapi.saved_type</string>
+    <string name="arg_bottom_sheet_track">com.bustasirio.spotifyapi.bottom_sheet_track</string>
+    <string name="arg_bottom_sheet_episode">com.bustasirio.spotifyapi.bottom_sheet_episode</string>
     <string name="category_image">Category image</string>
     <string name="category_playlists">category_playlists</string>
     <string name="settings">Settings</string>
@@ -75,7 +75,7 @@
     <string name="reproduce_toast">This track cannot be reproduced.</string>
     <string name="decoration_main">Decoration, try with log in button</string>
     <string name="album_boolean">album_boolean</string>
-    <string name="arg_album_from_bottom">album_from_bottom</string>
+    <string name="arg_album_from_bottom">com.bustasirio.spotifyapi.album_from_bottom</string>
     <string name="save">Save</string>
     <string name="edit_playlist">Edit Playlist</string>
     <string name="change_image">Change image</string>
@@ -86,7 +86,7 @@
     <string name="reproduce_sample_edit">Reproduce Sample</string>
     <string name="description_edit">Give your playlist a catchy description</string>
     <string name="name_edit">Playlist name</string>
-    <string name="arg_playlist_to_edit">playlist_to_edit</string>
+    <string name="arg_playlist_to_edit">com.bustasirio.spotifyapi.playlist_to_edit</string>
     <string name="added_to_queue">Added to queue</string>
     <string name="queue_403">Feature available with Spotify Premium</string>
     <string name="get_premium">Spotify Premium lets you play any track, ad-free and with better audio quality. Go to spotify.com/premium to try it for free.</string>
@@ -97,4 +97,9 @@
     <string name="create_text">* The playlist will have a default name based on the params you selected, you can change details later.</string>
     <string name="create">Create</string>
     <string name="followers_caps">FOLLOWERS</string>
+    <string name="instance_track_bottom_sheet">com.bustasirio.spotifyapi.instance_track_bottom_sheet</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="get_spotify_free">Get Spotify Free</string>
+    <string name="spotify_package">com.spotify.music</string>
 </resources>

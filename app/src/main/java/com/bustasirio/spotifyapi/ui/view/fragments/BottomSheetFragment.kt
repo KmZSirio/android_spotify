@@ -1,7 +1,11 @@
 package com.bustasirio.spotifyapi.ui.view.fragments
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +15,6 @@ import com.bustasirio.spotifyapi.databinding.FragmentBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Picasso
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.bustasirio.spotifyapi.core.*
 import com.bustasirio.spotifyapi.ui.viewmodel.BottomSheetViewModel
@@ -30,7 +33,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_bottom_sheet, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -38,14 +40,15 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         val track = arguments!!.getParcelable<Track>(getString(R.string.arg_bottom_sheet_track))!!
 
         val binding = FragmentBottomSheetBinding.bind(view)
-//        val size = screenSize(requireActivity())
+
+        val spotifyInstalled = isItInstalled(getString(R.string.spotify_package), requireContext().packageManager)
+        if (!spotifyInstalled) binding.spotifyBottomSheet.text = getString(R.string.get_spotify_free)
 
         val bottomSheet: FrameLayout =
             dialog!!.findViewById(com.google.android.material.R.id.design_bottom_sheet)
 
         val behavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(bottomSheet)
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
-//        behavior.peekHeight = (size.heightPixels * 0.7).toInt()
 
         if (track.album.images.isNotEmpty()) Picasso.get().load(track.album.images[0].url)
             .into(binding.ivBottomSheet)
@@ -67,6 +70,51 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             bottomSheetVM.addToQueue(track.uri)
         }
 
+        binding.shareBottomSheet.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, track.external_urls.spotify)
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(sendIntent, "Share to:")
+            startActivity(shareIntent)
+            removeAnnoyingFrag(requireActivity().supportFragmentManager)
+        }
+
+        binding.spotifyBottomSheet.setOnClickListener {
+            if (spotifyInstalled) {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(track.uri)
+                intent.putExtra(
+                    Intent.EXTRA_REFERRER,
+                    Uri.parse("android-app://" + requireContext().packageName)
+                )
+                startActivity(intent)
+                removeAnnoyingFrag(requireActivity().supportFragmentManager)
+            } else {
+                val spotifyPackage = getString(R.string.spotify_package)
+                val referrer =
+                    "adjust_campaign=PACKAGE_NAME&adjust_tracker=ndjczk&utm_source=adjust_preinstall"
+
+                try {
+                    val uri = Uri.parse("market://details")
+                        .buildUpon()
+                        .appendQueryParameter("id", spotifyPackage)
+                        .appendQueryParameter("referrer", referrer)
+                        .build()
+                    startActivity(Intent(Intent.ACTION_VIEW, uri))
+                } catch (ignored: ActivityNotFoundException) {
+                    val uri = Uri.parse("https://play.google.com/store/apps/details")
+                        .buildUpon()
+                        .appendQueryParameter("id", spotifyPackage)
+                        .appendQueryParameter("referrer", referrer)
+                        .build()
+                    startActivity(Intent(Intent.ACTION_VIEW, uri))
+                }
+                removeAnnoyingFrag(requireActivity().supportFragmentManager)
+            }
+        }
+
         bottomSheetVM.completedResponse.observe(viewLifecycleOwner, {
             when(it) {
                 204 -> showToast(requireContext(), getString(R.string.added_to_queue))
@@ -81,7 +129,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         bottomSheetVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
         bottomSheetVM.newTokensResponse.observe(viewLifecycleOwner, { saveTokens(it, requireContext()) })
-
     }
 
     private fun getPrefs() {

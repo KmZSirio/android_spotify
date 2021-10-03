@@ -33,7 +33,6 @@ class HomeViewModel @Inject constructor(
     // * To renew token
     val refreshToken = MutableLiveData<String>() // prefs
 
-    // ! FIXME Eliminate repeatable code
     fun fetchTopArtists() = viewModelScope.launch {
         apiService.getTopArtists(
             authorizationWithToken.value!!,

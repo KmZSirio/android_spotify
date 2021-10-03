@@ -19,7 +19,6 @@ class MainViewModel @Inject constructor(
     val errorResponse = MutableLiveData<Int>()
     val code = MutableLiveData<String>()
 
-    // ! TODO encode basic myself!
     val auth = MutableLiveData<String>()
 
     fun getAuth() = viewModelScope.launch {
