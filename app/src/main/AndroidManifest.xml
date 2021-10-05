@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bustasirio.spotifyapi">
+    package="com.bustasirio.triskl">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <queries>
-        <package android:name="com.spotify.music"/>
+        <package android:name="com.spotify.music" />
     </queries>
 
     <application
         android:name=".MyApplication"
-        android:icon="@mipmap/ic_launcher"
         android:allowBackup="true"
         android:fullBackupContent="true"
+        android:icon="@mipmap/ic_triskl"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_triskl_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SpotifyAPI">
+        android:theme="@style/Theme.Triskl">
         <activity
             android:name=".ui.view.activities.SplashActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.view.activities.LobbyActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.view.activities.MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
+        <activity
+            android:name=".ui.view.activities.LobbyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.activities.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -41,7 +45,7 @@
 
                 <data
                     android:host="callback"
-                    android:scheme="bustasirio" />
+                    android:scheme="triskl" />
             </intent-filter>
         </activity>
     </application>

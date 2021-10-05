@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.bustasirio.spotifyapi.ui.view.fragments.HomeFragment"
+        android:name="com.bustasirio.triskl.ui.view.fragments.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.bustasirio.spotifyapi.ui.view.fragments.SearchFragment"
+        android:name="com.bustasirio.triskl.ui.view.fragments.SearchFragment"
         android:label="Search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_library"
-        android:name="com.bustasirio.spotifyapi.ui.view.fragments.LibraryFragment"
+        android:name="com.bustasirio.triskl.ui.view.fragments.LibraryFragment"
         android:label="Library"
         tools:layout="@layout/fragment_library" />
 </navigation>
