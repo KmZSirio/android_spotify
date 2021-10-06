@@ -54,7 +54,7 @@ class SettingsFragment : Fragment() {
 
         binding.toolbarSettings.setNavigationOnClickListener { removeAnnoyingFrag(requireActivity().supportFragmentManager) }
 
-        binding.logOutSettings.setOnClickListener { logOut() }
+        binding.logOutSettings.setOnClickListener { logOut(requireActivity(), requireContext()) }
 
         settingsVM.marketsResponse.observe(viewLifecycleOwner, { response ->
             when (response) {
@@ -149,28 +149,5 @@ class SettingsFragment : Fragment() {
         settingsVM.auth.value =
             resources.getString(R.string.esl)
         settingsVM.refreshToken.value = refreshToken
-    }
-
-    private fun logOut() {
-        requireActivity().supportFragmentManager.popBackStack()
-
-        val sharedPrefs = requireContext().getSharedPreferences(
-            getString(R.string.preference_file_key),
-            Context.MODE_PRIVATE
-        )
-        with(sharedPrefs.edit()) {
-            putString(getString(R.string.spotify_access_token), "")
-            putString(getString(R.string.spotify_token_type), "")
-            putString(getString(R.string.spotify_refresh_token), "")
-            putBoolean(getString(R.string.spotify_logged), false)
-            putString(getString(R.string.spotify_country), "")
-            putInt(getString(R.string.spotify_country_pos), 0)
-            putString(getString(R.string.spotify_language), "en_US")
-            apply()
-        }
-
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
     }
 }

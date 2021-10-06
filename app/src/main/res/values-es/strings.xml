@@ -106,4 +106,15 @@
     <string name="conversion_problem">Error en la conversion</string>
     <string name="playlist_created">Playlist Creada</string>
     <string name="not_working">Aún no funciono :(</string>
+    <string name="spotify_icon">Icono de Spotify</string>
+    <string name="authorization">Autorización</string>
+    <string name="dialog_desc">Para continuar usando la app debes tener permiso del desarrollador, esto debido a algunas limitaciones de Spotify. Ponte en contacto para ser agregado a la lista de acceso.</string>
+    <string name="dialog_button">Entendido</string>
+    <string name="spotify_first_time">spotify_first_time</string>
+    <string name="told_you">"403: Te lo dije. Usuario no registrado en el panel de desarrollador"</string>
+    <string name="too_many_requests">429: Demasiadas peticiones. Intente mas tarde.</string>
+    <string name="internal_server_error">500: Error interno de Spotify. Intente mas tarde.</string>
+    <string name="service_unavailable">503: Servicio no disponible. Intente mas tarde.</string>
+    <string name="not_found">404: No encontrado. Intente mas tarde.</string>
+    <string name="try_later">. Intente mas tarde.</string>
 </resources>

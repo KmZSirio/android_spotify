@@ -53,10 +53,15 @@ class RecentlyFragment : Fragment() {
         recentlyVM.recentlyResponse.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Success -> {
-                    recentlyAdapter.differ.submitList(response.data!!.play_histories.toList())
+                    if (response.data!!.play_histories.size == 0)
+                        binding.ivEmptyRecently.visibility = View.VISIBLE
+                    recentlyAdapter.differ.submitList(response.data.play_histories.toList())
                 }
-                is Resource.Error -> { errorToast(response.message ?: "", requireContext()) }
-                is Resource.Loading -> {}
+                is Resource.Error -> {
+                    errorToast(response.message ?: "", requireContext())
+                }
+                is Resource.Loading -> {
+                }
             }
         })
 
@@ -78,7 +83,6 @@ class RecentlyFragment : Fragment() {
         binding.rvRecently.apply {
             adapter = recentlyAdapter
             layoutManager = LinearLayoutManager(activity)
-//            addOnScrollListener(this@RecentlyFragment.scrollListener)
         }
     }
 

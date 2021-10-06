@@ -3,13 +3,11 @@
 ### Will have this and more
  - Spotify API with OAuth 2.0.
  - MVVM and Dagger Hilt for DI.
- - Multiple endpoints such as top tracks, user playlist lists and playlist tracks.
+ - 18 endpoints used, from auth to create playlist and add track to queue.
  - Most songs have a preview listenable, also there's a botton with an intent for Spotify App.
  - Design almost the same as the Official Spotify App.
 
 #### Log in button works, it opens a custom tab to ask for user's authorization to use his Spotify data.
-![Login](https://i.imgur.com/4qbCvE4.jpg)
-![Home tab](https://i.imgur.com/z0UgKXk.jpg)
-![Your library tab](https://i.imgur.com/4Lq2cF0.jpg)
-![Playlist](https://i.imgur.com/XJgaQHS.jpg)
-![Profile](https://i.imgur.com/3cqhbi1.jpg)
+ [**All images here**](https://imgur.com/a/68Dfbzn)
+
+![Login](https://i.imgur.com/vPShQKr.jpg)  ![Home](https://i.imgur.com/Bp5DDOX.jpg)  ![Search](https://i.imgur.com/B4UEyfO.jpg)![Bottom Sheet](https://i.imgur.com/sFOxbBl.jpg)

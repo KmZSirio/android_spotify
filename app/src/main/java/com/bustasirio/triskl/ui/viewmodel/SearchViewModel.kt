@@ -113,12 +113,12 @@ class SearchViewModel @Inject constructor(
                                 if (it.isSuccessful) {
                                     categoriesSuccessful(it)
                                     newTokensResponse.postValue(accServiceResp.body())
-                                } else categoriesResponse.postValue(Resource.Error(it.message()))
+                                } else categoriesResponse.postValue(Resource.Error(it.code().toString()))
                             }
-                        } else categoriesResponse.postValue(Resource.Error(accServiceResp.message()))
+                        } else categoriesResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> categoriesResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> categoriesResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }
@@ -164,12 +164,12 @@ class SearchViewModel @Inject constructor(
                                 if (it.isSuccessful) {
                                     featuredResponse.postValue(Resource.Success(it.body()!!))
                                     newTokensResponse.postValue(accServiceResp.body())
-                                } else featuredResponse.postValue(Resource.Error(it.message()))
+                                } else featuredResponse.postValue(Resource.Error(it.code().toString()))
                             }
-                        } else featuredResponse.postValue(Resource.Error(accServiceResp.message()))
+                        } else featuredResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> featuredResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> featuredResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }

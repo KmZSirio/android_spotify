@@ -127,13 +127,13 @@ class SavedViewModel @Inject constructor(
                                     songsSuccessful(it)
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
-                                else songsResponse.postValue(Resource.Error(it.message()))
+                                else songsResponse.postValue(Resource.Error(it.code().toString()))
                             }
                         }
-                        else songsResponse.postValue(Resource.Error(accServiceResp.message()))
+                        else songsResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> songsResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> songsResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }
@@ -170,13 +170,13 @@ class SavedViewModel @Inject constructor(
                                     episodesSuccessful(it)
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
-                                else episodesResponse.postValue(Resource.Error(it.message()))
+                                else episodesResponse.postValue(Resource.Error(it.code().toString()))
                             }
                         }
-                        else episodesResponse.postValue(Resource.Error(accServiceResp.message()))
+                        else episodesResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> episodesResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> episodesResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }
@@ -213,13 +213,13 @@ class SavedViewModel @Inject constructor(
                                     showsSuccessful(it)
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
-                                else showsResponse.postValue(Resource.Error(it.message()))
+                                else showsResponse.postValue(Resource.Error(it.code().toString()))
                             }
                         }
-                        else showsResponse.postValue(Resource.Error(accServiceResp.message()))
+                        else showsResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> showsResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> showsResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }

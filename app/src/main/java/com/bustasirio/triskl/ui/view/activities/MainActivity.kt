@@ -1,29 +1,34 @@
 package com.bustasirio.triskl.ui.view.activities
 
-import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
-import com.bustasirio.triskl.R
 import com.bustasirio.triskl.core.Constants.Companion.CLIENT_ID
 import com.bustasirio.triskl.core.Constants.Companion.REDIRECT_URI
 import com.bustasirio.triskl.core.Constants.Companion.SCOPE
-import com.bustasirio.triskl.core.Resource
 import com.bustasirio.triskl.core.showToast
 import com.bustasirio.triskl.databinding.ActivityMainBinding
 import com.bustasirio.triskl.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import android.widget.Button
+import com.bustasirio.triskl.R
+import com.bustasirio.triskl.core.Resource
+
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    // ! FIXME Crash when app doesn't have internet
 
     private val mainVM: MainViewModel by viewModels()
 
@@ -37,6 +42,31 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        if (getPrefs()) {
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.custom_dialog)
+            dialog.window?.setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_background))
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.setCancelable(false)
+
+//            dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+            dialog.show()
+
+            val btnDialog: Button = dialog.findViewById(R.id.btnDialog)
+
+            btnDialog.setOnClickListener {
+                dialog.dismiss()
+                val sharedPrefs = getSharedPreferences(
+                    getString(R.string.preference_file_key),
+                    Context.MODE_PRIVATE
+                )
+                with(sharedPrefs.edit()) {
+                    putBoolean(getString(R.string.spotify_first_time), false)
+                    apply()
+                }
+            }
+        }
 
         binding.logInButton.setOnClickListener {
             val colorInt: Int = resources.getColor(R.color.spotifyBlack, resources.newTheme())
@@ -69,6 +99,16 @@ class MainActivity : AppCompatActivity() {
         binding.signUpButton.setOnClickListener {
             showToast(this, getString(R.string.decoration_main))
         }
+    }
+
+    private fun getPrefs(): Boolean {
+        Log.d("tagMainActivity", "getPrefs()")
+        val sharedPrefs =
+            this.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            )
+        return sharedPrefs.getBoolean(getString(R.string.spotify_first_time), true)
     }
 
     override fun onResume() {

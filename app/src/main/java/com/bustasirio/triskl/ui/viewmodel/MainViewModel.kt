@@ -52,7 +52,7 @@ class MainViewModel @Inject constructor(
             REDIRECT_URI
         ).let {
             if (it.isSuccessful) authResponse.postValue(Resource.Success(it.body()!!))
-            else authResponse.postValue(Resource.Error(it.message()))
+            else authResponse.postValue(Resource.Error(it.code().toString()))
         }
     }
 }

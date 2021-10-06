@@ -120,10 +120,8 @@ class HomeFragment : Fragment() {
                     if (response.data.artists.isEmpty()) binding.ivEmptyArtists.visibility =
                         View.VISIBLE
                 }
-                is Resource.Error -> {
-                }
-                is Resource.Loading -> {
-                }
+                is Resource.Error -> {}
+                is Resource.Loading -> {}
             }
         })
 
@@ -138,10 +136,8 @@ class HomeFragment : Fragment() {
                         binding.ivEmptyTracks.visibility = View.VISIBLE
                     }
                 }
-                is Resource.Error -> {
-                }
-                is Resource.Loading -> {
-                }
+                is Resource.Error -> {}
+                is Resource.Loading -> {}
             }
         })
 
@@ -152,10 +148,8 @@ class HomeFragment : Fragment() {
                     binding.rvTopTracksSixMonths.adapter = adapter
                     if (response.data.tracks.isEmpty()) mediumEmpty = true
                 }
-                is Resource.Error -> {
-                }
-                is Resource.Loading -> {
-                }
+                is Resource.Error -> {}
+                is Resource.Loading -> {}
             }
         })
 
@@ -166,16 +160,12 @@ class HomeFragment : Fragment() {
                     binding.rvTopTracksLifetime.adapter = adapter
                     if (response.data.tracks.isEmpty()) longEmpty = true
                 }
-                is Resource.Error -> {
-                }
-                is Resource.Loading -> {
-                }
+                is Resource.Error -> {}
+                is Resource.Loading -> {}
             }
         })
 
-        homeVM.errorResponse.observe(viewLifecycleOwner, {
-            errorToast(it, requireContext())
-        })
+        homeVM.errorResponse.observe(viewLifecycleOwner, { errorToast(it, requireContext()) })
 
         // * Save new tokens
         homeVM.newTokensResponse.observe(viewLifecycleOwner, { saveTokens(it, requireContext()) })

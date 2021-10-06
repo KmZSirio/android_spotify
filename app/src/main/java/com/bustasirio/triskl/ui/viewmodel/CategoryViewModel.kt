@@ -55,8 +55,8 @@ class CategoryViewModel @Inject constructor(
             else playlistsResponse.postValue(Resource.Error("internet"))
         } catch (t: Throwable) {
             when(t) {
-                is IOException -> playlistsResponse.postValue(Resource.Error("Network Failure"))
-                else -> playlistsResponse.postValue(Resource.Error("Conversion Error"))
+                is IOException -> playlistsResponse.postValue(Resource.Error("network"))
+                else -> playlistsResponse.postValue(Resource.Error("conversion"))
             }
         }
     }
@@ -97,13 +97,13 @@ class CategoryViewModel @Inject constructor(
                                     playlistsSuccessful(it)
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
-                                else playlistsResponse.postValue(Resource.Error(it.message()))
+                                else playlistsResponse.postValue(Resource.Error(it.code().toString()))
                             }
                         }
-                        else playlistsResponse.postValue(Resource.Error(accServiceResp.message()))
+                        else playlistsResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> playlistsResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> playlistsResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }

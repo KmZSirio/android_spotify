@@ -102,13 +102,13 @@ class LibraryViewModel @Inject constructor(
                                     userResponse.postValue(Resource.Success(it.body()!!))
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
-                                else userResponse.postValue(Resource.Error(it.message()))
+                                else userResponse.postValue(Resource.Error(it.code().toString()))
                             }
                         }
-                        else userResponse.postValue(Resource.Error(accServiceResp.message()))
+                        else userResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> userResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> userResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }
@@ -142,13 +142,13 @@ class LibraryViewModel @Inject constructor(
                                     playlistsSuccessful(it)
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
-                                else playlistsResponse.postValue(Resource.Error(it.message()))
+                                else playlistsResponse.postValue(Resource.Error(it.code().toString()))
                             }
                         }
-                        else playlistsResponse.postValue(Resource.Error(accServiceResp.message()))
+                        else playlistsResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> playlistsResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> playlistsResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }

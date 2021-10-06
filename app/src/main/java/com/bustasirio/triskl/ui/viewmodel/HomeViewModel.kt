@@ -104,13 +104,13 @@ class HomeViewModel @Inject constructor(
                                     artistsResponse.postValue(Resource.Success(it.body()!!))
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
-                                else artistsResponse.postValue(Resource.Error(it.message()))
+                                else errorResponse.postValue(it.code().toString())
                             }
                         }
-                        else artistsResponse.postValue(Resource.Error(accServiceResp.message()))
+                        else errorResponse.postValue(accServiceResp.code().toString())
                     }
                 }
-                else -> artistsResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> errorResponse.postValue(apiServiceResp.code().toString())
             }
         }
     }
@@ -149,13 +149,13 @@ class HomeViewModel @Inject constructor(
                                     if (term == "long_term") tracksLifetimeResponse.postValue(Resource.Success(it.body()!!))
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
-                                else errorResponse.postValue(it.message())
+                                else errorResponse.postValue(it.code().toString())
                             }
                         }
-                        else errorResponse.postValue(accServiceResp.message())
+                        else errorResponse.postValue(accServiceResp.code().toString())
                     }
                 }
-                else -> errorResponse.postValue(apiServiceResp.message())
+                else -> errorResponse.postValue(apiServiceResp.code().toString())
             }
         }
     }

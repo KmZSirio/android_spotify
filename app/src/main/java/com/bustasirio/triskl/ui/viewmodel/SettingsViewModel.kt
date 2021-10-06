@@ -82,12 +82,12 @@ class SettingsViewModel @Inject constructor(
                                 if (it.isSuccessful) {
                                     marketsResponse.postValue(Resource.Success(it.body()!!))
                                     newTokensResponse.postValue(accServiceResp.body())
-                                } else marketsResponse.postValue(Resource.Error(it.message()))
+                                } else marketsResponse.postValue(Resource.Error(it.code().toString()))
                             }
-                        } else marketsResponse.postValue(Resource.Error(accServiceResp.message()))
+                        } else marketsResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> marketsResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> marketsResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }

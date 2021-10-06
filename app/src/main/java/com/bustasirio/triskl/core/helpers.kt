@@ -3,6 +3,7 @@ package com.bustasirio.triskl.core
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
@@ -21,6 +22,7 @@ import com.bustasirio.triskl.R
 import com.bustasirio.triskl.data.model.AuthorizationModel
 import com.bustasirio.triskl.data.model.Playlist
 import com.bustasirio.triskl.data.model.Track
+import com.bustasirio.triskl.ui.view.activities.MainActivity
 import com.bustasirio.triskl.ui.view.fragments.BottomSheetFragment
 import com.bustasirio.triskl.ui.view.fragments.PlaylistFragment
 import com.bustasirio.triskl.ui.view.fragments.SavedFragment
@@ -188,8 +190,18 @@ fun errorToast(text: String, context: Context) {
         showToast(context, context.getString(R.string.network_problem))
     if (text == "conversion")
         showToast(context, context.getString(R.string.conversion_problem))
+    if (text == "403")
+        showToast(context, context.getString(R.string.told_you), true)
+    if (text == "404")
+        showToast(context, context.getString(R.string.not_found))
+    if (text == "429")
+        showToast(context, context.getString(R.string.too_many_requests))
+    if (text == "500")
+        showToast(context, context.getString(R.string.internal_server_error), true)
+    if (text == "503")
+        showToast(context, context.getString(R.string.service_unavailable))
     else
-        showToast(context, context.getString(R.string.something_wrong))
+        showToast(context, "Error " + text + context.getString(R.string.try_later))
 }
 
 
@@ -230,7 +242,7 @@ fun reproduce(context: Context, text: String, url: String?) {
 fun screenSize(activity: FragmentActivity): DisplayMetrics {
     val outMetrics = DisplayMetrics()
 
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         val display = activity.display
         display?.getRealMetrics(outMetrics)
     } else {
@@ -278,4 +290,27 @@ fun hasInternetConnection(connectivityManager: ConnectivityManager): Boolean {
         }
     }
     return false
+}
+
+fun logOut(activity: FragmentActivity, context: Context) {
+    activity.supportFragmentManager.popBackStack()
+
+    val sharedPrefs = context.getSharedPreferences(
+        context.getString(R.string.preference_file_key),
+        Context.MODE_PRIVATE
+    )
+    with(sharedPrefs.edit()) {
+        putString(context.getString(R.string.spotify_access_token), "")
+        putString(context.getString(R.string.spotify_token_type), "")
+        putString(context.getString(R.string.spotify_refresh_token), "")
+        putBoolean(context.getString(R.string.spotify_logged), false)
+        putString(context.getString(R.string.spotify_country), "")
+        putInt(context.getString(R.string.spotify_country_pos), 0)
+        putString(context.getString(R.string.spotify_language), "en_US")
+        apply()
+    }
+
+    val intent = Intent(context, MainActivity::class.java)
+    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    activity.startActivity(intent)
 }

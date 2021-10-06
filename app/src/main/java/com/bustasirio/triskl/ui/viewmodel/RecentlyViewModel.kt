@@ -79,13 +79,13 @@ class RecentlyViewModel @Inject constructor(
                                     recentlySuccessful(it)
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
-                                else recentlyResponse.postValue(Resource.Error(it.message()))
+                                else recentlyResponse.postValue(Resource.Error(it.code().toString()))
                             }
                         }
-                        else recentlyResponse.postValue(Resource.Error(accServiceResp.message()))
+                        else recentlyResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else ->recentlyResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else ->recentlyResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }

@@ -92,13 +92,13 @@ class PlaylistViewModel @Inject constructor(
                                     tracksSuccessful(it)
                                     newTokensResponse.postValue(accServiceResp.body())
                                 }
-                                else tracksResponse.postValue(Resource.Error(it.message()))
+                                else tracksResponse.postValue(Resource.Error(it.code().toString()))
                             }
                         }
-                        else tracksResponse.postValue(Resource.Error(accServiceResp.message()))
+                        else tracksResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> tracksResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> tracksResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }

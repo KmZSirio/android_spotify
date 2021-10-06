@@ -82,12 +82,12 @@ class EditViewModel @Inject constructor(
                                 if (it.code() == 200) {
                                     changedResponse.postValue(Resource.Success(true))
                                     newTokensResponse.postValue(accServiceResp.body())
-                                } else changedResponse.postValue(Resource.Error(it.message()))
+                                } else changedResponse.postValue(Resource.Error(it.code().toString()))
                             }
-                        } else changedResponse.postValue(Resource.Error(accServiceResp.message()))
+                        } else changedResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
                 }
-                else -> changedResponse.postValue(Resource.Error(apiServiceResp.message()))
+                else -> changedResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }

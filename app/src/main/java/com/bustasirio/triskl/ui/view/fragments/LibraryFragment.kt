@@ -87,7 +87,10 @@ class LibraryFragment : Fragment() {
                     }
                     user = response.data
                 }
-                is Resource.Error -> { errorToast(response.message ?: "", requireContext()) }
+                is Resource.Error -> {
+                    if (response.message != "403")
+                        errorToast(response.message ?: "", requireContext())
+                }
                 is Resource.Loading -> {}
             }
         })
@@ -122,7 +125,15 @@ class LibraryFragment : Fragment() {
                         reloading = false
                     }
                 }
-                is Resource.Error -> { errorToast(response.message ?: "", requireContext()) }
+                is Resource.Error -> {
+                    hideProgressBar(view)
+                    if (response.message == "403") {
+                        showToast(requireContext(), getString(R.string.told_you), true)
+                        logOut(requireActivity(), requireContext())
+                    } else {
+                        errorToast(response.message ?: "", requireContext())
+                    }
+                }
                 is Resource.Loading -> { showProgressBar(view) }
             }
 
