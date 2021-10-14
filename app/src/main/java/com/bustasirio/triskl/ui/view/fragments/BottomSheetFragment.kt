@@ -55,6 +55,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
         binding.tvTrackBottomSheet.text = track.name
         binding.tvArtistBottomSheet.text = track.artists[0].name
+        binding.tvAlbumBottomSheet.text = track.album.name
 
         binding.playBottomSheet.setOnClickListener {
             reproduce(

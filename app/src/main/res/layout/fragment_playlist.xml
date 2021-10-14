@@ -129,6 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:visibility="gone"
             android:baselineAlignBottom="false"
             android:contentDescription="@string/random_play_button"
             android:src="@drawable/ic_round_play_arrow_30"
@@ -136,7 +137,8 @@
             app:layout_anchor="@id/collapsingPlaylist"
             app:layout_anchorGravity="end|bottom"
             android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/spotifyGreen"/>
+            android:backgroundTint="@color/spotifyGreen"
+            android:focusable="true" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <ImageButton

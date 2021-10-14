@@ -96,6 +96,7 @@
             android:id="@+id/fabSaved"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:clickable="true"
             android:baselineAlignBottom="false"
             android:contentDescription="@string/random_play_button"
@@ -104,7 +105,8 @@
             app:layout_anchor="@id/collapsingSaved"
             app:layout_anchorGravity="end|bottom"
             android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/spotifyGreen"/>
+            android:backgroundTint="@color/spotifyGreen"
+            android:focusable="true" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <ImageButton

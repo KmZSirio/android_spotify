@@ -46,7 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivBottomSheet"
-            android:text="Si puedo volverte a ver (feat. Miguel Bose)" />
+            tools:text="Si puedo volverte a ver (feat. Miguel Bose)" />
 
         <TextView
             android:id="@+id/tvArtistBottomSheet"
@@ -62,7 +62,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTrackBottomSheet"
-            android:text="Benny" />
+            tools:text="Benny" />
+
+        <TextView
+            android:id="@+id/tvAlbumBottomSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxEms="12"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvArtistBottomSheet"
+            tools:text="Benny" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +87,7 @@
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvArtistBottomSheet">
+            app:layout_constraintTop_toBottomOf="@+id/tvAlbumBottomSheet">
 
             <Button
                 android:id="@+id/playBottomSheet"

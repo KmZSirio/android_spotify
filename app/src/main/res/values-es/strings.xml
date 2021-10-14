@@ -117,4 +117,6 @@
     <string name="service_unavailable">503: Servicio no disponible. Intente mas tarde.</string>
     <string name="not_found">404: No encontrado. Intente mas tarde.</string>
     <string name="try_later">. Intente mas tarde.</string>
+    <string name="triskl_logo">Triskl logo</string>
+    <string name="all_content_provided_by">Todo el contenido es proveído por</string>
 </resources>

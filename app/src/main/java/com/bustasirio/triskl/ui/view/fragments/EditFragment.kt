@@ -83,6 +83,10 @@ class EditFragment : Fragment() {
             removeAnnoyingFrag(requireActivity().supportFragmentManager)
         }
 
+        binding.btnImageEdit.setOnClickListener {
+            showToast(requireContext(), getString(R.string.not_working))
+        }
+
         editVM.changedResponse.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Success -> {

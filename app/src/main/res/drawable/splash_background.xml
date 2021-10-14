@@ -2,14 +2,22 @@
 <layer-list android:opacity="opaque"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/spotifyBlack"/>
+    <item android:drawable="@color/black"/>
 
-    <item android:width="150dp"
-        android:height="150dp"
+    <item android:height="230dp"
+        android:width="230dp"
+        android:bottom="200dp"
         android:gravity="center">
 
-        <bitmap android:src="@drawable/icon_green"/>
+        <bitmap android:src="@drawable/triskl_logo"/>
+    </item>
 
+    <item android:height="40dp"
+        android:width="133dp"
+        android:top="200dp"
+        android:gravity="center">
+
+        <bitmap android:src="@drawable/spotify_logo"/>
     </item>
 
 </layer-list>

@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.bustasirio.triskl.R
 
 class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

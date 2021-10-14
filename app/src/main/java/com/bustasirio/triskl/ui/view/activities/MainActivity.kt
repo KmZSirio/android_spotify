@@ -24,7 +24,6 @@ import android.widget.Button
 import com.bustasirio.triskl.R
 import com.bustasirio.triskl.core.Resource
 
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -82,22 +81,6 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Uri.parse("$baseUrl$endpoint?client_id=$CLIENT_ID&response_type=$responseType&redirect_uri=$REDIRECT_URI&scope=$SCOPE&state=$stateSpotify")
             )
-        }
-
-        binding.phoneButton.setOnClickListener {
-            showToast(this, getString(R.string.decoration_main))
-        }
-
-        binding.googleButton.setOnClickListener {
-            showToast(this, getString(R.string.decoration_main))
-        }
-
-        binding.facebookButton.setOnClickListener {
-            showToast(this, getString(R.string.decoration_main))
-        }
-
-        binding.signUpButton.setOnClickListener {
-            showToast(this, getString(R.string.decoration_main))
         }
     }
 

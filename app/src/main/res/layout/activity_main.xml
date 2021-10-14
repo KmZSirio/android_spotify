@@ -8,6 +8,7 @@
     tools:context=".ui.view.activities.MainActivity">
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,125 +31,69 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="bottom"
-            android:background="@drawable/gradient_login"/>
+            android:background="@drawable/gradient_login" />
 
     </FrameLayout>
 
-    <Button
-        android:id="@+id/logInButton"
-        android:theme="@style/LogInBlackButton"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="25dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/log_in"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18sp"
+    <TextView
+        android:id="@+id/tvContentMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/all_content_provided_by"
+        android:textColor="@color/spotifyGreen"
+        android:textStyle="bold"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/spotifyLogoMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/spotifyLogoMain"
+        android:layout_width="160dp"
+        android:layout_height="90dp"
+        android:padding="25dp"
+        android:contentDescription="@string/background_image_shadow_of_someone_listening_music"
+        android:scaleType="centerCrop"
+        android:src="@drawable/spotify_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/facebookButton"
-        android:theme="@style/ContinueBlackButton"
-        app:icon="@drawable/ic_facebook_24"
-        app:iconTint="@color/white"
+        android:id="@+id/logInButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="10dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="36dp"
-        android:gravity="center"
-        android:fontFamily="sans-serif"
-        android:text="@string/continue_with_facebook"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/logInButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/googleButton"
-        android:theme="@style/ContinueBlackButton"
-        app:icon="@drawable/ic_google_24"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:paddingStart="20dp"
-        android:paddingEnd="36dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/continue_with_google"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/facebookButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/phoneButton"
-        android:theme="@style/ContinueBlackButton"
-        app:icon="@drawable/ic_cellphone_24"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:paddingStart="20dp"
-        android:paddingEnd="36dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/continue_with_phone_number"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/googleButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/signUpButton"
-        android:theme="@style/SignUpGreenButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginEnd="30dp"
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:paddingStart="40dp"
         android:paddingEnd="56dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/sign_up_free"
+        android:text="@string/log_in"
         android:textAllCaps="false"
         android:textColor="@color/spotifyBlack"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/phoneButton"
+        android:theme="@style/SignUpGreenButton"
+        app:layout_constraintBottom_toTopOf="@+id/tvContentMain"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/secondLoginText" />
 
     <TextView
         android:id="@+id/secondLoginText"
-        android:text="@string/free_on_spotify"
-        android:textColor="@color/white"
-        android:fontFamily="sans-serif"
-        android:textSize="40sp"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/signUpButton"
+        android:fontFamily="sans-serif"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:text="@string/free_on_spotify"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/firstLoginText"
