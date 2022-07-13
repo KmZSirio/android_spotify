@@ -60,7 +60,7 @@ class EditFragment : Fragment() {
             val editedDesc = binding.edTxDescriptionEdit.text.toString()
 
             if (editedName == playlist.name && editedDesc == playlist.description) {
-                Toast.makeText(requireContext(), "No detail has changed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.has_not_changed), Toast.LENGTH_SHORT).show()
             } else {
                 if (editedName == "") editedName = playlist.name
 
@@ -127,8 +127,6 @@ class EditFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         editVM.authorizationWithToken.value = "$tokenType $accessToken"
-        editVM.auth.value =
-            resources.getString(R.string.esl)
         editVM.refreshToken.value = refreshToken
     }
 

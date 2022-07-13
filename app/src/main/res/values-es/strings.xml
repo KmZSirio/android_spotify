@@ -119,4 +119,7 @@
     <string name="try_later">. Intente mas tarde.</string>
     <string name="triskl_logo">Triskl logo</string>
     <string name="all_content_provided_by">Todo el contenido es proveído por</string>
+    <string name="gradient">Degradado</string>
+    <string name="has_not_changed">No cambio nada</string>
+    <string name="created_description">Generado el</string>
 </resources>

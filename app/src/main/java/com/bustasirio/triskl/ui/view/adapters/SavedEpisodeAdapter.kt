@@ -46,7 +46,7 @@ class SavedEpisodeAdapter :
 
         holder.itemView.apply {
             holder.tvNamePodcastItem.text = savedEpisode.episode.name
-            holder.tvPublisherPodcastItem.text = savedEpisode.episode.show.publisher
+            holder.tvPublisherPodcastItem.text = savedEpisode.episode.show?.publisher ?: ""
             holder.tvDescriptionPodcastItem.text = savedEpisode.episode.description
 
             if (savedEpisode.episode.images.isNotEmpty()) {

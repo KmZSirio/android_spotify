@@ -69,7 +69,7 @@ class RecentlyFragment : Fragment() {
             reproduce(
                 requireContext(),
                 getString(R.string.reproduce_toast),
-                it.track.preview_url
+                it.track.previewUrl
             )
         }
 
@@ -99,8 +99,6 @@ class RecentlyFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         recentlyVM.authorizationWithToken.value = "$tokenType $accessToken"
-        recentlyVM.auth.value =
-            resources.getString(R.string.esl)
         recentlyVM.refreshToken.value = refreshToken
     }
 

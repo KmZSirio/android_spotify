@@ -134,7 +134,7 @@ class SavedFragment : Fragment() {
             reproduce(
                 requireContext(),
                 getString(R.string.reproduce_toast),
-                it.track.preview_url
+                it.track.previewUrl
             )
         }
         savedSongsAdapter.setOnMenuClickListener {
@@ -173,7 +173,7 @@ class SavedFragment : Fragment() {
             reproduce(
                 requireContext(),
                 getString(R.string.reproduce_toast),
-                it.episode.audio_preview_url
+                it.episode.audioPreviewUrl
             )
         }
 
@@ -293,8 +293,6 @@ class SavedFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         savedVM.authorizationWithToken.value = "$tokenType $accessToken"
-        savedVM.auth.value =
-            resources.getString(R.string.esl)
         savedVM.refreshToken.value = refreshToken
     }
 

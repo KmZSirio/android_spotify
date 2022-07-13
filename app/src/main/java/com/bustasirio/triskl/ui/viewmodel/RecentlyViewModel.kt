@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bustasirio.triskl.MyApplication
 import com.bustasirio.triskl.core.Constants
+import com.bustasirio.triskl.core.ESL
 import com.bustasirio.triskl.core.Resource
 import com.bustasirio.triskl.core.hasInternetConnection
 import com.bustasirio.triskl.data.model.AuthorizationModel
@@ -33,7 +34,6 @@ class RecentlyViewModel @Inject constructor(
     val newTokensResponse = MutableLiveData<AuthorizationModel>()
 
     val authorizationWithToken = MutableLiveData<String>() // "$tokenType $accessToken"
-    val auth = MutableLiveData<String>() // prefs
 
     // * To renew token
     val refreshToken = MutableLiveData<String>() // prefs
@@ -63,7 +63,7 @@ class RecentlyViewModel @Inject constructor(
                 apiServiceResp.code() == 401 -> {
 
                     accountsService.getNewToken(
-                        auth.value!!,
+                        ESL.ESL,
                         "refresh_token",
                         refreshToken.value!!,
                         Constants.REDIRECT_URI

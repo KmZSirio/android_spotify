@@ -54,7 +54,7 @@ class LibraryPlaylistsAdapter :
         holder.itemView.apply {
             holder.tvNameYourLibraryItem.text = playlist.name
             holder.tvDescriptionYourLibraryItem.text =
-                type + " • " + playlist.owner.display_name
+                type + " • " + playlist.owner.displayName
             if (playlist.images.isNotEmpty()) {
                 Picasso.get().load(playlist.images[0].url)
                     .into(holder.ivPlaylistYourLibraryItem)

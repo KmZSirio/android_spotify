@@ -31,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="bottom"
-            android:background="@drawable/gradient_login" />
+            android:background="@drawable/gradient_login"
+            android:contentDescription="@string/gradient" />
 
     </FrameLayout>
 
@@ -41,8 +42,8 @@
         android:layout_height="wrap_content"
         android:text="@string/all_content_provided_by"
         android:textColor="@color/spotifyGreen"
-        android:textStyle="bold"
         android:textSize="13sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/spotifyLogoMain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -51,8 +52,8 @@
         android:id="@+id/spotifyLogoMain"
         android:layout_width="160dp"
         android:layout_height="90dp"
-        android:padding="25dp"
         android:contentDescription="@string/background_image_shadow_of_someone_listening_music"
+        android:padding="28dp"
         android:scaleType="centerCrop"
         android:src="@drawable/spotify_logo"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -64,8 +65,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginBottom="50dp"
         android:layout_marginEnd="30dp"
+        android:layout_marginBottom="50dp"
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:paddingStart="40dp"
@@ -88,6 +89,7 @@
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
         android:text="@string/free_on_spotify"
+        android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -97,15 +99,15 @@
 
     <TextView
         android:id="@+id/firstLoginText"
-        android:text="@string/millions_of_songs"
-        android:textColor="@color/white"
-        android:fontFamily="sans-serif"
-        android:textSize="40sp"
-        android:textAlignment="center"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:text="@string/millions_of_songs"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/secondLoginText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -114,11 +116,11 @@
         android:id="@+id/spotifyLoginImage"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        app:layout_constraintBottom_toTopOf="@+id/firstLoginText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="15dp"
         android:contentDescription="@string/spotify_logo"
         android:src="@drawable/icon_white"
-        android:layout_marginBottom="15dp"/>
+        app:layout_constraintBottom_toTopOf="@+id/firstLoginText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

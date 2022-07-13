@@ -61,7 +61,7 @@ class PlaylistFragment : Fragment() {
         binding.rvPlaylist.overScrollMode = View.OVER_SCROLL_NEVER
 
         binding.tvTitlePlaylist.text = playlist.name
-        binding.tvOwnerPlaylist.text = playlist.owner.display_name
+        binding.tvOwnerPlaylist.text = playlist.owner.displayName
 
         // * Appbar height depending if the playlist has a description
         if (playlist.description.isNullOrEmpty()) descriptionIsEmpty(binding)
@@ -110,7 +110,7 @@ class PlaylistFragment : Fragment() {
             reproduce(
                 requireContext(),
                 getString(R.string.reproduce_toast),
-                it.track.preview_url
+                it.track.previewUrl
             )
         }
         playlistAdapter.setOnMenuClickListener {
@@ -223,8 +223,6 @@ class PlaylistFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         playlistVM.authorizationWithToken.value = "$tokenType $accessToken"
-        playlistVM.auth.value =
-            resources.getString(R.string.esl)
         playlistVM.refreshToken.value = refreshToken
     }
 

@@ -95,7 +95,9 @@ class CreateFragment : Fragment() {
 
             val title = "Top $size songs in the $timeRange"
             val description = "${dt.dayOfMonth}-$month-${dt.year}"
-            val json = "{\"name\":\"$title\", \"description\":\"Generated on $description\"}"
+            val json = "{\"name\":\"$title\", \"description\":\"" +
+                    getString(R.string.created_description) +
+                    " $description\"}"
 
             val body = RequestBody.create(MediaType.parse("text/plain"), json)
             createVM.requestBody.value = body
@@ -155,8 +157,6 @@ class CreateFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         createVM.authorizationWithToken.value = "$tokenType $accessToken"
-        createVM.auth.value =
-            resources.getString(R.string.esl)
         createVM.refreshToken.value = refreshToken
     }
 

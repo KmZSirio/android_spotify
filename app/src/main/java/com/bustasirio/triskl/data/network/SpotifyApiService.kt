@@ -1,5 +1,6 @@
 package com.bustasirio.triskl.data.network
 
+import android.util.Log
 import com.bustasirio.triskl.data.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,6 +14,7 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
         auth: String,
         limit: String
     ): Response<TopArtistsModel> {
+        Log.d("authSpotifyApiService", auth)
         return withContext(Dispatchers.IO) {
             api.getTopArtists(
                 auth,
@@ -243,6 +245,34 @@ class SpotifyApiService @Inject constructor(private val api: SpotifyApiClient) {
             api.postToQueue(
                 auth,
                 uri
+            )
+        }
+    }
+
+    suspend fun search(
+        auth: String,
+        query: String,
+        type: String,
+        limit: String
+    ) : Response<SearchModel> {
+        return withContext(Dispatchers.IO) {
+            api.search(
+                auth,
+                query,
+                type,
+                limit
+            )
+        }
+    }
+
+    suspend fun getEpisode(
+        auth: String,
+        episodeId: String
+    ) : Response<Episode> {
+        return withContext(Dispatchers.IO) {
+            api.getEpisode(
+                auth,
+                episodeId
             )
         }
     }

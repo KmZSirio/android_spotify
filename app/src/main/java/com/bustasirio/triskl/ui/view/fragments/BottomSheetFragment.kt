@@ -61,7 +61,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             reproduce(
                 requireContext(),
                 getString(R.string.reproduce_toast),
-                track.preview_url
+                track.previewUrl
             )
         }
 
@@ -73,7 +73,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         binding.shareBottomSheet.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, track.external_urls.spotify)
+                putExtra(Intent.EXTRA_TEXT, track.externalUrls.spotify)
                 type = "text/plain"
             }
             val shareIntent = Intent.createChooser(sendIntent, "Share to:")
@@ -151,8 +151,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         bottomSheetVM.authorizationWithToken.value = "$tokenType $accessToken"
-        bottomSheetVM.auth.value =
-            resources.getString(R.string.esl)
         bottomSheetVM.refreshToken.value = refreshToken
     }
 }

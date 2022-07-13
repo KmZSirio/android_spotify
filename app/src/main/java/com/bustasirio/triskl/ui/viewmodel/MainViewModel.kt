@@ -3,11 +3,13 @@ package com.bustasirio.triskl.ui.viewmodel
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bustasirio.triskl.MyApplication
 import com.bustasirio.triskl.core.Constants.Companion.REDIRECT_URI
+import com.bustasirio.triskl.core.ESL
 import com.bustasirio.triskl.core.Resource
 import com.bustasirio.triskl.core.hasInternetConnection
 import com.bustasirio.triskl.data.model.AuthorizationModel
@@ -26,7 +28,7 @@ class MainViewModel @Inject constructor(
     val authResponse: MutableLiveData<Resource<AuthorizationModel>> = MutableLiveData()
 
     val code = MutableLiveData<String>()
-    val auth = MutableLiveData<String>()
+//    val auth = MutableLiveData<String>()
 
     fun safeGetAuth() {
         val connectivityManager = getApplication<MyApplication>().getSystemService(
@@ -46,13 +48,22 @@ class MainViewModel @Inject constructor(
 
     private fun getAuth() = viewModelScope.launch {
         service.getAuth(
-            auth.value!!,
+            ESL.ESL,
             "authorization_code",
             code.value!!,
             REDIRECT_URI
         ).let {
+
+            Log.d("tagMainVM", "auth ${ESL.ESL}")
+            Log.d("tagMainVM", "code ${code.value!!}")
+            Log.d("tagMainVM", "Error $REDIRECT_URI")
+
             if (it.isSuccessful) authResponse.postValue(Resource.Success(it.body()!!))
-            else authResponse.postValue(Resource.Error(it.code().toString()))
+            else {
+                Log.d("tagMainVM", "Error ${it.code()}")
+                Log.d("tagMainVM", "Error ${it.errorBody()}")
+                authResponse.postValue(Resource.Error(it.code().toString()))
+            }
         }
     }
 }

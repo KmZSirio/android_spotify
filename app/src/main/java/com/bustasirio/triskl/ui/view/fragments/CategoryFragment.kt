@@ -181,8 +181,6 @@ class CategoryFragment : Fragment() {
 
         categoryVM.country.value = country
         categoryVM.authorizationWithToken.value = "$tokenType $accessToken"
-        categoryVM.auth.value =
-            resources.getString(R.string.esl)
         categoryVM.refreshToken.value = refreshToken
     }
 

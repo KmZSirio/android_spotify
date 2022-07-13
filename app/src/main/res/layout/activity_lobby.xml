@@ -36,6 +36,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
+        android:contentDescription="@string/gradient"
         android:layout_width="match_parent"
         android:layout_height="155dp"
         android:backgroundTintMode="multiply"

@@ -1,15 +1,19 @@
 package com.bustasirio.triskl.data.model
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class User(
     val country: String,
-    val display_name: String,
+    @SerializedName("display_name")
+    val displayName: String,
     val email: String,
-    val explicit_content: ExplicitContent,
-    val external_urls: ExternalUrls,
+    @SerializedName("explicit_content")
+    val explicitContent: ExplicitContent,
+    @SerializedName("external_urls")
+    val externalUrls: ExternalUrls,
     val followers: Followers,
     val href: String,
     val id: String,

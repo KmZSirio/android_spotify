@@ -174,8 +174,6 @@ class SearchFragment : Fragment() {
         searchVM.language.value = language
         searchVM.country.value = country
         searchVM.authorizationWithToken.value = "$tokenType $accessToken"
-        searchVM.auth.value =
-            resources.getString(R.string.esl)
         searchVM.refreshToken.value = refreshToken
     }
 }

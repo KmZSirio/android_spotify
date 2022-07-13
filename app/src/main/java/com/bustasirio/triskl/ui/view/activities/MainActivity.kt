@@ -40,7 +40,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        Log.d("tagMain", "onCreate")
 
         if (getPrefs()) {
             val dialog = Dialog(this)
@@ -49,7 +50,6 @@ class MainActivity : AppCompatActivity() {
             dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             dialog.setCancelable(false)
 
-//            dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
             dialog.show()
 
             val btnDialog: Button = dialog.findViewById(R.id.btnDialog)
@@ -85,7 +85,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getPrefs(): Boolean {
-        Log.d("tagMainActivity", "getPrefs()")
         val sharedPrefs =
             this.getSharedPreferences(
                 getString(R.string.preference_file_key),
@@ -102,7 +101,6 @@ class MainActivity : AppCompatActivity() {
                 .contains("access_denied")
         ) {
             mainVM.code.value = uri.getQueryParameter("code")!!
-            mainVM.auth.value = resources.getString(R.string.esl)
 
             mainVM.safeGetAuth()
 

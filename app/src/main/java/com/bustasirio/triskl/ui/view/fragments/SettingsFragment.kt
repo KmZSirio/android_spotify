@@ -1,8 +1,8 @@
 package com.bustasirio.triskl.ui.view.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import com.bustasirio.triskl.R
 import com.bustasirio.triskl.core.*
 import com.bustasirio.triskl.databinding.FragmentSettingsBinding
-import com.bustasirio.triskl.ui.view.activities.MainActivity
 import com.bustasirio.triskl.ui.view.adapters.CountrySpinnerAdapter
 import com.bustasirio.triskl.ui.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -146,8 +145,6 @@ class SettingsFragment : Fragment() {
         language = sharedPrefs.getString(getString(R.string.spotify_language), "en_US") ?: "en_US"
 
         settingsVM.authorizationWithToken.value = "$tokenType $accessToken"
-        settingsVM.auth.value =
-            resources.getString(R.string.esl)
         settingsVM.refreshToken.value = refreshToken
     }
 }

@@ -251,8 +251,6 @@ class LibraryFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         libraryVM.authorizationWithToken.value = "$tokenType $accessToken"
-        libraryVM.auth.value =
-            resources.getString(R.string.esl)
         libraryVM.refreshToken.value = refreshToken
     }
 }

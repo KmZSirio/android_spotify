@@ -35,7 +35,7 @@ class ProfileFragment : Fragment() {
         requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyGreen)
 
         if (user != null) {
-            binding.tvNameProfile.text = user.display_name
+            binding.tvNameProfile.text = user.displayName
             binding.tvFollowersProfile.text = "${user.followers.total}"
             binding.tvPlaylistProfile.text = "$noPlaylists"
 

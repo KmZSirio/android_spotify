@@ -26,8 +26,9 @@ class TopArtistsAdapter(private val artists: List<Artist>) :
         position: Int
     ) {
         holder.tvArtistName.text = artists[position].name
-        if (artists[position].images.isNotEmpty()) {
-            Picasso.get().load(artists[position].images[0].url).into(holder.ivArtistImage)
+        if (artists[position].images != null) {
+            if (artists[position].images!!.isNotEmpty())
+                Picasso.get().load(artists[position].images!![0].url).into(holder.ivArtistImage)
         } else {
             holder.ivArtistImage.setImageResource(R.drawable.artist_cover)
         }

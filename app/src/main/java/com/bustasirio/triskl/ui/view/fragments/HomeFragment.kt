@@ -195,8 +195,6 @@ class HomeFragment : Fragment() {
             sharedPrefs.getString(getString(R.string.spotify_refresh_token), "")
 
         homeVM.authorizationWithToken.value = "$tokenType $accessToken"
-        homeVM.auth.value =
-            resources.getString(R.string.esl)
         homeVM.refreshToken.value = refreshToken
     }
 

@@ -209,4 +209,28 @@ interface SpotifyApiClient {
         @Header("Authorization") auth: String,
         @Query("uri") uri: String
     ): Response<Unit>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("/v1/search")
+    suspend fun search(
+        @Header("Authorization") auth: String,
+        @Query("q") query: String,
+        @Query("type") type: String,
+        @Query("limit") limit: String
+    ): Response<SearchModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET("/v1/episodes/{episode_id}")
+    suspend fun getEpisode(
+        @Header("Authorization") auth: String,
+        @Path("episode_id") episodeId: String,
+    ): Response<Episode>
 }

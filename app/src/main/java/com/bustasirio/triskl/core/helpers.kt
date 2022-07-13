@@ -1,7 +1,6 @@
 package com.bustasirio.triskl.core
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,7 +16,6 @@ import androidx.fragment.app.DialogFragment.STYLE_NO_FRAME
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import com.bustasirio.triskl.MyApplication
 import com.bustasirio.triskl.R
 import com.bustasirio.triskl.data.model.AuthorizationModel
 import com.bustasirio.triskl.data.model.Playlist

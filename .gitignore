@@ -13,4 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-/app/src/main/res/values/esl.xml
+/app/src/main/java/com/bustasirio/triskl/core/ESL.kt

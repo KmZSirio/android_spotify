@@ -48,7 +48,7 @@ class RecentlyAdapter :
 
         holder.itemView.apply {
 
-            val string = playHistory.played_at
+            val string = playHistory.playedAt
             val fmt: org.joda.time.format.DateTimeFormatter = ISODateTimeFormat.dateTime()
             holder.tvTimeRecentlyItem.text = fmt.parseDateTime(string).toString("HH:mm")
             holder.tvDateRecentlyItem.text = fmt.parseDateTime(string).toString("MMM dd")
