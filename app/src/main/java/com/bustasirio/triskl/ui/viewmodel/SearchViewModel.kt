@@ -55,7 +55,7 @@ class SearchViewModel @Inject constructor(
             if (hasInternetConnection(connectivityManager)) fetchCategories()
             else categoriesResponse.postValue(Resource.Error("internet"))
         } catch (t: Throwable) {
-            when(t) {
+            when (t) {
                 is IOException -> categoriesResponse.postValue(Resource.Error("network"))
                 else -> categoriesResponse.postValue(Resource.Error("conversion"))
             }
@@ -71,7 +71,7 @@ class SearchViewModel @Inject constructor(
             if (hasInternetConnection(connectivityManager)) fetchFeaturedPlaylists()
             else featuredResponse.postValue(Resource.Error("internet"))
         } catch (t: Throwable) {
-            when(t) {
+            when (t) {
                 is IOException -> featuredResponse.postValue(Resource.Error("network"))
                 else -> featuredResponse.postValue(Resource.Error("conversion"))
             }
@@ -168,8 +168,7 @@ class SearchViewModel @Inject constructor(
                             }
                         } else featuredResponse.postValue(Resource.Error(accServiceResp.code().toString()))
                     }
-                }
-                else -> featuredResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
+                } else -> featuredResponse.postValue(Resource.Error(apiServiceResp.code().toString()))
             }
         }
     }

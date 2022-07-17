@@ -34,7 +34,6 @@ class TopTracksAdapter(private val tracks: List<Track>) :
     override fun getItemCount(): Int = tracks.size
 
     class TopTracksHolder(val view: View) : RecyclerView.ViewHolder(view) {
-
         val ivTrackImage: ImageView = view.findViewById(R.id.ivTrackImageOnRepeat)
         val tvTrackName: TextView = view.findViewById(R.id.tvTrackNameOnRepeat)
         val tvArtistName: TextView = view.findViewById(R.id.tvArtistNameOnRepeat)

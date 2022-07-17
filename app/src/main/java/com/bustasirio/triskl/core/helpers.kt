@@ -26,6 +26,9 @@ import com.bustasirio.triskl.ui.view.fragments.PlaylistFragment
 import com.bustasirio.triskl.ui.view.fragments.SavedFragment
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 
@@ -312,3 +315,5 @@ fun logOut(activity: FragmentActivity, context: Context) {
     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
     activity.startActivity(intent)
 }
+
+fun msToMin(ms: Int): String = TimeUnit.MILLISECONDS.toMinutes(ms.toLong()).toString()

@@ -19,7 +19,6 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.joda.time.DateTime
 
-
 @AndroidEntryPoint
 class CreateFragment : Fragment() {
 

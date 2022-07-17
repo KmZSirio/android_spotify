@@ -122,4 +122,18 @@
     <string name="gradient">Gradient</string>
     <string name="has_not_changed">No detail has changed</string>
     <string name="created_description">Generated on</string>
+    <string name="search_box">Artists, songs, or podcasts</string>
+    <string name="search_query">Search query</string>
+    <string name="songs">Songs</string>
+    <string name="artists">Artists</string>
+    <string name="playlists">Playlists</string>
+    <string name="albums">Albums</string>
+    <string name="episodes">Episodes</string>
+    <string name="podcasts_and_shows">Podcasts &amp; shows</string>
+    <string name="search_result_1">Play what you love</string>
+    <string name="search_result_2">Search for artists, songs, podcasts, and more.</string>
+    <string name="search_result_incorrect_1">Couldn\'t find </string>
+    <string name="search_result_incorrect_2">Try searching again using a different spelling or keyword.</string>
+    <string name="podcast_cover_image">Podcast cover image</string>
+    <string name="episode_cover_image">Episode cover image</string>
 </resources>

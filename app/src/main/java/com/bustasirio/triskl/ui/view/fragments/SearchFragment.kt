@@ -17,6 +17,7 @@ import com.bustasirio.triskl.databinding.FragmentSearchBinding
 import com.bustasirio.triskl.ui.view.adapters.CategoryAdapter
 import com.bustasirio.triskl.ui.view.adapters.FeaturedAdapter
 import com.bustasirio.triskl.ui.viewmodel.SearchViewModel
+import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import org.joda.time.DateTime
 
@@ -59,6 +60,25 @@ class SearchFragment : Fragment() {
         setupFeaturedRW(binding)
 
         requireActivity().window.statusBarColor = requireActivity().getColor(R.color.spotifyBlack)
+
+        // * To show the proper SearchBox depending on the extended/collapsed appBar
+        var isShow = true
+        var scrollRange = -1
+        binding.appBarSearch.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
+            if (scrollRange == -1) {
+                scrollRange = barLayout?.totalScrollRange!!
+            }
+            if (scrollRange + verticalOffset == 0) {
+                binding.cvExtendedSearch.visibility = View.GONE
+                binding.cvCollapsedSearch.visibility = View.VISIBLE
+                isShow = true
+//                binding.toolbarSearch.background =
+//                    resources.getDrawable(R.drawable.gradient_collapsed, resources.newTheme())
+            } else if (isShow) {
+                binding.cvExtendedSearch.visibility = View.VISIBLE
+                binding.cvCollapsedSearch.visibility = View.GONE
+            }
+        })
 
         // * CATEGORIES
         searchVM.categoriesResponse.observe(viewLifecycleOwner, { response ->
@@ -112,6 +132,20 @@ class SearchFragment : Fragment() {
         }
 
         searchVM.newTokensResponse.observe(viewLifecycleOwner, { saveTokens(it, requireContext()) })
+
+        // * Go to SearchResult
+        binding.cvCollapsedSearch.setOnClickListener {
+            replaceFrag(
+                requireActivity(),
+                SearchResultFragment()
+            )
+        }
+        binding.cvExtendedSearch.setOnClickListener {
+            replaceFrag(
+                requireActivity(),
+                SearchResultFragment()
+            )
+        }
     }
 
     private fun setupCategoryRW(binding: FragmentSearchBinding) {

@@ -1,32 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="20dp"
-    android:paddingStart="10dp"
-    android:paddingEnd="10dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/clPodcastItem">
+    android:id="@+id/clAlbumItem">
 
-    <androidx.cardview.widget.CardView
-        app:cardCornerRadius="10dp"
-        android:id="@+id/cvPodcastItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ivImageAlbumItem"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <ImageView
-            android:id="@+id/ivImagePodcastItem"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            tools:src="@drawable/playlist_cover"
-            android:contentDescription="@string/podcast_cover_image" />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/playlist_cover"
+        android:contentDescription="@string/album_cover_image" />
 
     <TextView
-        android:id="@+id/tvNamePodcastItem"
+        android:id="@+id/tvNameAlbumItem"
         tools:text="Believe (Deluxe)"
         android:textAlignment="textStart"
         android:maxLines="1"
@@ -38,11 +30,11 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvPodcastItem" />
+        app:layout_constraintTop_toBottomOf="@+id/ivImageAlbumItem" />
 
     <TextView
-        android:id="@+id/tvPublisherPodcastItem"
-        tools:text="Believe (Deluxe)"
+        android:id="@+id/tvArtistAlbumItem"
+        tools:text="Andrea Bocelli"
         android:textAlignment="textStart"
         android:maxLines="1"
         android:ellipsize="end"
@@ -53,5 +45,20 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNamePodcastItem" />
+        app:layout_constraintTop_toBottomOf="@+id/tvNameAlbumItem" />
+
+    <TextView
+        android:id="@+id/tvYearAlbumItem"
+        tools:text="2020"
+        android:textAlignment="textStart"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="15sp"
+        android:paddingTop="2dp"
+        android:textColor="@color/spotifyGreyLighter"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvArtistAlbumItem" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/spotifyBlack"
+    android:clickable="true"
+    android:focusable="true"
+    android:id="@+id/clSearchResult"
+    tools:context=".ui.view.fragments.SearchResultFragment">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/spotifyGreyMid"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/etSearchResult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/spotifyGreyMid"
+            android:hint="@string/search_query"
+            android:inputType="textCapSentences"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/spotifyGreyLighter"
+            android:textColorHighlight="@color/spotifyGreen"
+            android:textColorHint="@color/spotifyGreyLighter"
+            android:textCursorDrawable="@null"
+            android:autofillHints="" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/hsvChipsSearchResult"
+        android:scrollbars="none"
+        android:paddingVertical="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.ChipGroup
+                android:paddingHorizontal="20dp"
+                android:id="@+id/chipGroupSearchResult"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSongsSearchResult"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="@string/songs" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipArtistsSearchResult"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="@string/artists" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAlbumsSearchResult"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="@string/albums" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipPlaylistsSearchResult"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="@string/playlists" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipEpisodesSearchResult"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:visibility="gone"
+                    android:text="@string/episodes" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipPodcastsSearchResult"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="@string/podcasts_and_shows" />
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSongsSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingBottom="60dp"
+        android:layout_marginTop="128dp"
+        android:visibility="gone"
+        app:layoutManager="LinearLayoutManager"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hsvChipsSearchResult" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvArtistsSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingBottom="60dp"
+        android:layout_marginTop="128dp"
+        android:visibility="gone"
+        app:layoutManager="LinearLayoutManager"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hsvChipsSearchResult" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAlbumsSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingBottom="60dp"
+        android:layout_marginTop="128dp"
+        android:visibility="gone"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hsvChipsSearchResult" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlaylistsSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingBottom="60dp"
+        android:layout_marginTop="128dp"
+        android:visibility="gone"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hsvChipsSearchResult" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsvPodcastSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="60dp"
+        android:clipToPadding="false"
+        android:layout_marginTop="128dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hsvChipsSearchResult">
+
+        <LinearLayout
+            android:id="@+id/lyPodcastSearchResult"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvPodcastsSearchResult"
+                android:text="@string/podcasts_and_shows"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:paddingHorizontal="20dp"
+                android:paddingBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPodcastsSearchResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:clipToPadding="false"
+                app:layoutManager="LinearLayoutManager"
+                android:nestedScrollingEnabled="false" />
+
+            <TextView
+                android:id="@+id/tvEpisodesSearchResult"
+                android:text="@string/episodes"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEpisodesSearchResult"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:clipToPadding="false"
+                app:layoutManager="LinearLayoutManager"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

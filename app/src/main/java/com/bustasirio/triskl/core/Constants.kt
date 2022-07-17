@@ -16,5 +16,6 @@ class Constants {
             "playlist-modify-private " +
             "user-library-read " +
             "user-modify-playback-state"
+        const val SEARCH_TYPE_PARAMS = "track,album,artist,playlist,episode,show"
     }
 }

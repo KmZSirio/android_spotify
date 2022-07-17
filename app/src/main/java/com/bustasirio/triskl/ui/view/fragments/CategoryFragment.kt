@@ -29,7 +29,7 @@ class CategoryFragment : Fragment() {
 
     private val categoryVM: CategoryViewModel by viewModels()
 
-    private var categoryPlaylistAdapter = CategoryPlaylistAdapter()
+    private lateinit var categoryPlaylistAdapter: CategoryPlaylistAdapter
 
     var isLoading = false
     var isLastPage = false

@@ -62,7 +62,7 @@ class EditFragment : Fragment() {
             if (editedName == playlist.name && editedDesc == playlist.description) {
                 Toast.makeText(requireContext(), getString(R.string.has_not_changed), Toast.LENGTH_SHORT).show()
             } else {
-                if (editedName == "") editedName = playlist.name
+                if (editedName == "") editedName = playlist.name ?: ""
 
                 val json = if (editedDesc == "") "{\"name\":\"$editedName\"}"
                 else "{\"name\":\"$editedName\",\"description\":\"$editedDesc\"}"

@@ -1,6 +1,7 @@
 package com.bustasirio.triskl.ui.view.adapters
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,24 +48,25 @@ class FeaturedAdapter :
     override fun onBindViewHolder(holder: FeaturedViewHolder, position: Int) {
         val playlist = differ.currentList[position]
 
-        holder.itemView.apply {
-            holder.cvCategoryItem.setCardBackgroundColor(
-                Color.argb(
-                    255,
-                    Random.nextInt(30, 220),
-                    Random.nextInt(30, 220),
-                    Random.nextInt(30, 220)
+        if (playlist != null) {
+            holder.itemView.apply {
+                holder.cvCategoryItem.setCardBackgroundColor(
+                    Color.argb(
+                        255,
+                        Random.nextInt(30, 220),
+                        Random.nextInt(30, 220),
+                        Random.nextInt(30, 220)
+                    )
                 )
-            )
+                holder.tvCategoryItem.text = playlist.name ?: ""
+                if (playlist.images.isNotEmpty()) {
+                    Picasso.get().load(playlist.images[0].url)
+                        .into(holder.ivCategoryItem)
+                }
+                else holder.ivCategoryItem.setImageResource(R.drawable.playlist_cover)
 
-            holder.tvCategoryItem.text = playlist.name
-            if (playlist.images.isNotEmpty()) {
-                Picasso.get().load(playlist.images[0].url)
-                    .into(holder.ivCategoryItem)
+                setOnClickListener { onItemClickListener?.let { it(playlist) } }
             }
-            else holder.ivCategoryItem.setImageResource(R.drawable.playlist_cover)
-
-            setOnClickListener { onItemClickListener?.let { it(playlist) } }
         }
     }
 

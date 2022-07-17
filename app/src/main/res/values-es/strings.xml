@@ -122,4 +122,18 @@
     <string name="gradient">Degradado</string>
     <string name="has_not_changed">No cambio nada</string>
     <string name="created_description">Generado el</string>
+    <string name="search_box">Artistas, canciones, o podcasts</string>
+    <string name="search_query">Término de búsqueda</string>
+    <string name="songs">Canciones</string>
+    <string name="artists">Artistas</string>
+    <string name="playlists">Playlists</string>
+    <string name="albums">Álbumes</string>
+    <string name="episodes">Episodios</string>
+    <string name="podcasts_and_shows">Podcasts y programas</string>
+    <string name="search_result_1">Escucha lo que más te gusta</string>
+    <string name="search_result_2">Busca artistas, canciones, podcasts y más.</string>
+    <string name="search_result_incorrect_1">No se pudo encontrar </string>
+    <string name="search_result_incorrect_2">Vuelve a buscar o prueba con una palabra clave diferente.</string>
+    <string name="podcast_cover_image">Imagen de portada del podcast</string>
+    <string name="episode_cover_image">Imagen de portada del episodio</string>
 </resources>

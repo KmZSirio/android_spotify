@@ -13,7 +13,7 @@ data class Playlist(
     val href: String,
     val id: String,
     val images: List<Image>,
-    val name: String,
+    val name: String?,
     val owner: Owner,
     val public: Boolean?,
     val tracks: Tracks,

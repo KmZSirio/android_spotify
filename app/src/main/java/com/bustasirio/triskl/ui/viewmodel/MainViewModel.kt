@@ -54,14 +54,14 @@ class MainViewModel @Inject constructor(
             REDIRECT_URI
         ).let {
 
-            Log.d("tagMainVM", "auth ${ESL.ESL}")
-            Log.d("tagMainVM", "code ${code.value!!}")
-            Log.d("tagMainVM", "Error $REDIRECT_URI")
+//            Log.d("tagMainVM", "auth ${ESL.ESL}")
+//            Log.d("tagMainVM", "code ${code.value!!}")
+//            Log.d("tagMainVM1", "Error $REDIRECT_URI")
 
             if (it.isSuccessful) authResponse.postValue(Resource.Success(it.body()!!))
             else {
-                Log.d("tagMainVM", "Error ${it.code()}")
-                Log.d("tagMainVM", "Error ${it.errorBody()}")
+                Log.d("tagMainVM2", "Error ${it.code()}")
+                Log.d("tagMainVM3", "Error ${it.errorBody()}")
                 authResponse.postValue(Resource.Error(it.code().toString()))
             }
         }

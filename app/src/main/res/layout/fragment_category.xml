@@ -68,8 +68,8 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:itemCount="50"
             tools:listitem="@layout/category_playlist_item"
-            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:spanCount="2"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             android:orientation="vertical"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

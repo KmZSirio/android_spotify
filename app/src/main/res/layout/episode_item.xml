@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="108dp"
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:background="@color/spotifyBlack">
+
+    <View
+        android:background="@color/spotifyGreyDarker"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="66dp">
+
+        <ImageView
+            android:id="@+id/ivEpisodeItem"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/artist_picture"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/no_image" />
+
+        <TextView
+            android:id="@+id/tvNameEpisodeItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLength="40"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintStart_toEndOf="@+id/ivEpisodeItem"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="I've got you under my skin  you under my skin" />
+
+        <TextView
+            android:id="@+id/tvPublisherEpisodeItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginEnd="18dp"
+            android:ellipsize="end"
+            android:maxLength="40"
+            android:maxLines="1"
+            android:textColor="@color/spotifyGreyLighter"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivEpisodeItem"
+            tools:text="Frank Sinatra" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvDescriptionEpisodeItem"
+        tools:text="Joshua and Ryan talk about love, relationships, sex, and parenting with blogger, podcaster, and Registered Dietitian Becca Shern"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/spotifyGreyLighter"
+        android:textSize="13sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

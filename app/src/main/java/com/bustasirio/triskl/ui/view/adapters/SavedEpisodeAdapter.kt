@@ -34,7 +34,7 @@ class SavedEpisodeAdapter :
         val layoutInflater = LayoutInflater.from(parent.context)
         return SavedEpisodeViewHolder(
             layoutInflater.inflate(
-                R.layout.podcast_item,
+                R.layout.episode_item,
                 parent,
                 false
             )
@@ -71,9 +71,9 @@ class SavedEpisodeAdapter :
     override fun getItemCount(): Int = differ.currentList.size
 
     class SavedEpisodeViewHolder(val view: View) : RecyclerView.ViewHolder(view){
-        val ivPodcastItem: ImageView = view.findViewById(R.id.ivPodcastItem)
-        val tvNamePodcastItem: TextView = view.findViewById(R.id.tvNamePodcastItem)
-        val tvPublisherPodcastItem: TextView = view.findViewById(R.id.tvPublisherPodcastItem)
-        val tvDescriptionPodcastItem: TextView = view.findViewById(R.id.tvDescriptionPodcastItem)
+        val ivPodcastItem: ImageView = view.findViewById(R.id.ivEpisodeItem)
+        val tvNamePodcastItem: TextView = view.findViewById(R.id.tvNameEpisodeItem)
+        val tvPublisherPodcastItem: TextView = view.findViewById(R.id.tvPublisherEpisodeItem)
+        val tvDescriptionPodcastItem: TextView = view.findViewById(R.id.tvDescriptionEpisodeItem)
     }
 }
